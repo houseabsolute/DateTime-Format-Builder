@@ -146,7 +146,6 @@ Creates a function to parse datetime strings and return L<DateTime> objects.
         {
             params => [ qw( year month day ) ],
             regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
-            extra   => { hour => 0, minute => 0, second => 0 },
         }
     );
 
@@ -200,11 +199,9 @@ This argument is required.
 
 =item *
 
-C<extra> is a hashref that lists what any left over arguments should be set to.
-For example, an 8 character ICal string consists of just year, month and day.
-Thus one should set the hour, minute and second to 0. One could, equally, set
-them to noon. You can also specify any other parameters to C<< DateTime->new() >>
-here, such as C<time_zone>.
+C<extra> is a hashref that lists what any extra arguments should be set to.
+You can use it to specify  parameters to C<< DateTime->new() >>,
+such as C<time_zone>.
 
 =item *
 
