@@ -23,7 +23,7 @@ most of its responsibilities.
 
 =cut
 
-$VERSION = '0.16';
+$VERSION = '0.74';
 
 =head1 METHODS
 
