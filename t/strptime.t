@@ -38,7 +38,7 @@ for my $test (@tests)
 {
     my ($pattern, $data) = @$test;
     my $parser = $class->create_parser( strptime => $pattern );
-    my $parsed = $parser->( $class, $data );
+    my $parsed = $parser->parse( $class, $data );
     isa_ok( $parsed => 'DateTime' );
     is( $parsed->strftime($pattern) => $data, $pattern);
 }

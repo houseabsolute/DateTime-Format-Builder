@@ -1,7 +1,7 @@
 package DateTime::Format::Builder::Parser;
 use strict;
 use vars qw( $VERSION );
-use Carp;
+use Carp qw( croak );
 use Params::Validate qw(
     validate SCALAR CODEREF UNDEF ARRAYREF
 );
@@ -24,6 +24,70 @@ most of its responsibilities.
 =cut
 
 $VERSION = '0.75';
+
+=head1 CONSTRUCTORS
+
+=cut
+
+sub on_fail
+{
+    my ($self, $input, $parent) = @_;
+    my $maker = $self->maker;
+    if ( $maker and $maker->can( 'on_fail' ) ) {
+        $maker->on_fail( $input );
+    } else {
+        croak __PACKAGE__.": Invalid date format: $input";
+    }
+}
+
+sub no_parser
+{
+    croak "No parser set for this parser object.";
+}
+
+sub new
+{
+    my $class = shift;
+    $class = ref($class)||$class;
+    my $i = 0;
+    my $self = bless {
+        on_fail => \&on_fail,
+        parser => \&no_parser,
+    }, $class;
+
+    return $self;
+}
+
+sub maker { $_[0]->{maker} }
+sub set_maker { $_[0]->{maker} = $_[1]; $_[0] }
+
+sub fail
+{
+    my ($self, $parent, $input) = @_;
+    $self->{on_fail}->( $self, $input, $parent );
+}
+
+sub parse
+{
+    my ( $self, $parent, $input, @args ) = @_;
+    my $r = $self->{parser}->( $parent, $input, @args );
+    $self->fail( $parent, $input ) unless defined $r;
+    $r;
+}
+
+sub set_parser
+{
+    my ($self, $parser) = @_;
+    $self->{parser} = $parser;
+    $self;
+}
+
+sub set_fail
+{
+    my ($self, $fail) = @_;
+    $self->{on_fail} = $fail;
+    $self;
+}
 
 =head1 METHODS
 
@@ -217,6 +281,15 @@ or C<undef>.
 
 =cut
 
+sub create_single_object
+{
+    my ( $self ) = shift;
+    my $obj = $self->new;
+    my $parser = $self->create_single_parser( @_ );
+
+    $obj->set_parser( $parser );
+}
+
 sub create_single_parser
 {
     my $class = shift;
@@ -246,7 +319,7 @@ sub create_single_parser
 	or croak "Can't create a $_ parser (no appropriate create_parser method)";
     my @args = %args;
     %args = validate( @args, $from->params() );
-    return $from->$method( %args );
+    $from->$method( %args );
 }
 
 =head3 merge_callbacks
@@ -306,6 +379,8 @@ sub create_multiple_parsers
     my $class = shift;
     my ($options, @specs) = @_;
 
+    my $obj = $class->new;
+
     # Organise the specs, and transform them into parsers.
     my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
 
@@ -315,9 +390,13 @@ sub create_multiple_parsers
 	    $options->{$_}
 	) if $options->{$_};
     }
+    # Custom fail method?
+    $obj->set_fail( $options->{on_fail} ) if exists $options->{on_fail};
+    # Who's our maker?
+    $obj->set_maker( $options->{maker} ) if exists $options->{maker};
 
     # These are the innards of a multi-parser.
-    return sub {
+    my $parser = sub {
 	my ($self, $date, @args) = @_;
 	return unless defined $date;
 
@@ -357,6 +436,7 @@ sub create_multiple_parsers
 	# Failed, return undef.
 	return;
     };
+    $obj->set_parser( $parser );
 }
 
 =head2 sort_parsers
@@ -488,15 +568,15 @@ sub create_parser
     if (not ref $_[0])
     {
 	# Simple case of single specification as a hash
-	return $class->create_single_parser( @_ )
+	return $class->create_single_object( @_ )
     }
 
     # Let's see if we were given an options block
     my %options;
-    if (ref $_[0] eq 'ARRAY')
+    while ( ref $_[0] eq 'ARRAY' )
     {
 	my $options = shift;
-	%options = @$options;
+	%options = ( %options, @$options );
     }
 
     # Now, can we create a multi-parser out of the remaining arguments?
@@ -506,9 +586,9 @@ sub create_parser
     }
     else
     {
-	# If it wasn't a HASH or CODE, then it was something we
-	# don't currently accept.
-	croak "create_parser called with bad params.";
+	# If it wasn't a HASH or CODE, then it was (ideally)
+        # a list of pairs describing a single specification.
+        return $class->create_multiple_parsers( \%options, { @_ } );
     }
 }
 

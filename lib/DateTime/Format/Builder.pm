@@ -147,6 +147,7 @@ by C<parser()> and C<create_class()>.
 sub create_parser
 {
     my $class = shift;
+    my @common = ( maker => $class );
     if (@_ == 1)
     {
 	my $parsers = shift;
@@ -154,11 +155,11 @@ sub create_parser
 	    (ref $parsers eq 'HASH' ) ? %$parsers :
 	    ( ( ref $parsers eq 'ARRAY' ) ? @$parsers : $parsers)
 	);
-	$parser->create_parser( @parsers );
+	$parser->create_parser( \@common, @parsers );
     }
     else
     {
-	$parser->create_parser( @_ );
+	$parser->create_parser( \@common, @_ );
     }
 }
 
@@ -187,9 +188,7 @@ sub create_method
     my ($class, $parser) = @_;
     return sub {
 	my $self = shift;
-	my $r = $self->$parser(@_);
-	$class->on_fail( $_[0] ) unless defined $r;
-	$r;
+	$parser->parse( $self, @_);
     }
 }
 

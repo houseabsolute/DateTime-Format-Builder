@@ -58,13 +58,20 @@ right at the end when it's tried all it could.
 C<on_fail()> (see L<later|/on_fail>) is defined, by default,
 to throw an error.
 
+Multiple parser specifications can also specify C<on_fail>
+with a coderef as an argument in the options block. This
+will take precedence over the inheritable and over-ridable
+method.
+
 That said, don't throw real errors from callbacks in
 multiple parser specifications unless you really want
 parsing to stop right there and not try any other parsers.
 
 In summary: calling a B<method> will result in either a
 C<DateTime> object being returned or an error being thrown
-(unless you've overridden C<on_fail()> or C<create_method()>.
+(unless you've overridden C<on_fail()> or
+C<create_method()>, or you've specified a C<on_fail> key to
+a multiple parser specification).
 
 Individual B<parsers> (be they multiple parsers or single
 parsers) will return either the C<DateTime> object or
@@ -272,8 +279,6 @@ specifications.
 Note that if the first element of the array is an arrayref,
 then you're specifying options.
 
-At present, only one option is available:
-
 =over 4
 
 =item *
@@ -288,6 +293,15 @@ variable length timezone).
 
 Arguments are as for the I<single parser> I<preprocess>
 variant with the exception that I<label> is never given.
+
+=item *
+
+B<on_fail> should be a reference to a subroutine that is
+called if the parser fails. If this is not provided, the
+default action is to call
+C<DateTime::Format::Builder::on_fail>, or the C<on_fail>
+method of the subclass of DTFB that was used to create the
+parser.
 
 =back
 
@@ -633,6 +647,9 @@ fixing the auto-constructor writing, providing the
 
 Rick Measham (RICKM) for L<DateTime::Format::Strptime>
 which Builder now supports.
+
+Matthew McGillis for pointing out that C<on_fail> overriding
+should be simpler.
 
 Simon Cozens (SIMON) for saying it was cool.
 

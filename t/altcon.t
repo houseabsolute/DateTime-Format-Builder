@@ -15,7 +15,7 @@ BEGIN {
 sub do_check
 {
     my ($parser, $date, $values) = @_;
-    my $parsed = $class->$parser( $date );
+    my $parsed = $parser->parse( $class, $date );
     isa_ok( $parsed => 'DateTime' );
     is( $parsed->year()  => $values->[0], "Year is right" );
     is( $parsed->month() => $values->[1], "Month is right" );
@@ -69,7 +69,7 @@ sub do_check
     for my $epoch (sort keys %epochs)
     {
 	my $check = $epochs{$epoch};
-	my $dt = $class->$parser( $epoch );
+	my $dt = $parser->parse( $class, $epoch );
 	isa_ok( $dt => 'DateTime' );
 	is( $dt->datetime => $check, "Epoch of $epoch to $check" );
     }

@@ -3,48 +3,49 @@ use lib 'inc';
 use strict;
 use blib;
 
-BEGIN {
-for (qw( HTTP Mail IBeat ))
-{
-    my $mod = "DateTime::Format::$_";
-    eval "require $mod";
-    if ($@) {
-	print "1..1\nok 1 # skip Fallthrough tests: $mod not installed.\n";
-	exit;
-    }
-}
-}
-
 use Test::More tests => 4;
 BEGIN { use_ok 'DateTime::Format::Builder' }
 
-package DateTime::Format::Fall;
-use DateTime::Format::HTTP;
-use DateTime::Format::Mail;
-use DateTime::Format::IBeat;
+SKIP: {
+    my @three = map { "DateTime::Format::$_" } qw( HTTP Mail IBeat );
+    my @fails;
+    for my $mod (@three)
+    {
+        eval "require $mod";
+        push @fails, $mod if $@;
+    }
+    skip "@fails not installed.", 3 if @fails;
 
-use DateTime::Format::Builder (
-parsers => { parse_datetime => [
-    sub { eval { DateTime::Format::HTTP->parse_datetime( $_[1] ) } },
-    sub { eval { DateTime::Format::Mail->parse_datetime( $_[1] ) } },
-    sub { eval { DateTime::Format::IBeat->parse_datetime( $_[1] ) } },
-]});
+    eval qq|package DateTime::Format::Fall;|
+        .join("", map { "use $_;\n" } @three )
+        .q|
+        use DateTime::Format::Builder (
+        parsers => { parse_datetime => [
+        |.join("", map {
+                qq|sub { eval { $_->parse_datetime( \$_[1] ) } },\n|
+            } @three )
+        .q|
+        ]});
 
-package main;
+        1;
+    |;
 
-my $get = sub { eval {
-	DateTime::Format::Fall->parse_datetime($_[0])->datetime
-    } };
+    die $@ if $@;
+
+    my $get = sub { eval {
+            DateTime::Format::Fall->parse_datetime($_[0])->datetime
+        } };
 
 
-for ( '@d19.07.03 @704', '20030719T155345' )
-{
-    my $dt = $get->( $_ );
-    is $dt, "2003-07-19T15:53:45", "Can parse [$_]";
-}
+    for ( '@d19.07.03 @704', '20030719T155345' )
+    {
+        my $dt = $get->( $_ );
+        is $dt, "2003-07-19T15:53:45", "Can parse [$_]";
+    }
 
-for ( 'gibberish' )
-{
-    my $dt = $get->( $_ );
-    ok( !defined $dt, "Shouldn't parse [$_]" )
+    for ( 'gibberish' )
+    {
+        my $dt = $get->( $_ );
+        ok( !defined $dt, "Shouldn't parse [$_]" )
+    }
 }

@@ -2,10 +2,11 @@
 
 ---
 version: 0.76
-date:    17 Jul 2003
+date:    10 Aug 2003
 changes:
     - Fallthrough example and test added.
     - Quick parser added to simplify fallthrough stuff.
+    - Rejigged internals to allow for on_fail argument to multi-parsers.
 
 ---
 version: 0.75

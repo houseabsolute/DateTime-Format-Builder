@@ -50,6 +50,7 @@ BEGIN {
 
     my $bad_parse = eval { $o->parse_datetime( "Fnerk" ) };
     ok( !$@, "Bad parse gives no error" );
+    diag $@ if $@;
     ok( (!defined($bad_parse)), "Bad parse correctly gives undef" );
 }
 
