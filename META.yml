@@ -1,19 +1,33 @@
 --- #YAML:1.0
 build_requires:
-  Test::More: 0.47
 conflicts: {}
 distribution_type: module
 license: perl
 name: DateTime-Format-Builder
 recommends:
+  File::Find::Rule: 0.10
+  Test::More: 0.47
   Test::Pod: 0.95
-  Test::Signature: 1.03
 requires:
-  File::Find: 0
-  DateTime: 0.10
+  DateTime: 0.12
   Params::Validate: 0.58
-  File::Spec: 0.6
-  DateTime::Format::Strptime: 1.00.01
-  File::Basename: 2.4
-version: 0.69
+  DateTime::Format::Strptime: 1.0102
+version: 0.71
+provides:
+  DateTime::Format::Builder:
+    file: lib/DateTime/Format/Builder.pm
+    version: 0.71
+  DateTime::Format::Builder::Parser:
+    file: lib/DateTime/Format/Builder/Parser.pm
+    version: 0.14
+  DateTime::Format::Builder::Parser::Regex:
+    file: lib/DateTime/Format/Builder/Parser/Regex.pm
+    version: 0.16
+  DateTime::Format::Builder::Parser::Strptime:
+    file: lib/DateTime/Format/Builder/Parser/Strptime.pm
+    version: 0.13
+  DateTime::Format::Builder::Parser::generic:
+    file: lib/DateTime/Format/Builder/Parser/generic.pm
+    version: ~
+
 generated_by: docmaker version 0.89

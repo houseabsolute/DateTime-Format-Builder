@@ -8,7 +8,11 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.69 (28 Apr 2003)
+Changes for 0.71 (23 May 2003)
+   - Massive doc (re)writing.
+   - Examples tidied up.
+   - Tutorial refactored.
+   - Users of generic.pm get to subclass now rather than coderef.
    - DateTime::Format::Strptime is now supported.
    - To support the previous item, massive refactoring.
    - Minor API changes that shouldn't affect anyone.

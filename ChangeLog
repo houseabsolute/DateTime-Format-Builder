@@ -1,6 +1,62 @@
 
 ChangeLog generated directly from CVS logs.
 
+Release DateTime-Format-Builder 0.71:
+  - examples/Apache.pm v1.2
+  - examples/W3CDTF.pm v1.2
+  - examples/MySQL.pm v1.2
+        - Apache example made more legible.
+        - MySQL example duplicate sub removed.
+        - MySQL example POD nit fixed.
+        - W3CDTF example superfluous line removed.
+        - W3CDTF example POD nit fixed.
+        (koschei)
+
+  - Changes v1.11
+        - 0.71
+        (koschei)
+
+  - lib/DateTime/Format/Builder/Parser/Regex.pm v1.2
+  - lib/DateTime/Format/Builder.pm v1.20
+  - lib/DateTime/Format/Builder/Parser/Strptime.pm v1.2
+  - lib/DateTime/Format/Builder/Parser/generic.pm v1.1
+  - lib/DateTime/Format/Builder/Tutorial.pod v1.1
+  - lib/DateTime/Format/Builder.pod v1.21
+  - lib/DateTime/Format/Builder/Parser.pm v1.4
+        - Tutorial refactored.
+        - Common elements of Regex and Strptime refactored.
+        - All submodules documented.
+        - Appropriate (I think) changes to main docs made.
+        - Really need to print and red pen them.
+        - More interpod L<links>.
+        - Silly coderefs replaced with proper subclassing where
+          appropriate.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pod v1.20
+        - Updated THANKS
+        (koschei)
+
+  - t/verbose.t v1.2
+  - t/strptime.t v1.3
+  - t/param.t v1.4
+  - t/extra.t v1.3
+  - t/newclass.t v1.2
+  - t/mergecb.t v1.3
+  - t/create.t v1.3
+  - t/self.t v1.3
+  - t/basic.t v1.2
+  - t/noredef.t v1.2
+  - t/import.t v1.2
+  - t/wholeclass.t v1.2
+  - t/nocon.t v1.2
+  - t/clone.t v1.2
+        - Use 'inc' for lib.
+        - Extended strptime tests to match Strptime.
+        - Minor errors fixed.
+        (koschei)
+
+
 Release DateTime-Format-Builder 0.69:
   - lib/DateTime/Format/Builder/Parser/Regex.pm v1.1
   - lib/DateTime/Format/Builder.pm v1.17
@@ -229,8 +285,8 @@ Release DateTime-Format-Builder 0.25:
 
 Release DateTime-Format-Builder 0.24:
   - lib/DateTime/Format/Builder.pm v1.1
-  - lib/DateTime/Format/Builder.pod v1.1
   - t/00signature.t v1.1
+  - lib/DateTime/Format/Builder.pod v1.1
   - Changes v1.1
   - t/newclass.t v1.1
   - t/create.t v1.1

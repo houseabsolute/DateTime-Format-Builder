@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.21.
+signed via the Module::Signature module, version 0.22.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,49 +14,61 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 fa7a0590d25f60c53c4ae6e2da6958f5d69754a1 AUTHORS
+SHA1 8d50878004d8d5103e1f44dc3df2899419d3a59d AUTHORS
 SHA1 7a95fc8778fbce1f60d222e0d0d1dbb6c649461f Artistic
 SHA1 531e6b5c470d4726483fd68833391653eace0a92 COPYING
-SHA1 1c426500b8d82ef1b1c2acfb91fd2b7076765bf1 CREDITS
-SHA1 ade1c28c5d3457eb4b7c6341175e349db2a1678b ChangeLog
-SHA1 7f3662706e2078cfca613f64cbce1ff8611055fe Changes
-SHA1 cf98bb314440079222fecf45ffd831c78bc5feb1 INSTALL
-SHA1 01ccaebb322d57a110ca29de07de118d08d1b2fd LICENSE
-SHA1 ba9c54a116cff6e592406c57352c8ef50fbdba80 MANIFEST
+SHA1 f91627e855328761c5d591276e49b67ed2412e99 CREDITS
+SHA1 1b8163ec9346aeb886993a11a37700414c5e5dfd ChangeLog
+SHA1 18415ed126211111bbc9218ab751746442e942a7 Changes
+SHA1 0de4161348adcdf97668f223c2e6048e4008acae INSTALL
+SHA1 ad2ae7a69542b8de01d9597653847f3613f78ad9 LICENSE
+SHA1 9256fecdc19cf33364471bf8305af592eed917e0 MANIFEST
 SHA1 334ab1c6291867857d9b4a19aca94078fb9e39ac MANIFEST.SKIP
-SHA1 ce64a5b9f72a4ebe4e31fab1bbd4a776a048cf76 MANIFEST.bak
-SHA1 33bcea5b07fb88bdda8729474a7dce72ef3f826b META.yml
-SHA1 b178b80bebb2ea954af1d1d1058756f547fb7c75 Makefile.PL
-SHA1 7549c510dc354bf69bce1ff4433784d91263ba8e README
-SHA1 4eaa6d39de065aa0c6727e990152b0db0b99b4b6 examples/Apache.pm
+SHA1 b1ba0e6a06495947b4492a5f6ab381f342c14fd5 META.yml
+SHA1 d6b07f0227bbbb9eab156ca4c2f5377a5f6d693c Makefile.PL
+SHA1 4f3cb1c283138d51bbe372589bdb4649f6888b3b README
+SHA1 490a1757ea5183f2a0ddc84563abe2d3bdb6272c examples/Apache.pm
 SHA1 c3b2647784b6a351233732676ef49e725d2db4d9 examples/ICal.pm
-SHA1 58cf3bfc5c6bf4de31e749517f3747654e61d00d examples/MySQL.pm
-SHA1 037a0ab51cf4ef431e7c39a7dcefc3b936bdac90 examples/W3CDTF.pm
-SHA1 c4f6994a1c4176c6600b0f32c71f1c854c1a4dfc lib/DateTime/Format/Builder.pm
-SHA1 171166c1bcea780acd353b316a5c1e04d24533af lib/DateTime/Format/Builder.pod
-SHA1 9d2e812fda2f14d94d57865dbacd97ca99b0a1fe lib/DateTime/Format/Builder/Parser.pm
-SHA1 df11d0bcd640058d61789820a5dd9a601257063c lib/DateTime/Format/Builder/Parser/Regex.pm
-SHA1 129331119cfdd693c1c6755ebc103b5473293dca lib/DateTime/Format/Builder/Parser/Strptime.pm
-SHA1 fc88a93436798980b1b6d918159e9f8adacfc1e4 t/00pod.t
-SHA1 53e2f961178f95355c8a62dd1bbbbfb7dda6366e t/00signature.t
-SHA1 9028a1c7da629e92505b35b74d7df02a89b2b638 t/basic.t
-SHA1 81032eabee0bc216407415e593b4c08412ac2d3b t/clone.t
-SHA1 6bc34de38e9603a95ef57e4cf758ff7a48a00096 t/create.t
-SHA1 e273bbc9592f2d5ed913f2d380a7c2949d25e23b t/extra.t
-SHA1 f72c2d23353a24487bcf0ee9786347d2870b719d t/import.t
-SHA1 93b55057d18559337fb601b92d143a83bee997cd t/mergecb.t
-SHA1 97edf9c2255867a14941189366ebf0b17da0de17 t/newclass.t
-SHA1 5a5f78da09376b3f54206402ff3d420cba91ce34 t/nocon.t
-SHA1 3ffce225c039c733e78832db0a3cec9e161697b1 t/noredef.t
-SHA1 ffbefb4f4be2c293135f2ecbd3ba9398f917d9b7 t/param.t
-SHA1 9aea8d24de717b3e495094c8f46303caace42219 t/self.t
-SHA1 88bf243c0e92462780a0f45a4bcefe23c441f37c t/strptime.t
-SHA1 77ab876f0fb6844c0f005b2063ba6793802dfb9a t/verbose.t
-SHA1 0eb3c44985247daeae62c253dd1d6be18a4f2505 t/wholeclass.t
+SHA1 1a9b1adec2c20a9694bcd7358451a5a11429d795 examples/MySQL.pm
+SHA1 4000a671d01ce9a4c916a0b6eae0931c8da48f13 examples/W3CDTF.pm
+SHA1 9e7c405050a7cd7c6a8496c88259fe38214873c4 inc/Module/Install.pm
+SHA1 048ae06c0d9f54288ab39fdc8d509d4f91d0eaba inc/Module/Install/AutoInstall.pm
+SHA1 42d6ded1a7cadea45032887a6314090f9ff8cb0b inc/Module/Install/Base.pm
+SHA1 363404494c2ab23473b0e27f7a049b6e5c2827b8 inc/Module/Install/Include.pm
+SHA1 392e38d278f3cd92d2767e2bb480c01f4e6c4ffc inc/Module/Install/Makefile.pm
+SHA1 22bea1ee2fdc6072fbb0b1e2fc6917c55604796e inc/Module/Install/Metadata.pm
+SHA1 0baaaae39644d554246a0b0ef38aa25969011079 inc/Test.pm
+SHA1 38e3bb95a796f5f86cd96f0807787df6bd61dcdb inc/Test/Builder.pm
+SHA1 a84fdefeae3f13f0de07c52bdfd57d29ae62a64a inc/Test/More.pm
+SHA1 c3a11a060cf688004d8783608291e809eec4598c inc/Test/Signature.pm
+SHA1 2c5e88b3f8038fd37aeddc9ccc3727d9e14a17c7 inc/YAML.pm
+SHA1 7dc39612b198418886a48621ae4ff29fef93777d lib/DateTime/Format/Builder.pm
+SHA1 0a1782420be5d278de61df34883511736e994ace lib/DateTime/Format/Builder.pod
+SHA1 f7a3d01011ae59f76c622b940d18a3e0ebec2a07 lib/DateTime/Format/Builder/Parser.pm
+SHA1 553e91960a00758602803ec28b40a5b45f4e1e24 lib/DateTime/Format/Builder/Parser/Regex.pm
+SHA1 d251a7e44fdd31d15c5e22c156227686f498361d lib/DateTime/Format/Builder/Parser/Strptime.pm
+SHA1 e283e3dccc2d1b2444b0e1aca887856e9f53ff34 lib/DateTime/Format/Builder/Parser/generic.pm
+SHA1 43f562e08aa543ac1a5702e6186fa56ebf34fc70 lib/DateTime/Format/Builder/Tutorial.pod
+SHA1 395e8dadfd5d986300fb7808004023ada5c83880 t/00sig.t
+SHA1 a8bc052dd17b4e97bad9e84830891817cdf2abca t/99pod.t
+SHA1 099a26e3e15ae46099e38600253c6da2084ae74e t/basic.t
+SHA1 12616ef97e3fc1aa2a421444d143926c3801243c t/clone.t
+SHA1 2dd2b5f3109f890f77e48ea2dfbd0ee1f307fa1c t/create.t
+SHA1 7de222d93b1aa98ea2a8b51477b231ff38480aed t/extra.t
+SHA1 dd22e59bf92d9a30d8ad0f2a94af5fba133b8a76 t/import.t
+SHA1 f7653e3f2deb1cb0eeb6e2606d5d18bc320f1683 t/mergecb.t
+SHA1 cd023146d6aee7e5d21b513dfe59dd2b3f257f8a t/newclass.t
+SHA1 2daaf843240865acad0034f08e7d8c6e76304868 t/nocon.t
+SHA1 993b8a0ac33464dc858189f64029c88df6281f3d t/noredef.t
+SHA1 8f5abe5c35b435f9e96246772b08796c46d90058 t/param.t
+SHA1 1fd90038f64e17235adfe35228d202d6127c976a t/self.t
+SHA1 18e0a878cba141e0af55ea7049c0d0e39b2ebdcd t/strptime.t
+SHA1 ebe6d8c23079f8bfb457fae8b5d5fab6faa7f660 t/verbose.t
+SHA1 ac4ad2a1982f687cca636fa1f5b68449da251f5b t/wholeclass.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.1 (GNU/Linux)
 
-iD8DBQE+rd6nzL8gm6KQWMgRAm0HAKCQn6OwDgEUxkVhRJbvGaqaWsiEpgCdEkDA
-PICvQGFF6XqAyksPlhfW5Fo=
-=n9l0
+iD8DBQE+zgo7zL8gm6KQWMgRAr5/AKCkDjszjMAAicxB2HafiwcCL9revgCdH8WC
+11+ExdrBMLqs5cFPsX0C7wg=
+=eiQP
 -----END PGP SIGNATURE-----
