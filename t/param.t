@@ -83,15 +83,18 @@ my $sample = 'SampleClassWithArgs1';
 	}
     );
 
-    my $dt = $sample->parse_datetime(
-	"20030716T163245", 'global' => 'Africa/Cairo' );
-    is( $dt->time_zone->name, 'Africa/Cairo' );
+    my %tests = (
+	global => 'Africa/Cairo',
+	pre	=> 'Europe/London',
+	post	=> 'Australia/Sydney',
+    );
 
-    $dt = $sample->parse_datetime(
-	"20030716T163245", 'pre' => 'Europe/London' );
-    is( $dt->time_zone->name, 'Europe/London' );
-
-    $dt = $sample->parse_datetime(
-	"20030716T163245", 'post' => 'Australia/Sydney' );
-    is( $dt->time_zone->name, 'Australia/Sydney' );
+    while ( my ($callback, $value) = each %tests )
+    {
+	my $parser = $sample->new();
+	my $dt = $parser->parse_datetime( "20030716T163245",
+	    $callback => $value,
+	);
+	is( $dt->time_zone->name, $value );
+    }
 }

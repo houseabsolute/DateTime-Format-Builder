@@ -62,7 +62,7 @@ my @callbacks = qw( on_match on_fail postprocess preprocess );
     }
 }
 
-sub create_parser
+sub create_single_parser
 {
     my $class = shift;
     return $_[0] if ref $_[0] eq 'CODE'; # already code
@@ -198,17 +198,161 @@ sub merge_callbacks
     };
 }
 
+=pod
+
+Creates the multi-spec parsers.
+
+=cut
+
+sub create_multiple_parsers
 {
-    use File::Find;
-    use File::Spec;
-    my @dirs = map { File::Spec->catfile( $_, qw( DateTime Format Builder Parser ) ) } @INC;
-    find({
+    my $class = shift;
+    my ($options, @specs) = @_;
+
+    # Organise the specs, and transform them into parsers.
+    my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
+    for ( 'preprocess' ) {
+	$options->{$_} = $class->merge_callbacks( $options->{$_} ) if $options->{$_};
+    }
+
+    # These are the innards of a multi-parser.
+    return sub {
+	my ($self, $date, @args) = @_;
+
+	my %param = (
+	    self => $self,
+	    ( @args ? (args => \@args) : () ),
+	);
+
+	my %p;
+	# Preprocess and potentially fill %p
+	if ($options->{preprocess})
+	{
+	    $date = $options->{preprocess}->(
+		input => $date, parsed => \%p, %param
+	    );
+	}
+
+	# Find length parser
+	if (%$lengths)
+	{
+	    my $length = length $date;
+	    my $parser = $lengths->{$length};
+	    if ($parser)
+	    {
+		# Found one, call it with _copy_ of %p
+		my $dt = $parser->( $self, $date, { %p }, @args );
+		return $dt if defined $dt;
+	    }
+	}
+	# Or calls all others, with _copy_ of %p
+	for my $parser (@$others)
+	{
+	    my $dt = $parser->( $self, $date, { %p }, @args );
+	    return $dt if defined $dt;
+	}
+	# Failed, return undef.
+	return undef;
+    };
+}
+
+=pod
+
+Organise and create parsers from specs.
+
+=cut
+
+sub sort_parsers
+{
+    my $class = shift;
+    my ($options, $specs) = @_;
+    my (%lengths, @others);
+
+    for my $spec (@$specs)
+    {
+	# Put coderefs straight into the 'other' heap.
+	if (ref $spec eq 'CODE')
+	{
+	    push @others, $spec;
+	}
+	# Specifications...
+	elsif (ref $spec eq 'HASH')
+	{
+	    if (exists $spec->{length})
+	    {
+		croak "Cannot specify the same length twice"
+		if exists $lengths{$spec->{length}};
+
+		$lengths{$spec->{length}} =
+		    $class->create_single_parser( %$spec );
+	    }
+	    else
+	    {
+		push @others, $class->create_single_parser( %$spec );
+	    }
+	}
+	# Something else
+	else
+	{
+	    croak "Invalid specification in list.";
+	}
+    }
+
+    return ( \%lengths, \@others );
+}
+
+sub create_parser
+{
+    my $class = shift;
+    if (not ref $_[0])
+    {
+	# Simple case of single specification as a hash
+	return $class->create_single_parser( @_ )
+    }
+
+    # Let's see if we were given an options block
+    my %options;
+    if (ref $_[0] eq 'ARRAY')
+    {
+	my $options = shift;
+	%options = @$options;
+    }
+
+    # Now, can we create a multi-parser out of the remaining arguments?
+    if (ref $_[0] eq 'HASH' or ref $_[0] eq 'CODE')
+    {
+	return $class->create_multiple_parsers( \%options, @_ );
+    }
+    else
+    {
+	# If it wasn't a HASH or CODE, then it was something we
+	# don't currently accept.
+	croak "create_parser called with bad params.";
+    }
+}
+
+# Find all our workers
+{
+    use File::Find ();
+    use File::Spec ();
+    use File::Basename qw( basename );
+    my @dirs = grep -d, map { File::Spec->catfile( $_, qw( DateTime Format Builder Parser ) ) } @INC;
+    my $count = 0;
+    my %loaded;
+    File::Find::find({
 	    no_chdir => 1,
 	    wanted => sub {
-		require $_ if /\.pm\z/;
+		if ( /\.pm\z/ )
+		{
+		    next if $loaded{basename($_)}++;
+		    require $_;
+		    $count++;
+		}
 	    },
 	},
-	@dirs);
+	@dirs
+    );
+    croak "No parser modules found: this is bad! Check directory permissions.\n" unless $count;
 }
 
 1;

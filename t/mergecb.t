@@ -3,7 +3,7 @@ use strict;
 use vars qw( $class );
 
 BEGIN {
-    $class = 'DateTime::Format::Builder';
+    $class = 'DateTime::Format::Builder::Parser';
     use_ok $class;
 }
 
