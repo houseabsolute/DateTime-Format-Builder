@@ -1,6 +1,5 @@
-# $Id$
-use lib 'inc';
-use blib;
+#!/usr/bin/perl -wT
+
 use strict;
 use Test::More tests => 5;
 

@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.7805
+date:    11 08 2004
+changes:
+    - DateTime::Format::Build::Parser caused an exception when run in taint mode.  Reported by Curtis Hawthorne.
+
+---
 version: 0.7804
 date:    07 Jul 2004
 changes:

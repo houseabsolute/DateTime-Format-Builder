@@ -622,7 +622,7 @@ letter. These are ignored.
 		{
 		    $_ = basename($_);
 		    return if $loaded{$_}++;
-		    s/\.pm\z//;
+		    ($_) = $_ =~ /\A(\w+)\.pm\z/;
 		    eval "use DateTime::Format::Builder::Parser::$_";
 		    die $@ if $@;
 		    $count++;
