@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.7803
+date:    13 Feb 2004
+changes:
+    - Localize $_ before calling File::Find, otherwise it will be written over for caller.  Patch from Leon Brocard.
+
+---
 version: 0.7802
 date:    13 Feb 2004
 changes:
