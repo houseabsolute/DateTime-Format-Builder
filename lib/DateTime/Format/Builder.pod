@@ -372,10 +372,6 @@ it under the same terms as Perl itself.
 The full text of the licenses can be found in the F<Artistic> and
 F<COPYING> files included with this module.
 
-=head1 ABSTRACT
-
-Easy creation of simple DateTime parsers and formatters.
-
 =head1 AUTHOR
 
 Iain Truskett <spoon@cpan.org>
