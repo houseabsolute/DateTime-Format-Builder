@@ -106,11 +106,11 @@ For example (since the code is often clearer than my writing):
         parsers => {
             parse_datetime => [
             {
-                regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
+                regex => qr/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
                 params => [qw( year month day hour minute second )],
             },
             {
-                regex => qr/^(\d{4})(\d\d)(d\d)$/,
+                regex => qr/^(\d{4})(\d\d)(\d\d)$/,
                 params => [qw( year month day )],
             },
             ],
@@ -121,7 +121,7 @@ If you just have one specification, you can just have it without the
 list:
 
     parse_datetime => {
-        regex => qr/^(\d{4})(\d\d)(d\d)$/,
+        regex => qr/^(\d{4})(\d\d)(\d\d)$/,
         params => [qw( year month day )],
     },
 
@@ -273,11 +273,11 @@ can be specified like this:
             preprocess => sub { whatever },
         ],
         {
-            regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
+            regex => qr/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
             params => [qw( year month day hour minute second )],
         },
         {
-            regex => qr/^(\d{4})(\d\d)(d\d)$/,
+            regex => qr/^(\d{4})(\d\d)(\d\d)$/,
             params => [qw( year month day )],
         },
         ],
