@@ -1,5 +1,6 @@
 Artistic
 AUTHORS
+Build.PL
 Changes
 COPYING
 CREDITS
@@ -10,20 +11,6 @@ examples/MySQL.pm
 examples/Simple.pm
 examples/Tivoli.pm
 examples/W3CDTF.pm
-inc/Module/Install.pm
-inc/Module/Install/Base.pm
-inc/Module/Install/Include.pm
-inc/Module/Install/Makefile.pm
-inc/Module/Install/Metadata.pm
-inc/Module/Versions/Report.pm
-inc/Test/Builder.pm
-inc/Test/More.pm
-inc/Test/Signature.pm
-inc/YAML.pm
-inc/YAML/Error.pm
-inc/YAML/Family.pm
-inc/YAML/Node.pm
-inc/YAML/Transfer.pm
 INSTALL
 lib/DateTime/Format/Builder.pm
 lib/DateTime/Format/Builder.pod
@@ -40,7 +27,6 @@ MANIFEST
 MANIFEST.SKIP
 META.yml
 README
-SIGNATURE
 t/00sig.t
 t/99pod.t
 t/altcon.t

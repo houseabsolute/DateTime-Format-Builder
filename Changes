@@ -1,6 +1,13 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.7801
+date:    26 Jan 2004
+changes:
+    - New maintainer - Dave Rolsky
+    - Switched to a different build/install sysstem (Module::Build instead of Module::Install)
+
+---
 version: 0.78
 date:    1 Dec 2003
 changes:

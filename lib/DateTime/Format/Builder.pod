@@ -661,7 +661,7 @@ list. See http://lists.perl.org/ for more details.
 
 Alternatively, log them via the CPAN RT system via the web or email:
 
-    http://perl.dellah.org/rt/dtbuilder
+    http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DateTime%3A%3AFormat%3A%3ABuilder
     bug-datetime-format-builder@rt.cpan.org
 
 This makes it much easier for me to track things and thus means
@@ -681,7 +681,10 @@ L<perlgpl> as supplied with Perl 5.8.1 and later.
 
 =head1 AUTHOR
 
-Iain Truskett <spoon@cpan.org>
+Originally written by Iain Truskett <spoon@cpan.org>, who died on
+December 29, 2003.
+
+Maintained by Dave Rolsky <autarch@urth.org>
 
 =head1 SEE ALSO
 
