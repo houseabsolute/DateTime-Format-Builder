@@ -1,22 +1,46 @@
 package DateTime::Format::Builder;
 # $Id$
 
+=begin comments
+
+Note: there is no API documentation in this file. You want F<Builder.pod> instead.
+
+=cut
+
 use strict;
 use 5.005;
 use Carp;
 use DateTime 0.07;
-use Params::Validate qw( validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF );
+use Params::Validate qw(
+    validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF
+);
 use vars qw( $VERSION );
 
-$VERSION = '0.59';
+$VERSION = '0.60';
 
 # Developer oriented methods
+
+=pod
+
+This merely exists to save typing. class is specified after C<@_>
+in order to override it. We really don't want to know about
+any class they specify. We'd leave it empty, but C<create_class()>
+uses C<caller()> to determine where the code came from.
+
+=cut
 
 sub import
 {
     my $class = shift;
     $class->create_class( @_, class => (caller)[0] ) if @_;
 }
+
+=pod
+
+Populates C<$class::VERSION>, C<$class::new> and writes any
+of the methods.
+
+=cut
 
 sub create_class
 {
@@ -27,14 +51,16 @@ sub create_class
 	parsers	=> { type => HASHREF },
     });
 
-    my $target = $args{class};
+    my $target = $args{class}; # where we're writing our methods and such.
 
     # Create own lovely new package
     {
 	no strict 'refs';
 
-	${"${target}::VERSION"} = $args{version} if (exists $args{version});
+	${"${target}::VERSION"} = $args{version} if exists $args{version};
 
+	# Should probably make this optional, or at least check if
+	# something is already tehre..
 	*{"${target}::new"} = sub {
 	    my $class = shift;
 	    croak "${class}->new takes no parameters." if @_;
@@ -46,28 +72,40 @@ sub create_class
 	    $self;
 	};
 
+	# Write all our parser methods, creating parsers as we go.
 	while (my ($method, $parsers) = each %{ $args{parsers} })
 	{
+	    # I want to dereference the argument if it was a hash or
+	    # array ref. Coderefs? Straight through.
 	    *{"${target}::$method"} = $class->create_parser(
-		(ref $parsers eq 'HASH' ) ? %$parsers : @$parsers
+		(ref $parsers eq 'HASH' ) ? %$parsers :
+		( ( ref $parsers eq 'ARRAY' ) ? @$parsers : $parsers )
 	    );
 	}
     }
 
 }
 
+=pod
+
+This creates the method coderefs. Coderefs die on bad parses, return
+C<DateTime> objects on good parse. Used by C<parser()> and
+C<create_class()>.
+
+=cut
+
 sub create_parser
 {
     my $class = shift;
     if (not ref $_[0])
     {
-	# Simple case
-	my $parser = $class->create_single_parser( @_ );
-	return sub {
-	    $parser->(@_) || croak "Invalid date format: $_[1]";
-	};
+	# Simple case of single specification as a hash
+	return $class->create_method(
+	    $class->create_single_parser( @_ )
+	);
     }
 
+    # Let's see if we were given an options block
     my %options;
     if (ref $_[0] eq 'ARRAY')
     {
@@ -75,36 +113,70 @@ sub create_parser
 	%options = @$options;
     }
 
+    # Now, can we create a multi-parser out of the remaining arguments?
     if (ref $_[0] eq 'HASH' or ref $_[0] eq 'CODE')
     {
-	my $parser =  $class->create_multiple_parsers( \%options, @_ );
-	return sub {
-	    $parser->(@_) || croak "Invalid date format: $_[1]";
-	};
+	return $class->create_method(
+	    $class->create_multiple_parsers( \%options, @_ )
+	);
     }
     else
     {
-	# Only called in event of weirdness (e.g. bad params).
-	# Shoving it off to csp() should result in appropriate
-	# errors.
-	my $parser = $class->create_single_parser( @_ );
-	return sub {
-	    $parser->(@_) || croak "Invalid date format: $_[1]";
-	};
+	# If it wasn't a HASH or CODE, then it was something we
+	# don't currently accept.
+	croak "create_parser called with bad params.";
     }
 }
+
+=pod
+
+C<create_method()> simply takes a parser and returns a coderef suitable
+to act as a method.
+
+=cut
+
+sub create_method
+{
+    my ($class, $parser) = @_;
+    return sub {
+	my $self = shift;
+	$self->$parser(@_) || $self->on_fail( $_[1] );
+    }
+}
+
+=pod
+
+This is the method used when a parse fails. Subclass and override
+this if you like.
+
+=cut
+
+sub on_fail
+{
+    my ($class, $input) = @_;
+    croak "Invalid date format: $input";
+}
+
+=pod
+
+Creates the multi-spec parsers.
+
+=cut
 
 sub create_multiple_parsers
 {
     my $class = shift;
     my ($options, @specs) = @_;
 
+    # Organise the specs, and transform them into parsers.
     my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
 
+    # This is the innards of a multi-parser.
     return sub {
 	my ($self, $date) = @_;
 
 	my %p;
+	# Preprocess and potentially fill %p
 	if ($options->{preprocess})
 	{
 	    $date = $options->{preprocess}->(
@@ -119,19 +191,27 @@ sub create_multiple_parsers
 	    my $parser = $lengths->{$length};
 	    if ($parser)
 	    {
-		my $dt = eval { $parser->( $self, $date, { %p } ) };
-		return $dt if defined $dt and not $@;
+		# Found one, call it with _copy_ of %p
+		my $dt = $parser->( $self, $date, { %p } );
+		return $dt if defined $dt;
 	    }
 	}
-	# Or find parser parser
+	# Or calls all others, with _copy_ of %p
 	for my $parser (@$others)
 	{
-	    my $dt = eval { $parser->( $self, $date, { %p } ) };
-	    return $dt if defined $dt and not $@;
+	    my $dt = $parser->( $self, $date, { %p } );
+	    return $dt if defined $dt;
 	}
+	# Failed, return undef.
 	return undef;
     };
 }
+
+=pod
+
+Organise and create parsers from specs.
+
+=cut
 
 sub sort_parsers
 {
@@ -141,10 +221,12 @@ sub sort_parsers
 
     for my $spec (@$specs)
     {
+	# Put coderefs straight into the 'other' heap.
 	if (ref $spec eq 'CODE')
 	{
 	    push @others, $spec;
 	}
+	# Specifications...
 	elsif (ref $spec eq 'HASH')
 	{
 	    if (exists $spec->{length})
@@ -153,13 +235,14 @@ sub sort_parsers
 		if exists $lengths{$spec->{length}};
 
 		$lengths{$spec->{length}} =
-		$class->create_single_parser( %$spec );
+		    $class->create_single_parser( %$spec );
 	    }
 	    else
 	    {
 		push @others, $class->create_single_parser( %$spec );
 	    }
 	}
+	# Something else
 	else
 	{
 	    croak "Invalid specification in list.";
@@ -169,16 +252,22 @@ sub sort_parsers
     return ( \%lengths, \@others );
 }
 
+=pod
+
+Create the single parser. Delegation stops here!
+
+=cut
+
 sub create_single_parser
 {
     my $class = shift;
-    return $_[0] if ref $_[0] eq 'CODE';
-    @_ = %{ $_[0] } if ref $_[0] eq 'HASH';
+    return $_[0] if ref $_[0] eq 'CODE'; # already code
+    @_ = %{ $_[0] } if ref $_[0] eq 'HASH'; # turn hashref into hash
     # ordinary boring sort
     my %args = validate( @_, {
 	    # How to match
 	    params	=> {
-		type => ARRAYREF
+		type => ARRAYREF, # mapping $1,$2,... to new() args
 	    },
 	    regex	=> {
 		type      => SCALARREF,
@@ -189,7 +278,9 @@ sub create_single_parser
 	    length	=> {
 		type      => SCALAR,
 		optional  => 1,
-		callbacks => { 'is an int' => sub { $_[0] !~ /\D/ } }
+		callbacks => {
+		    'is an int' => sub { $_[0] !~ /\D/ }
+		}
 	    },
 	    # How to create
 	    extra	=> {
@@ -205,19 +296,25 @@ sub create_single_parser
 	    label	=> { type => SCALAR,	optional => 1 },
 	}
     );
-    my $callback = (exists $args{on_match} or exists $args{on_fail}) ? 1 : undef;
+
+    # Determine variables for ease of reference.
+    my $callback = (exists $args{on_match}
+	    or exists $args{on_fail}) ? 1 : undef;
     my $label = exists $args{label} ? $args{label} : undef;
 
+    # Create our parser
     return sub {
 	my ($self, $date, $p) = @_;
 	my %p;
-	%p = %$p if $p;
+	%p = %$p if $p; # Look! A copy!
 
+	# Preprocess - can modify $date and fill %p
 	if ($args{preprocess})
 	{
 	    $date = $args{preprocess}->( input => $date, parsed => \%p );
 	}
 
+	# Do the match!
 	my @matches = $date =~ $args{regex};
 
 	# Funky callback thing
@@ -233,14 +330,16 @@ sub create_single_parser
 	}
 	return undef unless @matches;
 
+	# Fill %p from match
 	@p{ @{ $args{params} } } = @matches;
 
-	# Allow post processing
+	# Allow post processing. Return undef if regarded as failure
 	return undef if $args{postprocess} and not $args{postprocess}->(
 	    parsed => \%p,
 	    input => $date,
 	);
 
+	# A successful match!
 	return DateTime->new( %p, %{ $args{extra} } );
     };
 }
@@ -248,6 +347,13 @@ sub create_single_parser
 #
 # User oriented methods
 #
+
+=pod
+
+These methods don't need explaining. They're pretty much
+boiler plate stuff.
+
+=cut
 
 sub new
 {

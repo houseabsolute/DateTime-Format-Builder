@@ -649,6 +649,12 @@ In the general course of things you won't need any of the
 methods. Life often throws unexpected things at us so the
 methods are all available for use.
 
+=head2 import
+
+C<import()> is a wrapper for C<create_class()>. If you
+specify the I<class> option (see documentation for
+C<create_class()>) it will be ignored.
+
 =head2 create_class
 
 This method can be used as the runtime equivalent of
@@ -682,8 +688,8 @@ B<class> is optional and specifies the name of the class in
 which to create the specified methods.
 
 If using this method in the guise of C<import()> then this
-field is overridden so it is only of use when calling as
-C<create_class()>.
+field will cause an error so it is only of use when calling
+as C<create_class()>.
 
 =item *
 
@@ -781,6 +787,35 @@ L<specification|/"SINGLE SPECIFICATIONS">.
 
 The returned parser will return either a C<DateTime> object
 or C<undef>.
+
+=head1 SUBCLASSING
+
+In the rest of the documentation I've often lied in order to
+get some of the ideas across more easily. The thing is, this
+module's very flexible. You can get markedly different
+behaviour from simply subclassing it and overriding some
+methods.
+
+=head2 create_method
+
+Given a parser coderef, returns a coderef that is suitable
+to be a method.
+
+The default action is to call C<on_fail()> in the event of a
+non-parse, but you can make it do whatever you want.
+
+=head2 on_fail
+
+This is called in the event of a non-parse (unless you've
+overridden C<create_method()> to do something else.
+
+The single argument is the input string. The default action
+is to call C<croak()>. Above, where I've said parsers or
+methods throw errors, this is the method that is doing the
+error throwing.
+
+You could conceivably override this method to, say, return
+C<undef>.
 
 =head1 USING BUILDER OBJECTS aka USERS USING BUILDER
 
