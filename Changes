@@ -1,6 +1,14 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.77
+date:    14 Aug 2003
+changes:
+    - Correct package name for Quick.
+    - Augment license conditions.
+    - Fixed timezones in fall.t and quick.t tests.
+
+---
 version: 0.76
 date:    10 Aug 2003
 changes:
