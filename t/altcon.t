@@ -2,7 +2,7 @@
 use strict;
 use lib 'inc';
 use blib;
-use Test::More tests => 18;
+use Test::More tests => 20;
 use vars qw( $class );
 
 BEGIN {
@@ -55,6 +55,24 @@ sub do_check
     }
 }
 
-
+{
+    my $parser = $class->create_parser(
+	{
+	    regex => qr/^ (\d+) $/x,
+	    params => [qw( epoch ) ],
+	    constructor => [ 'DateTime', 'from_epoch' ]
+	}
+    );
+    my %epochs = (
+	1057279398 => '2003-07-04T00:43:18',
+    );
+    for my $epoch (sort keys %epochs)
+    {
+	my $check = $epochs{$epoch};
+	my $dt = $class->$parser( $epoch );
+	isa_ok( $dt => 'DateTime' );
+	is( $dt->datetime => $check, "Epoch of $epoch to $check" );
+    }
+}
 
 pass 'All done';
