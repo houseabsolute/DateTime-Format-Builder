@@ -1,0 +1,17 @@
+--- #YAML:1.0
+build_requires:
+  Test::More: 0.47
+  Test: 1.23
+conflicts: {}
+distribution_type: module
+license: perl
+name: DateTime-Format-Builder
+recommends:
+  Test::Pod: 0.95
+  Test::Signature: 1.03
+requires:
+  DateTime: 0.08
+  Params::Validate: 0.57
+  Carp: 1.01
+version: 0.24
+generated_by: docmaker version 0.89

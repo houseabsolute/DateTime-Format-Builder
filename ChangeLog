@@ -1,0 +1,17 @@
+
+ChangeLog generated directly from CVS logs.
+
+Release DateTime-Format-Builder 0.24:
+  - Changes v1.1
+  - lib/DateTime/Format/Builder.pm v1.1
+  - lib/DateTime/Format/Builder.pod v1.1
+  - t/00pod.t v1.1
+  - t/00signature.t v1.1
+  - t/basic.t v1.1
+  - t/clone.t v1.1
+  - t/create.t v1.1
+  - t/newclass.t v1.1
+  - t/wholeclass.t v1.1
+        - Initial commit.
+
+

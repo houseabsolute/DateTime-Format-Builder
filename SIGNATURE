@@ -1,0 +1,45 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.21.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It would check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 fa7a0590d25f60c53c4ae6e2da6958f5d69754a1 AUTHORS
+SHA1 7a95fc8778fbce1f60d222e0d0d1dbb6c649461f Artistic
+SHA1 6304512079377d596500523ef67244e73fd37e28 COPYING
+SHA1 80c8589420985c27a40b03dcab35468b10a98a2d CREDITS
+SHA1 ad86cce9d0ee82bcd427d41258d148dfd8d4e1e8 ChangeLog
+SHA1 8dc8610f3ed46e6fa8ff8e8c1080ec3711caf651 Changes
+SHA1 92a2e29f1e8a73e2911d5b864c119cf9a89bba12 INSTALL
+SHA1 9bec0e1d7f1d124e674330aeaa2135650b0ec1bd LICENSE
+SHA1 1249fac5fb43cc90098a36afb765763525236cc9 MANIFEST
+SHA1 da37ec37a429e05da77d7734121e83447f4f488e MANIFEST.SKIP
+SHA1 99dd3568140b307d747d72afb86e191e4e856292 META.yml
+SHA1 0fa786683054fe55d2419935c46060f71968dd99 Makefile.PL
+SHA1 4c2df0cfa252994c7718039ea0f20b0c42e4c0ac README
+SHA1 a0ff456bada64545c7d9480b26d18b78fccda991 lib/DateTime/Format/Builder.pm
+SHA1 a16ae6fbbef17b27befa52e2adab59b7fb362346 lib/DateTime/Format/Builder.pod
+SHA1 fc88a93436798980b1b6d918159e9f8adacfc1e4 t/00pod.t
+SHA1 53e2f961178f95355c8a62dd1bbbbfb7dda6366e t/00signature.t
+SHA1 9028a1c7da629e92505b35b74d7df02a89b2b638 t/basic.t
+SHA1 81032eabee0bc216407415e593b4c08412ac2d3b t/clone.t
+SHA1 543058357efcefc5c4fc72b3da675355ff9b24ed t/create.t
+SHA1 97edf9c2255867a14941189366ebf0b17da0de17 t/newclass.t
+SHA1 0eb3c44985247daeae62c253dd1d6be18a4f2505 t/wholeclass.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.1 (GNU/Linux)
+
+iD8DBQE+f9suzL8gm6KQWMgRArpyAKCGNZTl41DKOkYE5nBjyea9cc8+8gCfcj/f
+fPfliV9ofJefqRqChl/sGaw=
+=aYlX
+-----END PGP SIGNATURE-----

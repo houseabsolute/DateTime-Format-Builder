@@ -1,0 +1,23 @@
+AUTHORS
+Artistic
+COPYING
+CREDITS
+ChangeLog
+Changes
+INSTALL
+LICENSE
+MANIFEST			This list of files
+MANIFEST.SKIP
+META.yml
+Makefile.PL
+README
+SIGNATURE
+lib/DateTime/Format/Builder.pm
+lib/DateTime/Format/Builder.pod
+t/00pod.t
+t/00signature.t
+t/basic.t
+t/clone.t
+t/create.t
+t/newclass.t
+t/wholeclass.t
