@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.76
+date:    17 Jul 2003
+changes:
+    - Fallthrough example and test added.
+
+---
 version: 0.75
 date:    29 Jun 2003
 changes:

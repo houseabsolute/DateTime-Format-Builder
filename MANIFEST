@@ -5,8 +5,10 @@ Changes
 COPYING
 CREDITS
 examples/Apache.pm
+examples/Fall.pm
 examples/ICal.pm
 examples/MySQL.pm
+examples/Simple.pm
 examples/W3CDTF.pm
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
@@ -47,6 +49,7 @@ t/clone.t
 t/create.t
 t/dispatch.t
 t/extra.t
+t/fall.t
 t/import.t
 t/lengths.t
 t/mergecb.t
