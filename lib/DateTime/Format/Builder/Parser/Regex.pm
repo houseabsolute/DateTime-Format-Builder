@@ -50,7 +50,7 @@ use strict;
 use vars qw( $VERSION @ISA );
 use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF );
 
-$VERSION = '0.17';
+$VERSION = '0.18';
 use DateTime::Format::Builder::Parser::generic;
 @ISA = qw( DateTime::Format::Builder::Parser::generic );
 

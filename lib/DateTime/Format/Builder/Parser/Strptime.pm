@@ -28,7 +28,7 @@ use strict;
 use vars qw( $VERSION @ISA );
 use Params::Validate qw( validate SCALAR HASHREF );
 
-$VERSION = '0.14';
+$VERSION = '0.15';
 use DateTime::Format::Builder::Parser::generic;
 @ISA = qw( DateTime::Format::Builder::Parser::generic );
 
