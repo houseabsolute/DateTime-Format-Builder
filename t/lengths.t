@@ -10,8 +10,6 @@ BEGIN {
     use_ok $class;
 }
 
-my $should_fail;
-
 my $which;
 
 my @parsers = (
