@@ -606,33 +606,13 @@ letter. These are ignored.
 
 # Find all our workers
 {
-    use File::Find ();
-    use File::Spec ();
-    use File::Basename qw( basename );
-    my @dirs = grep -d, map {
-	File::Spec->catfile( $_, qw( DateTime Format Builder Parser ) )
-    } @INC;
-    my $count = 0;
-    my %loaded;
-    local $_;
-    File::Find::find({
-	    no_chdir => 1,
-	    wanted => sub {
-		if ( /^[^a-z]/ and /\.pm\z/ )
-		{
-		    $_ = basename($_);
-		    return if $loaded{$_}++;
-		    ($_) = $_ =~ /\A(\w+)\.pm\z/;
-		    eval "use DateTime::Format::Builder::Parser::$_";
-		    die $@ if $@;
-		    $count++;
-		}
-	    },
-	},
-	@dirs
-    );
-    croak "No parser modules found: this is bad! Check directory permissions.\n"
-	unless $count;
+    use Class::Factory::Util;
+
+    foreach my $worker ( __PACKAGE__->subclasses )
+    {
+        eval "use DateTime::Format::Builder::Parser::$worker;";
+        die $@ if $@;
+    }
 }
 
 1;
