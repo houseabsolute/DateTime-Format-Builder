@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.7802
+date:    13 Feb 2004
+changes:
+    - Add dependency on DateTime::Format::Strptime.
+
+---
 version: 0.7801
 date:    26 Jan 2004
 changes:
