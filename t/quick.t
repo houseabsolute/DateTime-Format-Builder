@@ -32,11 +32,14 @@ SKIP: {
     die $@ if $@;
 
     my $get = sub { eval {
-            DTFB::Quick->parse_datetime($_[0])->datetime
+            DTFB::Quick
+                ->parse_datetime($_[0])
+                ->set_time_zone( 'UTC' )
+                ->datetime
         } };
 
 
-    for ( '@d19.07.03 @704', '20030719T155345' )
+    for ( '@d19.07.03 @704', '20030719T155345Z' )
     {
         my $dt = $get->( $_ );
         is $dt, "2003-07-19T15:53:45", "Can parse [$_]";
