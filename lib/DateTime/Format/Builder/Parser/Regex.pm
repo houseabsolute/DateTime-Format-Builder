@@ -1,10 +1,58 @@
 package DateTime::Format::Builder::Parser::Regex;
+
+=head1 NAME
+
+DateTime::Format::Builder::Parser::Regex - Regex based date parsing
+
+=head1 SYNOPSIS
+
+   my $parser = DateTime::Format::Builder->create_parser(
+	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+	params => [ qw( year month day hour minute second ) ],
+   );
+
+=head1 SPECIFICATION
+
+In addition to the
+L<common keys|DateTime::Format::Builder/"SINGLE SPECIFICATIONS">,
+C<Regex> supports:
+
+=over 4
+
+=item *
+
+B<regex> is a regular expression that should capture
+elements of the datetime string.
+This is a required element. This is the key whose presence
+indicates it's a specification that belongs to this class.
+
+=item *
+
+B<params> is an arrayref of key names. The captures from the
+regex are mapped to these (C<$1> to the first element, C<$2>
+to the second, and so on) and handed to
+C<< DateTime->new() >>.
+This is a required element.
+
+=item *
+
+B<extra> is a hashref of extra arguments you wish to give to
+C<< DateTime->new() >>. For example, you could set the
+C<year> or C<time_zone> to defaults:
+
+    extra => { year => 2004, time_zone => "Australia/Sydney" },
+
+=back
+
+=cut
+
 use strict;
 use vars qw( $VERSION @ISA );
 use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF );
 
 $VERSION = '0.16';
-@ISA = qw( DateTime::Format::Builder::Parser );
+use DateTime::Format::Builder::Parser::generic;
+@ISA = qw( DateTime::Format::Builder::Parser::generic );
 
 __PACKAGE__->valid_params(
 # How to match
@@ -24,36 +72,92 @@ __PACKAGE__->valid_params(
     },
 );
 
+sub do_match
+{
+    my $self = shift;
+    my $date = shift;
+    my @matches = $date =~ $self->{regex};
+    return @matches ? \@matches : undef;
+}
+
+sub post_match
+{
+    my $self = shift;
+    my ( $date, $matches, $p ) = @_;
+    # Fill %p from match
+    @{$p}{ @{ $self->{params} } } = @$matches;
+    return;
+}
+
+sub make {
+    my $self = shift;
+    my ( $date, $dt, $p ) = @_;
+    DateTime->new( %$p, %{ $self->{extra} } );
+}
+
 sub create_parser
 {
     my ($self, %args) = @_;
     $args{extra} ||= {};
+    unless (ref $self)
+    {
+	$self = $self->new( %args );
+    }
 
     # Create our parser
     return $self->generic_parser(
 	( map { exists $args{$_} ? ( $_ => $args{$_} ) : () } qw(
 	    on_match on_fail preprocess postprocess
 	    ) ),
-	do_match => sub {
-	    my $date = shift;
-	    # Do the match!
-	    my @matches = $date =~ $args{regex};
-	    return @matches ? \@matches : undef;
-	},
-
-	post_match => sub {
-	    my ( $date, $matches, $p ) = @_;
-	    # Fill %p from match
-	    @{$p}{ @{ $args{params} } } = @$matches;
-	    return;
-	},
 	label => $args{label},
-	make => sub {
-	    my ( $date, $dt, $p ) = @_;
-	    DateTime->new( %$p, %{ $args{extra} } );
-	}
     );
 }
 
 
 1;
+
+__END__
+
+=head1 THANKS
+
+See L<the main module's section|DateTime::Format::Builder/"THANKS">.
+
+=head1 SUPPORT
+
+Support for this module is provided via the datetime@perl.org email
+list. See http://lists.perl.org/ for more details.
+
+Alternatively, log them via the CPAN RT system via the web or email:
+
+    http://perl.dellah.org/rt/dtbuilder
+    bug-datetime-format-builder@rt.cpan.org
+
+This makes it much easier for me to track things and thus means
+your problem is less likely to be neglected.
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright E<copy> Iain Truskett, 2003. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+The full text of the licenses can be found in the F<Artistic> and
+F<COPYING> files included with this module.
+
+=head1 AUTHOR
+
+Iain Truskett <spoon@cpan.org>
+
+=head1 SEE ALSO
+
+C<datetime@perl.org> mailing list.
+
+http://datetime.perl.org/
+
+L<perl>, L<DateTime>,
+L<DateTime::Format::Builder>
+
+=cut
+
+

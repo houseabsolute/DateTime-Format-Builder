@@ -17,7 +17,7 @@ use Params::Validate qw(
 use vars qw( $VERSION );
 
 my $parser = 'DateTime::Format::Builder::Parser';
-$VERSION = '0.69';
+$VERSION = '0.71';
 
 # Developer oriented methods
 
