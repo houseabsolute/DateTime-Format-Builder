@@ -8,10 +8,14 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.73 (22 Jun 2003)
-   - Exit parser more quickly if able.
-   - Multiple same length parsers accepted.
-   - Fixed some perl 5.005 testing problems.
+Changes for 0.74 (28 Jun 2003)
+   - Dispatch Parser class added, which allows us to make
+     groups of parsers and hop quickly to them.
+   - length parameter can now be an arrayref, hence we can
+     have a parser belong to more than one length group.
+   - Version numbers are all identical now.
+   - Regex Parser can call custom constructors.
+   - Wrapped method only regards undef as a failure.
 
 For a complete list of changes, see the Changes file.
 
