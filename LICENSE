@@ -1,4 +1,4 @@
-LICENSE FOR DateTime::Format::Builder 0.75
+LICENSE FOR DateTime::Format::Builder 0.76
 
 Copyright © Iain Truskett, 2003. All rights reserved.
 
@@ -8,4 +8,6 @@ it under the same terms as Perl itself.
 The full text of the licenses can be found in the Artistic and
 COPYING files included with this module.
 
-See the supplied 'Artistic' and 'COPYING' files for the respective licenses.
+See the supplied 'Artistic' and 'COPYING' files, or
+perlartistic and perlgpl in Perl 5.8.1 or later, for
+the respective licenses.

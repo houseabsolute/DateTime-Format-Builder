@@ -1,5 +1,5 @@
 This file contains message digests of all files listed in MANIFEST,
-signed via the Module::Signature module, version 0.22.
+signed via the Module::Signature module, version 0.29.
 
 To verify the content in this distribution, first make sure you have
 Module::Signature installed, then type:
@@ -14,69 +14,77 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 8d50878004d8d5103e1f44dc3df2899419d3a59d AUTHORS
+SHA1 657a79754e61e70a3bde3340fdd80a15a4af96ac AUTHORS
 SHA1 7a95fc8778fbce1f60d222e0d0d1dbb6c649461f Artistic
 SHA1 531e6b5c470d4726483fd68833391653eace0a92 COPYING
-SHA1 2588e8170b8abfd6c1d2a584359a9b6d462b07a2 CREDITS
-SHA1 ff0ce07c1684e245965c90f3182abed08ac63fe3 ChangeLog
-SHA1 02f13d00cea870d4df298cf7ee62d10b86ac3503 Changes
-SHA1 49880ba55a9733c9b650eabdf8780ce99321ad7d INSTALL
-SHA1 d380b888447cd3063845492e339ebee25fadc8f3 LICENSE
-SHA1 225805e7e3bce64518e66dfdf8d2551c4b549acd MANIFEST
-SHA1 b9ab2695805060b22c0e1febb08acfbb2e7b78c7 MANIFEST.SKIP
-SHA1 251175557627daac132a86ac53f7ccb65b1a832c META.yml
-SHA1 5156f100d55779c1863688d8c9df36193aaa6c3b Makefile.PL
-SHA1 0477ff28f74cb753f4ab99d940da038f66612563 README
+SHA1 7e7997573e9eb510d9790faa51602910df25d38c CREDITS
+SHA1 a23aff4b77eda9eface20084a9b8976627df7a7a Changes
+SHA1 3d2cc28a3f7675df700c3bef1eeb879b740ec701 INSTALL
+SHA1 79d59167bdd1efb398f58ccecd3f9c9fe752cd21 LICENSE
+SHA1 7aac27763295f3dc5cf58e1f70571c311ddb23ca MANIFEST
+SHA1 28c62c83ecf9441f6ea47e7d196f99687e2d35e3 MANIFEST.SKIP
+SHA1 a6ca664ccf097e5e5e65ce6e1fe66a6dd8382850 META.yml
+SHA1 abab0c4f82b13610e0dca9844e38223a5f9288b0 Makefile.PL
+SHA1 c84463831ad4e1a75e12929f1ff7af90d113fa7e README
 SHA1 490a1757ea5183f2a0ddc84563abe2d3bdb6272c examples/Apache.pm
+SHA1 0bc31aa3397f1078efb83a6eff3ca4b3396a8921 examples/Fall.pm
 SHA1 c3b2647784b6a351233732676ef49e725d2db4d9 examples/ICal.pm
 SHA1 1a9b1adec2c20a9694bcd7358451a5a11429d795 examples/MySQL.pm
+SHA1 d882c0f4639ed4721524afbd1ac4a5bedb471d9c examples/Simple.pm
 SHA1 4000a671d01ce9a4c916a0b6eae0931c8da48f13 examples/W3CDTF.pm
-SHA1 6d0ae52f63e973c20a67f12a15a57893fc453acb inc/Module/Install.pm
+SHA1 5f93081758f1cee7aab2e929189f57046c86c390 inc/Module/Install.pm
 SHA1 42d6ded1a7cadea45032887a6314090f9ff8cb0b inc/Module/Install/Base.pm
 SHA1 363404494c2ab23473b0e27f7a049b6e5c2827b8 inc/Module/Install/Include.pm
-SHA1 fb0e666a927e669e5b48f7ff873a4fbd596c4a5b inc/Module/Install/Makefile.pm
-SHA1 6b29727422a6e5dd2c7faf77282579356b1e70eb inc/Module/Install/Metadata.pm
+SHA1 9c14753c969712b9a8f8cbea0df57077faf44652 inc/Module/Install/Makefile.pm
+SHA1 47a6aa7fb30f00f5550f13f2213f969114bdf27c inc/Module/Install/Metadata.pm
 SHA1 07f8fce380ef89afee66032b2a6186cc8a6528f1 inc/Module/Versions/Report.pm
 SHA1 0baaaae39644d554246a0b0ef38aa25969011079 inc/Test.pm
 SHA1 38e3bb95a796f5f86cd96f0807787df6bd61dcdb inc/Test/Builder.pm
 SHA1 a84fdefeae3f13f0de07c52bdfd57d29ae62a64a inc/Test/More.pm
-SHA1 c3a11a060cf688004d8783608291e809eec4598c inc/Test/Signature.pm
+SHA1 e1384b8150061bda0ab3cfa4d6194ad6db9f3eda inc/Test/Signature.pm
 SHA1 2c5e88b3f8038fd37aeddc9ccc3727d9e14a17c7 inc/YAML.pm
 SHA1 2a3674a8032af739dcc272029b3393962cd53428 inc/YAML/Error.pm
 SHA1 2dac618c86b5015e4c28e677d9318359692e1516 inc/YAML/Family.pm
 SHA1 67ee21900648ec6ca6b3a2c530709b67481d4219 inc/YAML/Node.pm
 SHA1 d0878f89b0538daf8e0187d354c7c915cfec8448 inc/YAML/Transfer.pm
-SHA1 374dea795abcacaaea96fd8cf8c91cb5db7f7742 lib/DateTime/Format/Builder.pm
-SHA1 13d7455dd18f5c5493290a893d54315255358f75 lib/DateTime/Format/Builder.pod
-SHA1 a16b8f770930b40e1adbd9ad5a4dcc21d052a066 lib/DateTime/Format/Builder/Parser.pm
-SHA1 cf86a440043a8a7214928fdcda33e209b883dc1c lib/DateTime/Format/Builder/Parser/Dispatch.pm
-SHA1 63344b12193b4022a87af5c43c6a0ae26a9e2120 lib/DateTime/Format/Builder/Parser/Regex.pm
-SHA1 6202b74821826d90309925372461db4674a949a5 lib/DateTime/Format/Builder/Parser/Strptime.pm
-SHA1 e8bee33dfa38a9d76a4bd840664b90c53f3b8a95 lib/DateTime/Format/Builder/Parser/generic.pm
+SHA1 33600ae1f351e3e477768541830e925c7680aa3d inc/threads.pm
+SHA1 490b30a6ce1f7d27732a60cf4a9d5574d068e09a inc/warnings.pm
+SHA1 0f4f756be12de87a1b7c457a623d6652f5cba07a lib/DateTime/Format/Builder.pm
+SHA1 88c1d5da471a3721e08a9294d16c90a53fb8e10d lib/DateTime/Format/Builder.pod
+SHA1 1ffed20b25c37ca59c0e16e3937849af5981f693 lib/DateTime/Format/Builder/Parser.pm
+SHA1 cdefe30cbac23c0ac3815f60e05944886e036d6f lib/DateTime/Format/Builder/Parser/Dispatch.pm
+SHA1 fbea43e77d343d2e9743229b87508eb9b2ca80e1 lib/DateTime/Format/Builder/Parser/Quick.pm
+SHA1 5303336a2e3411ddc71f9dd5ac9a1cf47aebd3d9 lib/DateTime/Format/Builder/Parser/Regex.pm
+SHA1 b72971dd4a40cbff88465ef46f31537a7e6748ef lib/DateTime/Format/Builder/Parser/Strptime.pm
+SHA1 1318e1012659b9311866a7085aa136c7ee12364a lib/DateTime/Format/Builder/Parser/generic.pm
 SHA1 43f562e08aa543ac1a5702e6186fa56ebf34fc70 lib/DateTime/Format/Builder/Tutorial.pod
-SHA1 0cf9d225d118d3414737723082b7818aa5591ee7 t/00sig.t
-SHA1 a8bc052dd17b4e97bad9e84830891817cdf2abca t/99pod.t
-SHA1 610cb3b3bcf77e2f0cb14b9ebd0c3587e3600c2d t/altcon.t
-SHA1 e47c560b65174669c80209a864e7ef6a9d68f765 t/basic.t
+SHA1 77f12203350ec7af06018cce0e198c4028b0b25e t/00sig.t
+SHA1 610ffa727a52842b0db5e32b6c2400b321cc04ad t/99pod.t
+SHA1 b5d3decfc6392450a01aa724a53b00f88e5901a1 t/altcon.t
+SHA1 c2e0961f37281036c2382e9c993184df2491d04c t/basic.t
 SHA1 1790878bcc32b752842061ded4f84582128a31d9 t/clone.t
 SHA1 a42aa6f8808c1de7b216c2ec57bd7992f8e6a15c t/create.t
 SHA1 0b3be9d71d95cbdd383d0f1604821f74f20f13ad t/dispatch.t
 SHA1 4a4f10337173f099c50414e0d1d962255fe29185 t/extra.t
+SHA1 8247e810e0b413d8b038c81437afeb055ac451c8 t/fall.t
 SHA1 b5c3d30a4250a8b3777a18a74b99ba3cc93ce9f0 t/import.t
 SHA1 a0e2055fcfbdee5f72426edacc3bf76f5416bf4a t/lengths.t
 SHA1 31ea31aa631bcd1c1e21670c7921ef8035293bfb t/mergecb.t
 SHA1 98f6e3ad5e329e062b0c32e34360bb7353aa856d t/newclass.t
 SHA1 7cca5cc1b00774f710fb1a4a4c1618a1b23f5f23 t/nocon.t
 SHA1 8579ec6460673b1f03d949996c701ea191289803 t/noredef.t
+SHA1 b0c06efc1f116bc2604b10e984fa9937a892b72c t/on_fail.t
+SHA1 8d0b420c207ea14b53000ff45f3f55d0bb696c3f t/on_fail_sub.t
 SHA1 4a2ed0ac7e8fdbaadb745350470237b3aa53f0ff t/param.t
+SHA1 43971250528ff362769c8f67ccdbd04daffba6e1 t/quick.t
 SHA1 15f5abf28a3d60bbb914b4e23aac923b3eb45642 t/self.t
-SHA1 fc119b5ff8c3e7fa6868c1e64b79815d28cdbabb t/strptime.t
+SHA1 c7a0e4d0b672ac48e7e5c71923a9fb0580f1a359 t/strptime.t
 SHA1 6573592ccfb596bfc874af25a0b5cf678fb06c89 t/verbose.t
 SHA1 d9313f5e6bdcf0db20787bf4fe354c5c357bf504 t/wholeclass.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.2.1 (GNU/Linux)
 
-iD8DBQE+/qTDzL8gm6KQWMgRAofCAKC5/gLbkwVRQFefgVkrrOZ3dRH0vQCguaU2
-iIpOQyj10biEYKLi5s0VdWQ=
-=MdvE
+iD8DBQE/Nk7UzL8gm6KQWMgRAuecAJ0WkYLlELNpaEc7GzofOhpOEzozVQCfaFMq
+JD3JrFsW/SWHC7hBJobucCM=
+=j3/v
 -----END PGP SIGNATURE-----
