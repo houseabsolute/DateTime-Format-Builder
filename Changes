@@ -1,6 +1,14 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.25
+date:    29 Mar 2003
+changes:
+    - Minor code cleanups.
+    - Bug fix; 'extra' params were being ignored.
+    - Doc fix; 'extra' params with 0 are not recommended.
+
+---
 version: 0.24
 date:    25 Mar 2003
 changes:
