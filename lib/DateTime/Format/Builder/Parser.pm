@@ -738,6 +738,7 @@ L<Params::Validate>.
 
 L<DateTime::Format::Builder::Parser::generic>,
 L<DateTime::Format::Builder::Parser::Dispatch>,
+L<DateTime::Format::Builder::Parser::Quick>,
 L<DateTime::Format::Builder::Parser::Regex>,
 L<DateTime::Format::Builder::Parser::Strptime>.
 
