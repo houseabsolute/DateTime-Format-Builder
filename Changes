@@ -1,8 +1,22 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.74
+date:    28 Jun 2003
+changes:
+    - >
+      Dispatch Parser class added, which allows us to make
+      groups of parsers and hop quickly to them.
+    - >
+      length parameter can now be an arrayref, hence we can
+      have a parser belong to more than one length group.
+    - Version numbers are all identical now.
+    - Regex Parser can call custom constructors.
+    - Wrapped method only regards undef as a failure.
+
+---
 version: 0.73
-date:    22 Jun 2003
+date:    24 Jun 2003
 changes:
     - Exit parser more quickly if able.
     - Multiple same length parsers accepted.
