@@ -689,8 +689,8 @@ B<parsers> takes a hashref of methods and their parser
 specifications. See the
 L<tutorial above|/"CREATING A CLASS"> for details.
 
-Note that if you define a method of the same name as one of
-your parsers, an error will be thrown.
+Note that if you define a subroutine of the same name as one
+of the methods you define here, an error will be thrown.
 
 =item *
 
@@ -706,7 +706,7 @@ our default code which simply creates a hashref and blesses
 it). 
 
 If your class defines its own C<new()> method it will not be
-overwritten. If you define your own C<new()> and also tell
+overwritten. If you define your own C<new()> and B<also> tell
 Builder to define one an error will be thrown.
 
 =item *
