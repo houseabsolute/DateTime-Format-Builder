@@ -49,5 +49,6 @@ t/param.t
 t/quick.t
 t/self.t
 t/strptime.t
+t/taint.t
 t/verbose.t
 t/wholeclass.t
