@@ -8,10 +8,13 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.25 (29 Mar 2003)
-   - Minor code cleanups.
-   - Bug fix; 'extra' params were being ignored.
-   - Doc fix; 'extra' params with 0 are not recommended.
+Changes for 0.6 (12 Apr 2003)
+   - Fixed missing '\' from a few '\d' in the docs.
+   - Added ICal.pm example.
+   - Added import() feature, to save lots of typing.
+   - Completely revised documentation.
+   - croak is same length is given twice.
+   - Assorted refactoring, retouching.
 
 For a complete list of changes, see the Changes file.
 

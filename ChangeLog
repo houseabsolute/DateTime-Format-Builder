@@ -1,6 +1,62 @@
 
 ChangeLog generated directly from CVS logs.
 
+Release DateTime-Format-Builder 0.60:
+  - lib/DateTime/Format/Builder.pod v1.5
+        document length option for parsers
+        (autarch)
+
+  - lib/DateTime/Format/Builder.pod v1.6
+        - Fixed recurring missing '\' in '\d'
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.6
+  - lib/DateTime/Format/Builder.pod v1.7
+  - t/import.t v1.1
+        - import() method added to obviate structural code that was
+          introduced.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pod v1.8
+        - Clearing file so diffs aren't weird.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.5
+        croak if same length is given twice
+        (autarch)
+
+  - lib/DateTime/Format/Builder.pod v1.9
+        - Oh my! It's completely rewritten DateTime::Format::Builder
+          documentation!
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.8
+        - Routines organised in order of relevance / importance /
+          calling.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.7
+        - Assorted touchups and refactoring (the diffs don't show
+          them well)
+        - Essentially, all the routines of a noticable size are now one
+          or more routines.
+        - Code should reasonably match the documentation now.
+        (koschei)
+
+  - Changes v1.3
+        - 0.60
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.9
+  - lib/DateTime/Format/Builder.pod v1.10
+        - Code documentation.
+        - Bit more refactoring (with associated updates to the API
+          docs).
+        - Code error handling matches the API docs now.
+        - import() API docs added.
+        (koschei)
+
+
 Release DateTime-Format-Builder 0.25:
   - lib/DateTime/Format/Builder.pod v1.4
         - Removed superfluous ABSTRACT section.
