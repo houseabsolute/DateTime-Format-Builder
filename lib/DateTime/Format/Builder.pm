@@ -227,8 +227,8 @@ sub create_multiple_parsers
 
     # Organise the specs, and transform them into parsers.
     my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
-    for ('preprocess') {
-	$options{$_} = $class->merge_callbacks( $options{$_} ) if $options{$_};
+    for ( 'preprocess' ) {
+	$options->{$_} = $class->merge_callbacks( $options->{$_} ) if $options->{$_};
     }
 
     # These are the innards of a multi-parser.
