@@ -46,7 +46,7 @@ module version:
     our $VERSION = '0.04';
 
 After that, you call Builder with some options. Currently,
-only I<parsers> is valid. 
+only I<parsers> and I<verbose> are valid.
 
     use DateTime::Format::Builder
     (
@@ -319,20 +319,24 @@ that's not strictly true.
 
 When a simple single specification is given for a method,
 the method isn't given a single parser directly. It's given
-a wrapper that will call C<die()> if the single parser
+a wrapper that will call C<on_fail()> if the single parser
 returns C<undef>. The single parser must return C<undef> so
 that a multiple parser can work nicely and actual errors can
 be thrown from any of the callbacks.
 
-Similarly, any multiple parsers will only throw an error
+Similarly, any multiple parsers will only call C<on_fail()>
 right at the end when it's tried all it could.
+
+C<on_fail()> (see L<later|/on_fail>) is defined, by default,
+to throw an error.
 
 That said, don't throw real errors from callbacks in
 multiple parser specifications unless you really want
 parsing to stop right there and not try any other parsers.
 
 In summary: calling a B<method> will result in either a
-C<DateTime> object being returned or an error being thrown.
+C<DateTime> object being returned or an error being thrown
+(unless you've overridden C<on_fail()> or C<create_method()>.
 
 Individual B<parsers> (be they multiple parsers or single
 parsers) will return either the C<DateTime> object or
@@ -671,7 +675,7 @@ That can be (almost) equivalently written as:
 The difference being that the first is done at compile time
 while the second is done at run time.
 
-In the tutorial I said there was only one parameter at
+In the tutorial I said there were only two parameters at
 present. I lied. There are actually three of them.
 
 =over 4
@@ -681,6 +685,19 @@ present. I lied. There are actually three of them.
 B<parsers> takes a hashref of methods and their parser
 specifications. See the
 L<tutorial above|/"CREATING A CLASS"> for details.
+
+=item *
+
+B<verbose> takes a value. If the value is undef, then
+logging is disabled. If the value is a filehandle then
+that's where logging will go. If it's a true value, then
+output will go to C<STDERR>.
+
+Alternatively, call C<$DateTime::Format::Builder::verbose()>
+with the relevant value. Whichever value is given more
+recently is adhered to.
+
+Be aware that verbosity is a global wide setting.
 
 =item *
 

@@ -12,17 +12,50 @@ use 5.005;
 use Carp;
 use DateTime 0.07;
 use Params::Validate qw(
-    validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF
+    validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF
 );
 use vars qw( $VERSION );
 
-$VERSION = '0.60';
+$VERSION = '0.62';
 
 # Developer oriented methods
 
 =pod
 
-This merely exists to save typing. class is specified after C<@_>
+C<verbose()> sets the logging.
+
+=cut
+
+use vars qw( $LOG_HANDLE );
+
+sub verbose
+{
+    my $fh = shift;
+    return $LOG_HANDLE = undef unless defined $fh;
+    return $LOG_HANDLE = $fh if fileno $fh;
+    return $LOG_HANDLE = \*STDERR;
+}
+
+my $log = sub {
+    return unless defined $LOG_HANDLE;
+    print $LOG_HANDLE @_, "\n";
+};
+
+my $logging = sub { defined $LOG_HANDLE };
+
+my $log_parse = sub {
+    my ($text, $p) = @_;
+    if ($logging->())
+    {
+	$log->($text);
+	require Data::Dumper;
+	$log->(Data::Dumper->Dump( [ $p ], [ 'p' ] ) );
+    }
+};
+
+=pod
+
+C<import()> merely exists to save typing. class is specified after C<@_>
 in order to override it. We really don't want to know about
 any class they specify. We'd leave it empty, but C<create_class()>
 uses C<caller()> to determine where the code came from.
@@ -48,8 +81,11 @@ sub create_class
     my %args = validate( @_, {
 	class	=> { type => SCALAR, default => (caller)[0] },
 	version => { type => SCALAR, optional => 1 },
+	verbose	=> { type => SCALAR|GLOBREF|GLOB, optional => 1 },
 	parsers	=> { type => HASHREF },
     });
+
+    verbose( $args{verbose} ) if exists $args{verbose};
 
     my $target = $args{class}; # where we're writing our methods and such.
 
@@ -140,7 +176,8 @@ sub create_method
     my ($class, $parser) = @_;
     return sub {
 	my $self = shift;
-	$self->$parser(@_) || $self->on_fail( $_[1] );
+	$log->("Calling parser on <$_[0]>");
+	$self->$parser(@_) || $self->on_fail( $_[0] );
     }
 }
 
@@ -179,9 +216,11 @@ sub create_multiple_parsers
 	# Preprocess and potentially fill %p
 	if ($options->{preprocess})
 	{
+	    $log->("Calling preprocessor on <$date>");
 	    $date = $options->{preprocess}->(
 		input => $date, parsed => \%p
 	    );
+	    $log_parse->("Master preprocess results <$date>", \%p );
 	}
 
 	# Find length parser
@@ -192,6 +231,7 @@ sub create_multiple_parsers
 	    if ($parser)
 	    {
 		# Found one, call it with _copy_ of %p
+		$log->("Trying length parse (length = $length) <$date>");
 		my $dt = $parser->( $self, $date, { %p } );
 		return $dt if defined $dt;
 	    }
@@ -199,10 +239,12 @@ sub create_multiple_parsers
 	# Or calls all others, with _copy_ of %p
 	for my $parser (@$others)
 	{
+	    $log->("Trying parse <$date>");
 	    my $dt = $parser->( $self, $date, { %p } );
 	    return $dt if defined $dt;
 	}
 	# Failed, return undef.
+	$log->("No parse");
 	return undef;
     };
 }
@@ -311,7 +353,9 @@ sub create_single_parser
 	# Preprocess - can modify $date and fill %p
 	if ($args{preprocess})
 	{
+	    $log->("Single preprocess <$date>");
 	    $date = $args{preprocess}->( input => $date, parsed => \%p );
+	    $log_parse->("Preprocess results <$date>", \%p );
 	}
 
 	# Do the match!
@@ -321,6 +365,7 @@ sub create_single_parser
 	if ($callback)
 	{
 	    my $type = @matches ? "on_match" : "on_fail";
+	    $log->("Calling $type callback <$date>");
 	    if ($args{$type}) {
 		$args{$type}->(
 		    input => $date,
@@ -332,14 +377,21 @@ sub create_single_parser
 
 	# Fill %p from match
 	@p{ @{ $args{params} } } = @matches;
+	$log_parse->("Match gave us", \%p);
 
 	# Allow post processing. Return undef if regarded as failure
-	return undef if $args{postprocess} and not $args{postprocess}->(
-	    parsed => \%p,
-	    input => $date,
-	);
+	if ($args{postprocess})
+	{
+	    my $rv = $args{postprocess}->(
+		parsed => \%p,
+		input => $date,
+	    );
+	    $log_parse->("Postprocess of <$date> gave us", \%p);
+	    return undef unless $rv;
+	}
 
 	# A successful match!
+	$log->("Good parse");
 	return DateTime->new( %p, %{ $args{extra} } );
     };
 }
