@@ -104,7 +104,9 @@ sub create_class
 	{
 	    # I want to dereference the argument if it was a hash or
 	    # array ref. Coderefs? Straight through.
-	    *{"${target}::$method"} = $class->create_parser(
+	    my $globname = $target."::$method";
+	    croak "Will not override a preexisting new()" if defined &$globname;
+	    *$globname = $class->create_parser(
 		(ref $parsers eq 'HASH' ) ? %$parsers :
 		( ( ref $parsers eq 'ARRAY' ) ? @$parsers : $parsers )
 	    );
