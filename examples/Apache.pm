@@ -44,8 +44,8 @@ my $parser = DateTime::Format::Apache->new();
 
 my @dates = ( '27/Feb/2003:19:45:11 -0400', '27/Apr/2003:19:45:11 -0400' );
 
-for (@dates)
+for my $date (@dates)
 {
-    my $dt = $parser->parse_datetime( $_ )->set_time_zone( 'Australia/Sydney' );
-    print "$_ => ", $dt->datetime, " => ", $parser->format_datetime( $dt ), "\n";
+    my $dt = $parser->parse_datetime( $date )->set_time_zone( 'Australia/Sydney' );
+    print "$date => ", $dt->datetime, " => ", $parser->format_datetime( $dt ), "\n";
 }

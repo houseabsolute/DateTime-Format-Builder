@@ -4,7 +4,7 @@ use strict;
 
 use vars qw ($VERSION);
 
-$VERSION = '0.02';
+$VERSION = '0.03';
 
 use DateTime;
 
@@ -20,6 +20,7 @@ use DateTime::Format::Builder
         parse_datetime =>
         { params => [ qw( year month day hour minute second ) ],
           regex  => qr/^(\d{1,4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/,
+          extra  => { time_zone => 'floating' },
         },
 
         parse_timestamp =>
@@ -75,23 +76,6 @@ sub _fix_2_digit_year
 }
 
 # Builder relevant stuff ends here.
-
-sub parse_datetime
-{
-    my ( $self, $date ) = @_;
-
-    $date =~ /^(\d+)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/
-        or die "Invalid MySQL date: $date\n";
-
-    return DateTime->new( year   => $1,
-                          month  => $2,
-                          day    => $3,
-                          hour   => $4,
-                          minute => $5,
-                          second => $6,
-                          time_zone => 'floating',
-                        );
-}
 
 sub format_date
 {
@@ -167,6 +151,8 @@ If given an improperly formatted string, this method may die.
 
 Given a C<DateTime> object, this methods returns an appropriately
 formatted string.
+
+=back
 
 =head1 SUPPORT
 

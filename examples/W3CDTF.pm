@@ -6,8 +6,6 @@ use vars qw ($VERSION);
 
 $VERSION = '0.03';
 
-use DateTime;
-
 use DateTime::Format::Builder
 (
     parsers => {
@@ -167,6 +165,8 @@ If given an improperly formatted string, this method may die.
 
 Given a C<DateTime> object, this methods returns a W3CDTF datetime
 string.
+
+=back
 
 =head1 SUPPORT
 
