@@ -187,7 +187,9 @@ sub create_method
     my ($class, $parser) = @_;
     return sub {
 	my $self = shift;
-	$self->$parser(@_) || $class->on_fail( $_[0] );
+	my $r = $self->$parser(@_);
+	$class->on_fail( $_[0] ) unless defined $r;
+	$r;
     }
 }
 
