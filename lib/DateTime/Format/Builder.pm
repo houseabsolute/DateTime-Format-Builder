@@ -123,6 +123,9 @@ sub create_parser
 	    {
 		if (exists $spec->{length})
 		{
+                    croak "Cannot specify the same length twice"
+                        if exists $lengths{$spec->{length}};
+
 		    $lengths{$spec->{length}} =
 			$class->create_single_parser( %$spec );
 		}
