@@ -1,4 +1,5 @@
-package DateTime::Format::MySQL;
+# we need to comment this out or PAUSE might index it
+# pack age DateTime::Format::MySQL;
 
 use strict;
 

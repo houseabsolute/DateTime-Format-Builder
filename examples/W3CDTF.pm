@@ -1,4 +1,5 @@
-package DateTime::Format::W3CDTF;
+# we need to comment this out or PAUSE might index it
+# pack age DateTime::Format::W3CDTF;
 
 use strict;
 

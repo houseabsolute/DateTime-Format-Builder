@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.7804
+date:    07 Jul 2004
+changes:
+    - No code or doc changes, just change the code in examples to ensure that PAUSE does not index it.
+
+---
 version: 0.7803
 date:    13 Feb 2004
 changes:

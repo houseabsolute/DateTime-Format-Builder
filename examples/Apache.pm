@@ -1,4 +1,5 @@
-package DateTime::Format::Apache;
+# we need to comment this out or PAUSE might index it
+# pack age DateTime::Format::Apache;
 
 use DateTime::Format::Builder
 (

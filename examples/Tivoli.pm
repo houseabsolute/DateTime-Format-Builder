@@ -1,4 +1,5 @@
-package DateTime::Format::Tivoli;
+# we need to comment this out or PAUSE might index it
+# pack age DateTime::Format::Tivoli;
 
 use DateTime::Format::Builder
 (
