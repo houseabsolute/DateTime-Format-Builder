@@ -1,4 +1,4 @@
-package DateTime::Format::Quick;
+package DateTime::Format::Builder::Parser::Quick;
 use strict;
 use vars qw( $VERSION %dispatch_data );
 use Params::Validate qw( SCALAR OBJECT CODEREF validate );
