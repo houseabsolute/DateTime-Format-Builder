@@ -1,10 +1,15 @@
 # Change log for DateTime::Format::Builder
 
-version: 0.7805
-date:    07 Jul 2004
+version: 0.7806
+date:    09 09 2004
 changes:
-    - DateTime::Format::Builder::Parser (loaded by DateTime::Format::Builder) was not taint-safe.  Reported by Curtis Hawthorne.
-    - When DateTime::Format::Builder::Parser loaded worker classes, it ignored modules find under relative paths.  This was fixed by using Class::Factory::Util for this functionality instead.
+    - When DateTime::Format::Builder::Parser loaded worker classes, it ignored modules located under relative paths.  This was fixed by using Class::Factory::Util for this functionality instead.
+
+---
+version: 0.7805
+date:    11 08 2004
+changes:
+    - DateTime::Format::Build::Parser caused an exception when run in taint mode.  Reported by Curtis Hawthorne.
 
 ---
 version: 0.7805
