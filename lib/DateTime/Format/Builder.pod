@@ -973,7 +973,8 @@ suggestions, L<DateTime::Format::W3CDTF> and the encouragement to
 rewrite these docs almost 100%!
 
 Claus FE<auml>rber for having me get around to fixing the
-auto-constructor writing.
+auto-constructor writing, and providing the 'args'/'self'
+patch.
 
 Simon Cozens (SIMON) for saying it was cool.
 
