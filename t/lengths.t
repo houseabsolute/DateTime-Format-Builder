@@ -1,5 +1,7 @@
+# $Id$
 use strict;
 use lib 'inc';
+use blib;
 use Test::More tests => 8;
 use vars qw( $class );
 

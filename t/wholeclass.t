@@ -1,5 +1,6 @@
 # $Id$
 use strict;
+use blib;
 use lib 'inc';
 use Test::More tests => 8;
 

@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
+# $Id$
 use lib 'inc';
+use blib;
 use Test::More tests => 25;
 use strict;
 use vars qw( $class );

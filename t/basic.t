@@ -1,7 +1,10 @@
 # $Id$
 use lib 'inc';
+use blib;
 use strict;
+use Module::Versions::Report qw();
 use Test::More tests => 5;
+END { diag '', Module::Versions::Report::report() }
 
 BEGIN {
     use_ok 'DateTime::Format::Builder';
