@@ -8,7 +8,7 @@ use DateTime 0.07;
 use Params::Validate qw( validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF );
 use vars qw( $VERSION );
 
-$VERSION = '0.25';
+$VERSION = '0.59';
 
 sub new
 {
@@ -102,7 +102,7 @@ sub create_parser
 	return sub {
 	    $parser->(@_) || croak "Invalid date format: $_[1]";
 	};
-    } #
+    }
 
     my %options;
     if (ref $_[0] eq 'ARRAY')
@@ -113,63 +113,9 @@ sub create_parser
 
     if (ref $_[0] eq 'HASH' or ref $_[0] eq 'CODE')
     {
-	# Series of parser specs
-	my @specs = @_;
-
-	my %lengths;
-	my @others;
-
-	for my $spec (@specs)
-	{
-	    if (ref $spec eq 'CODE')
-	    {
-		push @others, $spec;
-	    }
-	    elsif (ref $spec eq 'HASH')
-	    {
-		if (exists $spec->{length})
-		{
-                    croak "Cannot specify the same length twice"
-                        if exists $lengths{$spec->{length}};
-
-		    $lengths{$spec->{length}} =
-			$class->create_single_parser( %$spec );
-		}
-		else
-		{
-		    push @others, $class->create_single_parser( %$spec );
-		}
-	    }
-	    else
-	    {
-		croak "Invalid specification in list.";
-	    }
-	}
-
+	my $parser =  $class->create_multiple_parsers( \%options, @_ );
 	return sub {
-	    my ($self, $date) = @_;
-
-	    my %p;
-	    if ($options{preprocess})
-	    {
-		$date = $options{preprocess}->( input => $date, parsed => \%p );
-	    }
-
-	    # Find length parser
-	    if (%lengths)
-	    {
-		my $length = length $date;
-		my $parser = $lengths{$length};
-		my $dt = eval { $parser->( $self, $date, \%p ) };
-		return $dt if defined $dt and not $@;
-	    }
-	    # Or find parser parser
-	    for my $parser (@others)
-	    {
-		my $dt = eval { $parser->( $self, $date, \%p ) };
-		return $dt if defined $dt and not $@;
-	    }
-	    croak "Invalid date format: $date\n";
+	    $parser->(@_) || croak "Invalid date format: $_[1]";
 	};
     }
     else
@@ -182,15 +128,88 @@ sub create_parser
 	    $parser->(@_) || croak "Invalid date format: $_[1]";
 	};
     }
+}
 
-    #
+sub create_multiple_parsers
+{
+    my $class = shift;
+    my ($options, @specs) = @_;
+
+    my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
+
+    return sub {
+	my ($self, $date) = @_;
+
+	my %p;
+	if ($options->{preprocess})
+	{
+	    $date = $options->{preprocess}->(
+		input => $date, parsed => \%p
+	    );
+	}
+
+	# Find length parser
+	if (%$lengths)
+	{
+	    my $length = length $date;
+	    my $parser = $lengths->{$length};
+	    if ($parser)
+	    {
+		my $dt = eval { $parser->( $self, $date, { %p } ) };
+		return $dt if defined $dt and not $@;
+	    }
+	}
+	# Or find parser parser
+	for my $parser (@$others)
+	{
+	    my $dt = eval { $parser->( $self, $date, { %p } ) };
+	    return $dt if defined $dt and not $@;
+	}
+	return undef;
+    };
+}
+
+sub sort_parsers
+{
+    my $class = shift;
+    my ($options, $specs) = @_;
+    my (%lengths, @others);
+
+    for my $spec (@$specs)
+    {
+	if (ref $spec eq 'CODE')
+	{
+	    push @others, $spec;
+	}
+	elsif (ref $spec eq 'HASH')
+	{
+	    if (exists $spec->{length})
+	    {
+		croak "Cannot specify the same length twice"
+		if exists $lengths{$spec->{length}};
+
+		$lengths{$spec->{length}} =
+		$class->create_single_parser( %$spec );
+	    }
+	    else
+	    {
+		push @others, $class->create_single_parser( %$spec );
+	    }
+	}
+	else
+	{
+	    croak "Invalid specification in list.";
+	}
+    }
+
+    return ( \%lengths, \@others );
 }
 
 sub create_single_parser
 {
     my $class = shift;
-    return $class->create_single_parser( %{ $_[0] } ) if ref $_[0] eq 'HASH';
     return $_[0] if ref $_[0] eq 'CODE';
+    @_ = %{ $_[0] } if ref $_[0] eq 'HASH';
     # ordinary boring sort
     my %args = validate( @_, {
 	    # How to match
@@ -199,7 +218,9 @@ sub create_single_parser
 	    },
 	    regex	=> {
 		type      => SCALARREF,
-		callbacks => { 'is a regex' => sub { ref(shift) eq 'Regexp' } }
+		callbacks => {
+		    'is a regex' => sub { ref(shift) eq 'Regexp' }
+		}
 	    },
 	    length	=> {
 		type      => SCALAR,
@@ -216,7 +237,7 @@ sub create_single_parser
 	    on_match	=> { type => CODEREF,	optional => 1 },
 	    on_fail	=> { type => CODEREF,	optional => 1 },
 	    postprocess => { type => CODEREF,	optional => 1 },
-	    preprocess => { type => CODEREF,	optional => 1 },
+	    preprocess  => { type => CODEREF,	optional => 1 },
 	    label	=> { type => SCALAR,	optional => 1 },
 	}
     );
@@ -251,7 +272,7 @@ sub create_single_parser
 	@p{ @{ $args{params} } } = @matches;
 
 	# Allow post processing
-	return if $args{postprocess} and not $args{postprocess}->(
+	return undef if $args{postprocess} and not $args{postprocess}->(
 	    parsed => \%p,
 	    input => $date,
 	);
@@ -263,6 +284,8 @@ sub create_single_parser
 sub set_parser
 {
     my ($self, $parser) = @_;
+    croak "set_parser given something other than a coderef" unless $parser
+	and ref $parser eq 'CODE';
     $self->{parser} = $parser;
     $self;
 }
@@ -276,6 +299,8 @@ sub get_parser
 sub parse_datetime
 {
     my $self = shift;
+    croak "parse_datetime is an object method, not a class method."
+        unless ref $self and $self->isa( __PACKAGE__ );
     croak "No date specified." unless @_;
     return $self->{parser}->( $self, @_ );
 }
