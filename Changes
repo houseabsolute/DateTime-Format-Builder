@@ -5,6 +5,7 @@ version: 0.76
 date:    17 Jul 2003
 changes:
     - Fallthrough example and test added.
+    - Quick parser added to simplify fallthrough stuff.
 
 ---
 version: 0.75
