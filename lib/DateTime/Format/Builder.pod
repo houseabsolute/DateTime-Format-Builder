@@ -72,7 +72,8 @@ your own.
 
 In addition to creating any of the parser methods it also
 creates a C<new()> method that can instantiate (or clone)
-objects of this class.
+objects of this class.  If your class defines its own
+C<new()> method it will not be overwritten.
 
 Each value corresponding to a method name in the parsers
 list is either a single specification, or a list of

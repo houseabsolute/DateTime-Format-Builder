@@ -1,5 +1,5 @@
 use strict;
-use Test::More tests => 39;
+use Test::More tests => 41;
 use vars qw( $class );
 
 BEGIN {
@@ -83,4 +83,27 @@ my @parsers = (
 	    is( $dt->$method() => $expected, "\$dt->$method() == $expected" );
 	}
     }
+}
+
+{
+    sub ClassHasNew::new { return 'new' }
+
+    eval q[
+	package ClassHasNew;
+	use DateTime::Format::Builder
+	    parsers => {
+		parse_datetime => [
+		{
+		    regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
+		    params => [qw( year month day hour minute second )],
+		},
+		{
+		    regex => qr/^(\d{4})(\d\d)(\d\d)$/,
+		    params => [qw( year month day )],
+		},
+		],
+	    };
+    ];
+    ok( !$@, "No errors when creating the class." );
+    is( ClassHasNew->new, 'new', "Don't overwrite existing new() method" );
 }

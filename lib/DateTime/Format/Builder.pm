@@ -93,20 +93,23 @@ sub create_class
     {
 	no strict 'refs';
 
-	${"${target}::VERSION"} = $args{version} if exists $args{version};
+        unless (defined &{"${target}::new"})
+        {
+            ${"${target}::VERSION"} = $args{version} if exists $args{version};
 
-	# Should probably make this optional, or at least check if
-	# something is already tehre..
-	*{"${target}::new"} = sub {
-	    my $class = shift;
-	    croak "${class}->new takes no parameters." if @_;
+            # Should probably make this optional, or at least check if
+            # something is already tehre..
+            *{"${target}::new"} = sub {
+                my $class = shift;
+                croak "${class}->new takes no parameters." if @_;
 
-	    my $self = bless {}, ref($class)||$class;
-	    # If called on an object, clone, but we've nothing to
-	    # clone
+                my $self = bless {}, ref($class)||$class;
+                # If called on an object, clone, but we've nothing to
+                # clone
 
-	    $self;
-	};
+                $self;
+            };
+        }
 
 	# Write all our parser methods, creating parsers as we go.
 	while (my ($method, $parsers) = each %{ $args{parsers} })
