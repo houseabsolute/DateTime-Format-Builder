@@ -84,10 +84,8 @@ sub create_single_parser
     }
     if ( $from )
     {
-	eval " require $from ";
-	croak $@ if $@;
 	my $method = $from->can( "create_parser" )
-	    or croak "Can't create  a $_ parser (no such method)";
+	    or croak "Can't create a $_ parser (no appropriate create_parser method)";
 	my @args = %args;
 	my %args = validate( @args, $from->params() );
 	return $class->$method( %args );
@@ -135,7 +133,7 @@ sub generic_parser {
 	    my $type = defined $rv ? "on_match" : "on_fail";
 	    $args{$type}->( input => $date, %param ) if $args{$type};
 	}
-	return undef unless defined $rv;
+	return unless defined $rv;
 
 	my $dt;
 	$dt = $args{post_match}->( $date, $rv, \%p ) if exists $args{post_match};
@@ -149,7 +147,7 @@ sub generic_parser {
 		post => $dt,
 		%param,
 	    );
-	    return undef unless $rv;
+	    return unless $rv;
 	}
 
 	# A successful match!
@@ -169,15 +167,15 @@ sub merge_callbacks
 {
     my $self = shift;
 
-    return undef unless @_; # No arguments
-    return undef unless $_[0]; # Irrelevant argument
+    return unless @_; # No arguments
+    return unless $_[0]; # Irrelevant argument
     my @callbacks = @_;
     if (@_ == 1)
     {
 	return $_[0] if ref $_[0] eq 'CODE';
 	@callbacks = @{ $_[0] } if ref $_[0] eq 'ARRAY';
     }
-    return undef unless @callbacks;
+    return unless @callbacks;
 
     for (@callbacks)
     {
@@ -252,7 +250,7 @@ sub create_multiple_parsers
 	    return $dt if defined $dt;
 	}
 	# Failed, return undef.
-	return undef;
+	return;
     };
 }
 

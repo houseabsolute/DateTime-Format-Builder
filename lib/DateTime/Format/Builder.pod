@@ -1,6 +1,6 @@
 =head1 NAME
 
-DateTime::Format::Builder - create DateTime parser objects.
+DateTime::Format::Builder - Create DateTime parser classes and objects.
 
 =head1 SYNOPSIS
 
