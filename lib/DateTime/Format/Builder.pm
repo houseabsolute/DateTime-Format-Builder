@@ -12,7 +12,7 @@ use 5.005;
 use Carp;
 use DateTime 0.07;
 use Params::Validate qw(
-    validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF
+    validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
 );
 use vars qw( $VERSION );
 
@@ -83,6 +83,7 @@ sub create_class
 	version => { type => SCALAR, optional => 1 },
 	verbose	=> { type => SCALAR|GLOBREF|GLOB, optional => 1 },
 	parsers	=> { type => HASHREF },
+	constructor => { type => UNDEF|SCALAR|CODEREF, optional => 1 },
     });
 
     verbose( $args{verbose} ) if exists $args{verbose};
@@ -93,23 +94,10 @@ sub create_class
     {
 	no strict 'refs';
 
-        unless (defined &{"${target}::new"})
-        {
-            ${"${target}::VERSION"} = $args{version} if exists $args{version};
 
-            # Should probably make this optional, or at least check if
-            # something is already tehre..
-            *{"${target}::new"} = sub {
-                my $class = shift;
-                croak "${class}->new takes no parameters." if @_;
+	${"${target}::VERSION"} = $args{version} if exists $args{version};
 
-                my $self = bless {}, ref($class)||$class;
-                # If called on an object, clone, but we've nothing to
-                # clone
-
-                $self;
-            };
-        }
+	$class->create_constructor( $target, exists $args{constructor}, $args{constructor} );
 
 	# Write all our parser methods, creating parsers as we go.
 	while (my ($method, $parsers) = each %{ $args{parsers} })
@@ -123,6 +111,33 @@ sub create_class
 	}
     }
 
+}
+
+sub create_constructor
+{
+    my $class = shift;
+    my ( $target, $intended, $value ) = @_;
+
+    my $new = $target."::new";
+    $value = 1 unless $intended;
+
+    return unless $value;
+    return if not $intended and defined &$new;
+    croak "Will not override a preexisting new()" if defined &$new;
+
+    no strict 'refs';
+
+    return *$new = $value if ref $value eq 'CODE';
+    return *$new = sub {
+	my $class = shift;
+	croak "${class}->new takes no parameters." if @_;
+
+	my $self = bless {}, ref($class)||$class;
+	# If called on an object, clone, but we've nothing to
+	# clone
+
+	$self;
+    };
 }
 
 =pod

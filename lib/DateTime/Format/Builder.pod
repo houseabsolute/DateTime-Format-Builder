@@ -45,8 +45,9 @@ module version:
     package DateTime::Format::ICal;
     our $VERSION = '0.04';
 
-After that, you call Builder with some options. Currently,
-only I<parsers> and I<verbose> are valid.
+After that, you call Builder with some options. There are
+only a few (detailed later). Right now, we're only interested
+in I<parsers>.
 
     use DateTime::Format::Builder
     (
@@ -72,8 +73,9 @@ your own.
 
 In addition to creating any of the parser methods it also
 creates a C<new()> method that can instantiate (or clone)
-objects of this class.  If your class defines its own
-C<new()> method it will not be overwritten.
+objects of this class. This behaviour can be modified with
+the I<constructor> option, but we don't need to know that
+yet.
 
 Each value corresponding to a method name in the parsers
 list is either a single specification, or a list of
@@ -686,6 +688,23 @@ present. I lied. There are actually three of them.
 B<parsers> takes a hashref of methods and their parser
 specifications. See the
 L<tutorial above|/"CREATING A CLASS"> for details.
+
+=item *
+
+B<constructor> determines whether and how to create a
+C<new()> function in the new class. If given a true value, a
+constructor is created. If given a false value, one isn't.
+
+If given an anonymous sub or a reference to a sub then that
+is used as C<new()>.
+
+The default is C<1> (that is, create a constructor using
+our default code which simply creates a hashref and blesses
+it). 
+
+If your class defines its own C<new()> method it will not be
+overwritten. If you define your own C<new()> and also tell
+Builder to define one an error will be thrown.
 
 =item *
 

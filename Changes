@@ -2,10 +2,12 @@
 
 ---
 version: 0.62
-date:    15 Apr 2003
+date:    20 Apr 2003
 changse:
     - Fixed erroneous call to on_fail()
     - Added 'verbose' debugging capability.
+    - Added 'constructor' option to create_class/import.
+    - Avoid overriding developers own new() functions.
 
 ---
 version: 0.60
