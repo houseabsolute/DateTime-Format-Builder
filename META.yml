@@ -1,7 +1,6 @@
 --- #YAML:1.0
 build_requires:
   Test::More: 0.47
-  Test: 1.23
 conflicts: {}
 distribution_type: module
 license: perl
@@ -13,5 +12,5 @@ requires:
   DateTime: 0.08
   Params::Validate: 0.57
   Carp: 1.01
-version: 0.24
+version: 0.25
 generated_by: docmaker version 0.89

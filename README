@@ -1,6 +1,6 @@
 DateTime::Format::Builder
 
-   Easy creation of simple DateTime parsers and formatters.
+   create DateTime parser objects.
 
 For installation details, see INSTALL.
 
@@ -8,12 +8,10 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.24 (25 Mar 2003)
-   - First release!
-   - Split POD into separate file.
-   - Preprocess option for method building works.
-   - Postprocess option per parser works.
-   - Specification lists can now have coderefs in there.
+Changes for 0.25 (29 Mar 2003)
+   - Minor code cleanups.
+   - Bug fix; 'extra' params were being ignored.
+   - Doc fix; 'extra' params with 0 are not recommended.
 
 For a complete list of changes, see the Changes file.
 

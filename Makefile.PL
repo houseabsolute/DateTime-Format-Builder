@@ -7,7 +7,6 @@ WriteMakefile(
 		'Params::Validate' => 0.57,
 		'Carp' => 1.01,
 		'Test::More' => 0.47,
-		'Test' => 1.23,
 	    },
     ($] >= 5.005 ?
       (ABSTRACT_FROM => 'lib/DateTime/Format/Builder.pod',

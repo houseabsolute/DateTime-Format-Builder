@@ -21,3 +21,4 @@ t/clone.t
 t/create.t
 t/newclass.t
 t/wholeclass.t
+t/extra.t
