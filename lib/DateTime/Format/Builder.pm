@@ -8,7 +8,7 @@ use DateTime 0.07;
 use Params::Validate qw( validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF );
 use vars qw( $VERSION );
 
-$VERSION = '0.24';
+$VERSION = '0.25';
 
 sub new
 {
