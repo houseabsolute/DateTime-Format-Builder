@@ -1,0 +1,33 @@
+# Change log for DateTime::Format::Builder
+
+---
+version: 0.24
+date:    25 Mar 2003
+changes:
+    - First release!
+    - Split POD into separate file.
+    - Preprocess option for method building works.
+    - Postprocess option per parser works.
+    - Specification lists can now have coderefs in there.
+
+---
+version: 0.23
+date:    25 Mar 2003
+changes:
+    - Improved ancillary files.
+    - Added basic use case test for new classes.
+    - Assorted API changes.
+    - create_class infers package name.
+    - also creates specified methods rather than assumed ones.
+    - Assorted POD updates. Still not complete.
+    - Rejigged to only have an array of hashrefs. Simpler.
+    - No inference of length/key stuff.
+    - zero is now extra and is thus semantically different.
+    - Preliminary pre/post processing per parser provided.
+
+---
+version: 0.22
+date:    21 Mar 2003
+changes:
+    - Initial (pre-actual release) version.
+
