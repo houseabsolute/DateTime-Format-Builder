@@ -14,7 +14,7 @@ use DateTime 0.12;
 use Params::Validate qw(
     validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
 );
-use vars qw( $VERSION );
+use vars qw( $VERSION %dispatch_data );
 
 my $parser = 'DateTime::Format::Builder::Parser';
 $VERSION = '0.73';
@@ -63,6 +63,7 @@ sub create_class
 	version => { type => SCALAR, optional => 1 },
 	verbose	=> { type => SCALAR|GLOBREF|GLOB, optional => 1 },
 	parsers	=> { type => HASHREF },
+	groups  => { type => HASHREF, optional => 1 },
 	constructor => { type => UNDEF|SCALAR|CODEREF, optional => 1 },
     });
 
@@ -79,6 +80,23 @@ sub create_class
 
 	$class->create_constructor(
 	    $target, exists $args{constructor}, $args{constructor} );
+
+	# Turn groups of parser specs in to groups of parsers
+	{
+	    my $specs = $args{groups};
+	    my %groups;
+
+	    for my $label ( keys %$specs )
+	    {
+		my $parsers = $specs->{$label};
+		my $code = $parser->create_parser(
+		    (ref $parsers eq 'HASH' ) ? %$parsers :
+		    ( ( ref $parsers eq 'ARRAY' ) ? @$parsers : $parsers )
+		$groups{$label} = $code;
+	    }
+
+	    $dispatch_data{$target} = \%groups;
+	}
 
 	# Write all our parser methods, creating parsers as we go.
 	while (my ($method, $parsers) = each %{ $args{parsers} })
