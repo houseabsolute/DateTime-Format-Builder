@@ -2,28 +2,30 @@
 use lib 'inc';
 use blib;
 use strict;
-use Test::More tests => 9;
+use Test::More tests => 16;
 use vars qw( $class );
 BEGIN {
     $class = 'DateTime::Format::Builder';
     use_ok $class;
 }
 
+my %common = (
+    version => 4.00,
+    parsers => {
+        parse_datetime => {
+            params => [ qw( year month day hour minute second ) ],
+            regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+        }
+    },
+);
+
 # Does create_class() work properly?
 {
-    my %args = (
-	params => [ qw( year month day hour minute second ) ],
-	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
-    );
     my $sample = "20030716T163245";
     my $newclass = "DateTime::Format::ICal15";
 
-    $class->create_class(
+    $class->create_class( %common,
 	class => $newclass,
-	version => 4.00,
-	parsers => {
-	    parse_datetime => [ \%args ],
-	},
     );
 
     my $parser = $newclass->new();
@@ -43,4 +45,44 @@ BEGIN {
 	}
     }
 
+    # New with args
+    {
+        eval { $newclass->new( "with", "args" ) };
+        ok( $@, "Should have errors" );
+        like( $@, qr{ takes no parameters}, "Right error" );
+    }
+
+    # New from object
+    {
+        my $new = $parser->new();
+        isa_ok( $new, $newclass, "New from object gives right class" );
+    }
+}
+
+# New class, with given new
+{
+    my $newclass = "DateTime::Format::ICalTest";
+
+    $class->create_class( %common,
+	class => $newclass,
+        constructor => sub { bless { "Foo" => "Bar" }, shift },
+    );
+
+    my $parser = $newclass->new();
+    cmp_ok ( $newclass->VERSION, '==', '4.00', "Version matches");
+    is( $parser->{"Foo"} => "Bar", "Used the right constructor" );
+}
+
+# New class, with undef new
+{
+    my $newclass = "DateTime::Format::ICalTestUndef";
+
+    eval {
+        $class->create_class( %common,
+            class => $newclass,
+            constructor => undef,
+        );
+    };
+    ok( !$@, "Should be no errors with undef new" );
+    ok( !(UNIVERSAL::can( $newclass, 'new' )), "Should be no constructor" );
 }
