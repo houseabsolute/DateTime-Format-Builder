@@ -1,6 +1,90 @@
 
 ChangeLog generated directly from CVS logs.
 
+Release DateTime-Format-Builder 0.69:
+  - lib/DateTime/Format/Builder/Parser/Regex.pm v1.1
+  - lib/DateTime/Format/Builder.pm v1.17
+  - lib/DateTime/Format/Builder/Parser/Strptime.pm v1.1
+  - t/strptime.t v1.1
+  - lib/DateTime/Format/Builder/Parser.pm v1.1
+        - Strptime support added.
+        - Huge pile of refactoring.
+        - Logging/verbose support temporarily removed.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.18
+  - t/strptime.t v1.2
+  - lib/DateTime/Format/Builder/Parser.pm v1.2
+  - t/param.t v1.3
+  - t/mergecb.t v1.2
+        - Moved more parser only routines to Parser.pm
+        - Now just one line of code joining Builder.pm and Parser.pm
+        - Revised subclass requiring to handle multiple instances in
+          @INC
+        - Requiring will also barf if it can't find any modules
+        - Refactored param.t tests.
+        - Minor test changes to handle shifted API.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.19
+  - lib/DateTime/Format/Builder.pod v1.19
+  - lib/DateTime/Format/Builder/Parser.pm v1.3
+        - Minor touchups.
+        - Fix class of on_fail
+        (koschei)
+
+  - Changes v1.9
+        - 0.69 stuff.
+        (koschei)
+
+  - Changes v1.10
+        *** empty log message ***
+        (koschei)
+
+  - examples/Apache.pm v1.1
+        - New example.
+        (koschei)
+
+
+Release DateTime-Format-Builder 0.64:
+  - lib/DateTime/Format/Builder.pm v1.16
+        - *cough*
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.15
+  - lib/DateTime/Format/Builder.pod v1.18
+  - t/mergecb.t v1.1
+        - Multi-callbacks added.
+        (koschei)
+
+  - Changes v1.8
+        - 0.64
+        (koschei)
+
+
+Release DateTime-Format-Builder 0.63:
+  - lib/DateTime/Format/Builder.pod v1.17
+        - Always remember credits.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pod v1.15
+        - Clarify I<parsers> note.
+        (koschei)
+
+  - t/self.t v1.2
+  - t/param.t v1.2
+        - Polished the new tests.
+        (koschei)
+
+  - t/self.t v1.1
+  - lib/DateTime/Format/Builder.pm v1.14
+  - lib/DateTime/Format/Builder.pod v1.16
+  - t/param.t v1.1
+        - Added support for callbacks to be given 'args' and 'self'
+          arguments.
+        (koschei)
+
+
 Release DateTime-Format-Builder 0.62:
   - t/noredef.t v1.1
         - Test the lack of method redefinition.
@@ -22,8 +106,8 @@ Release DateTime-Format-Builder 0.62:
         - Complain if asked to overwrite methods.
         (koschei)
 
-  - lib/DateTime/Format/Builder.pm v1.11
   - t/create.t v1.2
+  - lib/DateTime/Format/Builder.pm v1.11
   - lib/DateTime/Format/Builder.pod v1.12
         don't overwrite existing new() method in calling class
         (autarch)
@@ -112,9 +196,25 @@ Release DateTime-Format-Builder 0.25:
         - 0.25
         (koschei)
 
+  - Changes v1.2
+        - DateTime-Format-Builder 0.25
+        (koschei)
+
   - lib/DateTime/Format/Builder.pod v1.2
         don't imply that user should use extra to set things like hour
         to 0, cause that's already the DateTime default
+        (autarch)
+
+  - lib/DateTime/Format/Builder.pm v1.3
+        extra was being ignore. looks like a bug
+        (autarch)
+
+  - lib/DateTime/Format/Builder.pm v1.2
+        stick default in validation spec
+        (autarch)
+
+  - t/extra.t v1.2
+        fix tests and test count
         (autarch)
 
   - t/extra.t v1.1
@@ -122,25 +222,9 @@ Release DateTime-Format-Builder 0.25:
         DateTime constructor
         (autarch)
 
-  - Changes v1.2
-        - DateTime-Format-Builder 0.25
-        (koschei)
-
-  - lib/DateTime/Format/Builder.pm v1.2
-        stick default in validation spec
-        (autarch)
-
-  - lib/DateTime/Format/Builder.pm v1.3
-        extra was being ignore. looks like a bug
-        (autarch)
-
   - lib/DateTime/Format/Builder.pod v1.3
         - Renders better with Pod::Simple::HTML
         (koschei)
-
-  - t/extra.t v1.2
-        fix tests and test count
-        (autarch)
 
 
 Release DateTime-Format-Builder 0.24:

@@ -4,11 +4,16 @@
 version: 0.69
 date:    28 Apr 2003
 changes:
-    - Callbacks are given 'args' and 'self' keys.
-    - Callbacks can be arrays of callbacks.
     - DateTime::Format::Strptime is now supported.
     - To support the previous item, massive refactoring.
     - Minor API changes that shouldn't affect anyone.
+
+---
+version: 0.64
+date:    27 Apr 2003
+changes:
+    - Callbacks are given 'args' and 'self' keys.
+    - Callbacks can be arrays of callbacks.
 
 ---
 version: 0.62

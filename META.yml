@@ -9,8 +9,11 @@ recommends:
   Test::Pod: 0.95
   Test::Signature: 1.03
 requires:
+  File::Find: 0
   DateTime: 0.10
   Params::Validate: 0.58
-  Data::Dumper: 2.09
-version: 0.62
+  File::Spec: 0.6
+  DateTime::Format::Strptime: 1.00.01
+  File::Basename: 2.4
+version: 0.69
 generated_by: docmaker version 0.89

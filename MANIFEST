@@ -4,16 +4,21 @@ ChangeLog
 Changes
 COPYING
 CREDITS
+examples/Apache.pm
 examples/ICal.pm
 examples/MySQL.pm
 examples/W3CDTF.pm
 INSTALL
 lib/DateTime/Format/Builder.pm
 lib/DateTime/Format/Builder.pod
+lib/DateTime/Format/Builder/Parser.pm
+lib/DateTime/Format/Builder/Parser/Regex.pm
+lib/DateTime/Format/Builder/Parser/Strptime.pm
 LICENSE
 Makefile.PL
+MANIFEST
+MANIFEST.bak
 MANIFEST.SKIP
-MANIFEST			This list of files
 META.yml
 README
 SIGNATURE
@@ -24,8 +29,12 @@ t/clone.t
 t/create.t
 t/extra.t
 t/import.t
+t/mergecb.t
 t/newclass.t
 t/nocon.t
 t/noredef.t
+t/param.t
+t/self.t
+t/strptime.t
 t/verbose.t
 t/wholeclass.t

@@ -1,6 +1,6 @@
 DateTime::Format::Builder
 
-   create DateTime parser objects.
+   Create DateTime parser classes and objects.
 
 For installation details, see INSTALL.
 
@@ -8,12 +8,12 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.62 (20 Apr 2003)
-   - Fixed erroneous call to on_fail()
-   - Added 'verbose' debugging capability.
-   - Added 'constructor' option to create_class/import.
-   - Avoid overwriting developers' own new() functions.
-   - Complain if asked to overwrite methods.
+Changes for 0.69 (28 Apr 2003)
+   - DateTime::Format::Strptime is now supported.
+   - To support the previous item, massive refactoring.
+   - Minor API changes that shouldn't affect anyone.
+   - Callbacks are given 'args' and 'self' keys.
+   - Callbacks can be arrays of callbacks.
 
 For a complete list of changes, see the Changes file.
 
