@@ -88,9 +88,8 @@ strings of a certain fixed length. This can be used to make
 parsers more efficient. It's strongly recommended that any
 parser that can use this parameter does.
 
-Due to the implementation, you cannot specify the same
-I<length> twice for one parser. This will be made possible
-if anyone finds a need for it, or submits a patch.
+You may happily specify the same length twice. The parsers
+will be tried in order of specification.
 
 If any specifications without I<length>s are given and the
 particular I<length> parser fails, then the non-I<length>
@@ -615,6 +614,7 @@ writing L<DateTime::Format::ICal> and
 L<DateTime::Format::MySQL>, and some much needed review.
 
 Joshua Hoblitt (JHOBLITT) for the concept, some of the API,
+impetus for writing the multilength code,
 and more much needed review.
 
 Kellan Elliott-McCrea (KELLAN) for even more review,

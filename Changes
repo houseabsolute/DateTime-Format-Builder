@@ -2,9 +2,10 @@
 
 ---
 version: 0.73
-date:    12 Jun 2003
+date:    22 Jun 2003
 changes:
     - Exit parser more quickly if able.
+    - Multiple same length parsers accepted.
 
 ---
 version: 0.72

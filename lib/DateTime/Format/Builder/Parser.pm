@@ -395,11 +395,7 @@ sub sort_parsers
 	{
 	    if (exists $spec->{length})
 	    {
-		croak "Cannot specify the same length twice"
-		if exists $lengths{$spec->{length}};
-
-		$lengths{$spec->{length}} =
-		    $class->create_single_parser( %$spec );
+		push @{ $lengths{$spec->{length}} }, $class->create_single_parser( %$spec );
 	    }
 	    else
 	    {
@@ -413,7 +409,27 @@ sub sort_parsers
 	}
     }
 
+    while (my ($length, $parsers) = each %lengths)
+    {
+	$lengths{$length} = $class->chain_parsers( $parsers );
+    }
+
     return ( \%lengths, \@others );
+}
+
+sub chain_parsers
+{
+    my ($self, $parsers) = @_;
+    return $parsers->[0] if @$parsers == 1;
+    return sub {
+	my $self = shift;
+	for my $parser (@$parsers)
+	{
+	    my $rv = $self->$parser( @_ );
+	    return $rv if defined $rv;
+	}
+	return undef;
+    };
 }
 
 =head2 create_parser
