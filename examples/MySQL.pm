@@ -2,10 +2,6 @@ package DateTime::Format::MySQL;
 
 use strict;
 
-use vars qw ($VERSION);
-
-$VERSION = '0.03';
-
 use DateTime;
 
 # Builder relevant stuff starts here.
