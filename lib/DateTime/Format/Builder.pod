@@ -210,11 +210,11 @@ be called in the event of a parse failing. It will be passed a hash looking like
 
 =over 4
 
-=item +
+=item *
 
 C<input>, being the input on which the parser failed
 
-=item +
+=item *
 
 C<label>, being the label of the parser, if there is one
 
