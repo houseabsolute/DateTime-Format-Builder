@@ -1,7 +1,7 @@
 package DateTime::Format::Quick;
 use strict;
 use vars qw( $VERSION %dispatch_data );
-use Params::Validate qw( SCALAR OBJECT validate );
+use Params::Validate qw( SCALAR OBJECT CODEREF validate );
 use base qw( DateTime::Format::Builder::Parser );
 
 =head1 NAME
