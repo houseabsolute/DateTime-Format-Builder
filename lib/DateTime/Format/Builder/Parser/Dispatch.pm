@@ -72,7 +72,7 @@ potentially end up with an infinitely recursive parser.
 
 =cut
 
-$VERSION = '0.75';
+$VERSION = '0.76';
 
 {
     no strict 'refs';
