@@ -1,6 +1,6 @@
 # $Id$
 use strict;
-use Test::More tests => 1;
+use Test::More tests => 2;
 
 BEGIN {
     use_ok 'DateTime::Format::Builder';
@@ -9,7 +9,7 @@ BEGIN {
 my $class = 'DateTime::Format::Builder';
 
 {
-    my $parser = $class->new( {
+    my $parser = $class->parser( {
 	params => [ qw( year month day hour minute second ) ],
 	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
 	extra  => { time_zone => 'America/Chicago' },
