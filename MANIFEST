@@ -26,3 +26,5 @@ t/extra.t
 t/import.t
 t/newclass.t
 t/wholeclass.t
+t/nocon.t
+t/verbose.t

@@ -3,8 +3,9 @@ WriteMakefile(
     NAME		=> 'DateTime::Format::Builder',
     VERSION_FROM	=> 'lib/DateTime/Format/Builder.pm',
     PREREQ_PM => {
-		'DateTime' => 0.09,
+		'DateTime' => 0.10,
 		'Params::Validate' => 0.58,
+		'Data::Dumper' => 2.09,
 		'Test::More' => 0.47,
 	    },
     ($] >= 5.005 ?

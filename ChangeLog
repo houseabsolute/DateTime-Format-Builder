@@ -1,6 +1,46 @@
 
 ChangeLog generated directly from CVS logs.
 
+Release DateTime-Format-Builder 0.62:
+  - t/noredef.t v1.1
+        - Test the lack of method redefinition.
+        (koschei)
+
+  - Changes v1.6
+        - Iain, learn to type.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.12
+  - lib/DateTime/Format/Builder.pod v1.13
+  - t/nocon.t v1.1
+  - Changes v1.5
+        - Constructor creation made more flexible.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.13
+  - lib/DateTime/Format/Builder.pod v1.14
+        - Complain if asked to overwrite methods.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.11
+  - t/create.t v1.2
+  - lib/DateTime/Format/Builder.pod v1.12
+        don't overwrite existing new() method in calling class
+        (autarch)
+
+  - lib/DateTime/Format/Builder.pm v1.10
+  - t/verbose.t v1.1
+  - lib/DateTime/Format/Builder.pod v1.11
+  - Changes v1.4
+        - Added support for 'verbose' to help with debugging.
+        - Fixed incorrect call to on_fail
+        (koschei)
+
+  - Changes v1.7
+        - Should be good for 0.62 now.
+        (koschei)
+
+
 Release DateTime-Format-Builder 0.60:
   - lib/DateTime/Format/Builder.pod v1.5
         document length option for parsers
@@ -41,6 +81,12 @@ Release DateTime-Format-Builder 0.60:
         - Essentially, all the routines of a noticable size are now one
           or more routines.
         - Code should reasonably match the documentation now.
+        (koschei)
+
+  - examples/ICal.pm v1.1
+  - examples/W3CDTF.pm v1.1
+  - examples/MySQL.pm v1.1
+        - Builder based variants of the common parsers.
         (koschei)
 
   - Changes v1.3

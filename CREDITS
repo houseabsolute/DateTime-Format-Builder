@@ -1,4 +1,4 @@
-CREDITS FOR DateTime::Format::Builder 0.6
+CREDITS FOR DateTime::Format::Builder 0.62
 
 Dave Rolsky (DROLSKY) for kickstarting the DateTime project,
 writing DateTime::Format::ICal and
@@ -10,6 +10,9 @@ and more much needed review.
 Kellan Elliott-McCrea (KELLAN) for even more review,
 suggestions, DateTime::Format::W3CDTF and the encouragement to
 rewrite these docs almost 100%!
+
+Claus Frber for having me get around to fixing the
+auto-constructor writing.
 
 Simon Cozens (SIMON) for saying it was cool.
 

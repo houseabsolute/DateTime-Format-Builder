@@ -9,7 +9,8 @@ recommends:
   Test::Pod: 0.95
   Test::Signature: 1.03
 requires:
-  DateTime: 0.09
+  DateTime: 0.10
   Params::Validate: 0.58
-version: 0.6
+  Data::Dumper: 2.09
+version: 0.62
 generated_by: docmaker version 0.89
