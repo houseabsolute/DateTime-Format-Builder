@@ -1,5 +1,6 @@
 # $Id$
 use strict;
+use lib 'inc';
 use Test::More tests => 8;
 
 package DateTime::Format::ICal15;

@@ -1,4 +1,5 @@
 use strict;
+use lib 'inc';
 use Test::More tests => 41;
 use vars qw( $class );
 

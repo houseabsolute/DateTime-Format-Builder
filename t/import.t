@@ -1,4 +1,5 @@
 use Test::More tests => 8;
+use lib 'inc';
 use vars qw( $class );
 
 BEGIN {
@@ -35,7 +36,7 @@ BEGIN {
     is( $dt->month	=> 5, 'Year is 2004' );
     is( $dt->day	=> 6, 'Year is 2004' );
 
-    eval { $parse->fnerk };
+    eval { $parser->fnerk };
     ok( $@, "There is no fnerk." );
 }
 

@@ -1,4 +1,6 @@
-use Test::More tests => 19;
+#!/usr/bin/perl -w
+use lib 'inc';
+use Test::More tests => 25;
 use strict;
 use vars qw( $class );
 
@@ -18,6 +20,11 @@ my @tests = (
 	# Simple times
 	['%H:%M:%S', '23:45:56'],
 	['%l:%M:%S %p', '12:34:56 PM'],
+	
+	# With Nanoseconds
+	['%H:%M:%S.%N', '23:45:56.123456789'],
+	['%H:%M:%S.%6N', '23:45:56.123456'],
+	['%H:%M:%S.%3N', '23:45:56.123'],
 
 	# Complex dates
 	['%Y;%j = %Y-%m-%d', '2003;56 = 2003-02-25'],

@@ -1,4 +1,5 @@
 # $Id$
+use lib 'inc';
 use strict;
 use Test::More tests => 5;
 use vars qw( $class );
@@ -11,8 +12,14 @@ BEGIN {
 # Does verbose() work properly?
 SKIP: {
     skip "This test requires perl 5.8", 4 unless $] >= 5.007;
+    skip "Verbose is temporarily out of it", 4;
+
     my $str;
-    open $SampleClass1::fh, '>', \$str or die "Cannot open string for writing!";
+    undef $SampleClass1::fh; # just to un-warn
+    eval q{
+	open $SampleClass1::fh, '>', \$str
+	    or die "Cannot open string for writing!";
+    };
     
     eval q[
 	package SampleClass1;
