@@ -91,7 +91,8 @@ sub create_class
 		my $parsers = $specs->{$label};
 		my $code = $parser->create_parser(
 		    (ref $parsers eq 'HASH' ) ? %$parsers :
-		    ( ( ref $parsers eq 'ARRAY' ) ? @$parsers : $parsers )
+		    ( ( ref $parsers eq 'ARRAY' ) ? @$parsers : $parsers)
+		);
 		$groups{$label} = $code;
 	    }
 
