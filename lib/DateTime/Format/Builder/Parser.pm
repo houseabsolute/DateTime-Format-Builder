@@ -614,6 +614,7 @@ letter. These are ignored.
     } @INC;
     my $count = 0;
     my %loaded;
+    local $_;
     File::Find::find({
 	    no_chdir => 1,
 	    wanted => sub {
