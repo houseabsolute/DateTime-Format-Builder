@@ -16,7 +16,7 @@ use Params::Validate qw(
 );
 use vars qw( $VERSION );
 
-$VERSION = '0.64';
+$VERSION = '0.69';
 
 # Developer oriented methods
 
@@ -26,32 +26,11 @@ C<verbose()> sets the logging.
 
 =cut
 
-use vars qw( $LOG_HANDLE );
-
 sub verbose
 {
-    my $fh = shift;
-    return $LOG_HANDLE = undef unless defined $fh;
-    return $LOG_HANDLE = $fh if fileno $fh;
-    return $LOG_HANDLE = \*STDERR;
+    warn "Use of verbose() deprecated for the interim.";
+    1;
 }
-
-my $log = sub {
-    return unless defined $LOG_HANDLE;
-    print $LOG_HANDLE @_, "\n";
-};
-
-my $logging = sub { defined $LOG_HANDLE };
-
-my $log_parse = sub {
-    my ($text, $p) = @_;
-    if ($logging->())
-    {
-	$log->($text);
-	require Data::Dumper;
-	$log->(Data::Dumper->Dump( [ $p ], [ 'p' ] ) );
-    }
-};
 
 =pod
 
@@ -196,7 +175,6 @@ sub create_method
     my ($class, $parser) = @_;
     return sub {
 	my $self = shift;
-	$log->("Calling parser on <$_[0]>");
 	$self->$parser(@_) || $self->on_fail( $_[0] );
     }
 }
@@ -244,11 +222,9 @@ sub create_multiple_parsers
 	# Preprocess and potentially fill %p
 	if ($options->{preprocess})
 	{
-	    $log->("Calling preprocessor on <$date>");
 	    $date = $options->{preprocess}->(
 		input => $date, parsed => \%p, %param
 	    );
-	    $log_parse->("Master preprocess results <$date>", \%p );
 	}
 
 	# Find length parser
@@ -259,7 +235,6 @@ sub create_multiple_parsers
 	    if ($parser)
 	    {
 		# Found one, call it with _copy_ of %p
-		$log->("Trying length parse (length = $length) <$date>");
 		my $dt = $parser->( $self, $date, { %p }, @args );
 		return $dt if defined $dt;
 	    }
@@ -267,12 +242,10 @@ sub create_multiple_parsers
 	# Or calls all others, with _copy_ of %p
 	for my $parser (@$others)
 	{
-	    $log->("Trying parse <$date>");
 	    my $dt = $parser->( $self, $date, { %p }, @args );
 	    return $dt if defined $dt;
 	}
 	# Failed, return undef.
-	$log->("No parse");
 	return undef;
     };
 }
@@ -331,141 +304,13 @@ Create the single parser. Delegation stops here!
 sub create_single_parser
 {
     my $class = shift;
-    return $_[0] if ref $_[0] eq 'CODE'; # already code
-    @_ = %{ $_[0] } if ref $_[0] eq 'HASH'; # turn hashref into hash
-    my @callbacks = qw( on_match on_fail postprocess preprocess );
-    # ordinary boring sort
-    my %args = validate( @_, {
-	    # How to match
-	    params	=> {
-		type => ARRAYREF, # mapping $1,$2,... to new() args
-	    },
-	    regex	=> {
-		type      => SCALARREF,
-		callbacks => {
-		    'is a regex' => sub { ref(shift) eq 'Regexp' }
-		}
-	    },
-	    length	=> {
-		type      => SCALAR,
-		optional  => 1,
-		callbacks => {
-		    'is an int' => sub { $_[0] !~ /\D/ }
-		}
-	    },
-	    # How to create
-	    extra	=> {
-		type => HASHREF,
-		default => { },
-	    },
-
-	    # Stuff used by callbacks
-	    label	=> { type => SCALAR,	optional => 1 },
-	    ( map { $_ => { type => CODEREF, optional => 1 } } @callbacks ),
-	}
-    );
-
-    # Determine variables for ease of reference.
-    my $callback = (exists $args{on_match}
-	    or exists $args{on_fail}) ? 1 : undef;
-    my $label = exists $args{label} ? $args{label} : undef;
-    for (@callbacks)
-    {
-	$args{$_} = $class->merge_callbacks( $args{$_} ) if $args{$_};
-    }
-
-    # Create our parser
-    return sub {
-	my ($self, $date, $p, @args) = @_;
-	my %p;
-	%p = %$p if $p; # Look! A copy!
-
-	my %param = (
-	    self => $self,
-	    ( defined $label ? ( label => $label ) : ()),
-	    (@args ? (args => \@args) : ()),
-	);
-
-	# Preprocess - can modify $date and fill %p
-	if ($args{preprocess})
-	{
-	    $log->("Single preprocess <$date>");
-	    $date = $args{preprocess}->( input => $date, parsed => \%p, %param );
-	    $log_parse->("Preprocess results <$date>", \%p );
-	}
-
-	# Do the match!
-	my @matches = $date =~ $args{regex};
-
-	# Funky callback thing
-	if ($callback)
-	{
-	    my $type = @matches ? "on_match" : "on_fail";
-	    $log->("Calling $type callback <$date>");
-	    $args{$type}->( input => $date, %param ) if $args{$type};
-	}
-	return undef unless @matches;
-
-	# Fill %p from match
-	@p{ @{ $args{params} } } = @matches;
-	$log_parse->("Match gave us", \%p);
-
-	# Allow post processing. Return undef if regarded as failure
-	if ($args{postprocess})
-	{
-	    my $rv = $args{postprocess}->(
-		parsed => \%p,
-		input => $date,
-		%param,
-	    );
-	    $log_parse->("Postprocess of <$date> gave us", \%p);
-	    return undef unless $rv;
-	}
-
-	# A successful match!
-	$log->("Good parse");
-	return DateTime->new( %p, %{ $args{extra} } );
-    };
+    DateTime::Format::Builder::Parser->create_parser( @_ );
 }
-
-=pod
-
-Produce either undef or a single coderef from either undef,
-an empty array, a single coderef or an array of coderefs
-
-=cut
 
 sub merge_callbacks
 {
-    my $self = shift;
-
-    return undef unless @_; # No arguments
-    return undef unless $_[0]; # Irrelevant argument
-    my @callbacks = @_;
-    if (@_ == 1)
-    {
-	return $_[0] if ref $_[0] eq 'CODE';
-	@callbacks = @{ $_[0] } if ref $_[0] eq 'ARRAY';
-    }
-    return undef unless @callbacks;
-
-    for (@callbacks)
-    {
-	croak "All callbacks must be coderefs!" unless ref $_ eq 'CODE';
-    }
-
-    return sub {
-	my $rv;
-	my %args = @_;
-	for my $cb (@callbacks)
-	{
-	    $rv = $cb->( %args );
-	    return $rv unless $rv;
-	    # Ugh. Symbiotic. All but postprocessor return the date.
-	    $args{input} = $rv unless $args{parsed};
-	}
-	$rv;
-    };
+    my $class = shift;
+    DateTime::Format::Builder::Parser->merge_callbacks( @_ );
 }
 
 #
@@ -545,5 +390,7 @@ sub format_datetime
 {
     croak __PACKAGE__."::format_datetime not implemented.";
 }
+
+require DateTime::Format::Builder::Parser;
 
 1;
