@@ -49,6 +49,8 @@ my @callbacks = qw( on_match on_fail postprocess preprocess );
 =head3 Common parameters
 
 These parameters appear for all parser implementations.
+These are primarily documented in
+L<the main docs|DateTime::Format::Builder/"SINGLE SPECIFICATIONS">.
 
 =over 4
 
@@ -74,7 +76,10 @@ B<label>
 
 =item *
 
-B<length>
+B<length> may be a number or an arrayref of numbers
+indicating the length of the input. This lets us optimise in
+the case of static length input. If supplying an arrayref of
+numbers, please keep the number of numbers to a minimum.
 
 =back
 
@@ -83,10 +88,11 @@ B<length>
     my %params = (
 	common => {
 	    length	=> {
-		type      => SCALAR,
+		type      => SCALAR|ARRAYREF,
 		optional  => 1,
 		callbacks => {
-		    'is an int' => sub { $_[0] !~ /\D/ }
+		    'is an int' => sub { ref $_[0] ? 1 : $_[0] !~ /\D/ },
+		    'not empty' => sub { ref $_[0] ? @{$_[0]} >= 1 : 1 },
 		}
 	    },
 
@@ -395,7 +401,14 @@ sub sort_parsers
 	{
 	    if (exists $spec->{length})
 	    {
-		push @{ $lengths{$spec->{length}} }, $class->create_single_parser( %$spec );
+		my $code = $class->create_single_parser( %$spec );
+		my @lengths = ref $spec->{length}
+		    ? @{ $spec->{length} }
+		    : ( $spec->{length} );
+		for my $length ( @lengths )
+		{
+		    push @{ $lengths{$length} }, $code;
+		}
 	    }
 	    else
 	    {
@@ -644,6 +657,7 @@ L<perl>, L<DateTime>, L<DateTime::Format::Builder>.
 L<Params::Validate>.
 
 L<DateTime::Format::Builder::Parser::generic>,
+L<DateTime::Format::Builder::Parser::Dispatch>,
 L<DateTime::Format::Builder::Parser::Regex>,
 L<DateTime::Format::Builder::Parser::Strptime>.
 

@@ -2,7 +2,7 @@
 use strict;
 use lib 'inc';
 use blib;
-use Test::More tests => 8;
+use Test::More tests => 15;
 use vars qw( $class );
 
 BEGIN {
@@ -53,4 +53,47 @@ BEGIN {
 	    is( $which, $length, "Used length parser $length" );
 	}
     }
+}
+
+# Test single parser having multiple lengths
+{
+    my $which = 0;
+    my @parsers = (
+	{
+	    length     => 4,
+	    regex      => qr/bar/,
+	    params     => [],
+	    preprocess => sub { $which = 4 }
+	},
+	{
+	    length     => 5,
+	    regex      => qr/bar/,
+	    params     => [],
+	    preprocess => sub { $which = 5 }
+	},
+	{
+	    length => [qw( 4 5 )],
+	    regex  => qr/(-?\d\d\d\d)/,
+	    params => [qw( year )],
+	}
+    );
+
+    my $parser = $class->parser( @parsers );
+    isa_ok( $parser => $class );
+
+    my %data = (
+	4 => 2003,
+	5 => -2003,
+    );
+
+    for my $length (sort keys %data)
+    {
+	my $year = $data{$length};
+	my $dt = $parser->parse_datetime( $year );
+	isa_ok( $dt => 'DateTime' );
+	is( $length, $which, "Parser length $length for $year" );
+	is( $dt->year, $year, "Year $year matches" );
+    }
+
+
 }
