@@ -42,13 +42,32 @@ C<year> or C<time_zone> to defaults:
 
     extra => { year => 2004, time_zone => "Australia/Sydney" },
 
+=item *
+
+B<constructor> is either an arrayref or a coderef. If an arrayref
+then the first element is a class name or object, and the second
+element is a method name (or coderef since Perl allows that sort of
+thing).  The arguments to the call are anything in C<$p> and
+anything given in the C<extra> option above.
+
+If only a coderef is supplied, then it is called with arguments of
+C<$self>, C<$p> and C<extra>.
+
+In short:
+
+            $self->$coderef( %$p, %{ $self->{extra} } );
+
+The method is expected to return a valid L<DateTime> object,
+or undef in event of failure, but can conceivably return anything
+it likes. So long as it's 'true'.
+
 =back
 
 =cut
 
 use strict;
 use vars qw( $VERSION @ISA );
-use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF );
+use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF CODEREF );
 
 $VERSION = '0.74';
 use DateTime::Format::Builder::Parser::generic;
@@ -69,6 +88,15 @@ __PACKAGE__->valid_params(
     extra	=> {
 	type => HASHREF,
 	optional => 1,
+    },
+    constructor => {
+	type => CODEREF|ARRAYREF,
+	optional => 1,
+	callbacks => {
+	    'array has 2 elements' => sub {
+	        ref($_[0]) eq 'ARRAY' ? (@{$_[0]} == 2) : 1
+	    }
+	}
     },
 );
 
@@ -92,7 +120,20 @@ sub post_match
 sub make {
     my $self = shift;
     my ( $date, $dt, $p ) = @_;
-    DateTime->new( %$p, %{ $self->{extra} } );
+    my @args = ( %$p, %{ $self->{extra} } );
+    if (my $cons = $self->{constructor})
+    {
+	if (ref $cons eq 'ARRAY') {
+	    my ($class, $method) = @$cons;
+	    return $class->$method(@args);
+	} elsif (ref $cons eq 'CODE') {
+	    return $self->$cons( @args );
+	}
+    }
+    else
+    {
+	return DateTime->new(@args);
+    }
 }
 
 sub create_parser
