@@ -86,6 +86,12 @@ sub create_class
 
 }
 
+sub import
+{
+    my $class = shift;
+    $class->create_class( @_, class => (caller)[0] ) if @_;
+}
+
 sub create_parser
 {
     my $class = shift;

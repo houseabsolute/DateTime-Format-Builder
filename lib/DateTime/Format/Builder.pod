@@ -126,6 +126,30 @@ list:
     },
 
 
+=head2 import
+
+This is provided to save time. It lets you do:
+
+    package DateTime::Format::Brief;
+    use DateTime::Format::Builder
+    (
+        parsers => {
+            parse_datetime => [
+            {
+                regex => qr/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+                params => [qw( year month day hour minute second )],
+            },
+            {
+                regex => qr/^(\d{4})(\d\d)(\d\d)$/,
+                params => [qw( year month day )],
+            },
+            ],
+        }
+    );
+
+Thus it obviates part of the standard call style. However, anything it
+uses in its parameters must be declared and defined at compile time.
+
 =head1 CLASS METHODS
 
 These methods work on either our objects or as class methods.
