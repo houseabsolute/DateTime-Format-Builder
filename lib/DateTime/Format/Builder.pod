@@ -199,6 +199,17 @@ This argument is required.
 
 =item *
 
+C<length> is an optional parameter that can be used to specify that
+this particular C<regex> is only applicable to strings of a certain
+fixed length.  Our inefficient ical parser in the previous example
+could be made more efficient by specifying the length for each
+C<regex>.
+
+For obvious reasons, you cannot specify the same C<length> twice for
+one parser.
+
+=item *
+
 C<extra> is a hashref that lists what any extra arguments should be set to.
 You can use it to specify  parameters to C<< DateTime->new() >>,
 such as C<time_zone>.
@@ -304,8 +315,8 @@ like this:
         return $date;
     };
 
-Any length calculations (for length parsers) are done after this
-preprocessing.
+Any length calculations (for length-specific parsers) are done after
+this preprocessing.
 
 =head1 OBJECT METHODS
 
