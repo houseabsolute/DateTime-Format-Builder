@@ -1,0 +1,922 @@
+=head1 NAME
+
+DateTime::Format::Builder - create DateTime parser objects.
+
+=head1 SYNOPSIS
+
+    package DateTime::Format::Brief;
+    our $VERSION = '0.07';
+    use DateTime::Format::Builder
+    (
+        parsers => {
+            parse_datetime => [
+            {
+                regex => qr/^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+                params => [qw( year month day hour minute second )],
+            },
+            {
+                regex => qr/^(\d{4})(\d\d)(\d\d)$/,
+                params => [qw( year month day )],
+            },
+            ],
+        }
+    );
+
+=head1 DESCRIPTION
+
+DateTime::Format::Builder creates DateTime parsers.
+Many string formats of dates and times are simple and just
+require a basic regular expression to extract the relevant
+information. Builder provides a simple way to do this
+without writing reams of structural code.
+
+Builder provides a number of methods, most of which you'll
+never need, or at least rarely need. They're provided more
+for exposing of the module's innards to any subclasses, or
+for when you need to do something slightly beyond what I
+expected.
+
+=head1 CREATING A CLASS
+
+As most people who are writing modules know, you start a
+package with a package declaration and some indication of
+module version:
+
+    package DateTime::Format::ICal;
+    our $VERSION = '0.04';
+
+After that, you call Builder with some options. Currently,
+only I<parsers> is valid. 
+
+    use DateTime::Format::Builder
+    (
+        parsers => {
+	...
+	}
+    );
+
+The I<parsers> option takes a reference to a hash of method
+names and specifications:
+
+        parsers => {
+	    parse_datetime => ... ,
+	    parse_datetime_with_timezone => ... ,
+	    ...
+	}
+
+Builder will create methods in your class, each method being
+a parser that follows the given specifications. It is
+B<strongly> recommended that one method is called
+I<parse_datetime>, be it a Builder created method or one of
+your own.
+
+In addition to creating any of the parser methods it also
+creates a C<new()> method that can instantiate (or clone)
+objects of this class.
+
+Each value corresponding to a method name in the parsers
+list is either a single specification, or a list of
+specifications. We'll start with the simple case.
+
+        parse_briefdate => {
+	    params => [ qw( year month day ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
+	},
+
+This will result in a method named I<parse_briefdate> which
+will take strings in the form C<20040716> and return
+DateTime objects representing that date. A user of the class
+might write:
+
+    use DateTime::Format::ICal;
+    my $date = "19790716";
+    my $dt = DateTime::Format::ICal->parse_briefdate( $date );
+    print "My birth month is ", $dt->month_name, "\n";
+
+The C<regex> is applied to the input string, and if it
+matches, then C<$1>, C<$2>, ... are mapped to the I<params>
+given and handed to C<< DateTime->new() >>. Essentially:
+
+    my $rv = DateTime->new( year => $1, month => $2, day => $3 );
+
+There are more complicated things one can do within a single
+specification, but we'll cover those later.
+
+Often, you'll want a method to be able to take one string,
+and run it against multiple parser specifications. It would
+be very irritating if the user had to work out what format
+the datetime string was in and then which method was most
+appropriate.
+
+So, Builder lets you specify multiple specifications:
+
+    parse_datetime => [
+	{
+	    params => [ qw( year month day hour minute second ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+	},
+	{
+	    params => [ qw( year month day hour minute ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)$/,
+	},
+	{
+	    params => [ qw( year month day hour ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)$/,
+	},
+	{
+	    params => [ qw( year month day ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
+	},
+    ],
+
+It's an arrayref of specifications. A parser will be created
+that will try each of these specifications sequentially, in
+the order you specified.
+
+There's a flaw with this though. In this example, we're
+building a parser for ICal datetimes. One can place a
+timezone id at the start of an ICal datetime. You might
+extract such an id with the following code:
+
+    if ( $date =~ s/^TZID=([^:]+):// )
+    {
+	$time_zone = $1;
+    }
+    # Z at end means UTC
+    elsif ( $date =~ s/Z$// )
+    {
+	$time_zone = 'UTC';
+    }
+    else
+    {
+	$time_zone = 'floating';
+    }
+
+C<$date> would end up without the id, and C<$time_zone> would
+contain something appropriate to give to DateTime's
+I<set_time_zone> method, or I<time_zone> argument.
+
+But how to get this scrap of code into your parser? You
+might be tempted to call the parser something else and build
+a small wrapper. There's no need though because an option is
+provided for preprocesing dates:
+
+    parse_datetime => [
+        [ preprocess => \&_parse_tz ], # Only changed line!
+	{
+	    params => [ qw( year month day hour minute second ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+	},
+	{
+	    params => [ qw( year month day hour minute ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)$/,
+	},
+	{
+	    params => [ qw( year month day hour ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)$/,
+	},
+	{
+	    params => [ qw( year month day ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
+	},
+    ],
+
+It will necessitate I<_parse_tz> to be written, and that
+routine looks like this:
+
+    sub _parse_tz
+    {
+	my %args = @_;
+	my ($date, $p) = @args{qw( input parsed )};
+	if ( $date =~ s/^TZID=([^:]+):// )
+	{
+	    $p->{time_zone} = $1;
+	}
+	# Z at end means UTC
+	elsif ( $date =~ s/Z$// )
+	{
+	    $p->{time_zone} = 'UTC';
+	}
+	else
+	{
+	    $p->{time_zone} = 'floating';
+	}
+	return $date;
+    }
+
+On input it is given a hash containing two items: the input
+date and a hashref that will be used in the parsing. The
+return value from the routine is what the parser
+specifications will run against, and anything in the
+I<parsed> hash (C<$p> in the example) will be put in the
+call to C<< DateTime->new(...) >>.
+
+So, we now have a happily working ICal parser. It parses the
+assorted formats, and can also handle timezones. Is there
+anything else it needs to do? No. But we can make it work
+more efficiently.
+
+At present, the specifications are tested sequentially.
+However, each one applies to strings of particular lengths.
+Thus we could be efficient and have the parser only test the
+given strings against a parser that handles that string
+length. Again, Builder makes it easy:
+
+    parse_datetime => [
+	[ preprocess => \&_parse_tz ],
+	{
+	    length => 15, # We handle strings of exactly 15 chars
+	    params => [ qw( year month day hour minute second ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+	},
+	{
+	    length => 13, # exactly 13 chars...
+	    params => [ qw( year month day hour minute ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)$/,
+	},
+	{
+	    length => 11, # 11..
+	    params => [ qw( year month day hour ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)$/,
+	},
+	{
+	    length => 8, # yes.
+	    params => [ qw( year month day ) ],
+	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
+	},
+	],
+
+Now the created parser will create a parser that only runs
+specifications against appropriate strings.
+
+So our complete code looks like:
+
+    package DateTime::Format::ICal;
+    use strict;
+    our $VERSION = '0.04';
+
+    use DateTime::Format::Builder
+    (
+	parsers => {
+	    parse_datetime => [
+	    [ preprocess => \&_parse_tz ],
+	    {
+		length => 15,
+		params => [ qw( year month day hour minute second ) ],
+		regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+	    },
+	    {
+		length => 13,
+		params => [ qw( year month day hour minute ) ],
+		regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)$/,
+	    },
+	    {
+		length => 11,
+		params => [ qw( year month day hour ) ],
+		regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)$/,
+	    },
+	    {
+		length => 8,
+		params => [ qw( year month day ) ],
+		regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
+	    },
+	    ],
+	},
+    );
+
+    sub _parse_tz
+    {
+	my %args = @_;
+	my ($date, $p) = @args{qw( input parsed )};
+	if ( $date =~ s/^TZID=([^:]+):// )
+	{
+	    $p->{time_zone} = $1;
+	}
+	# Z at end means UTC
+	elsif ( $date =~ s/Z$// )
+	{
+	    $p->{time_zone} = 'UTC';
+	}
+	else
+	{
+	    $p->{time_zone} = 'floating';
+	}
+	return $date;
+    }
+
+And that's an ICal parser. The actual
+L<DateTime::Format::ICal> module also includes formatting
+methods and parsing for durations, but Builder doesn't
+support those yet. A drop in replacement (at the time of
+writing the replacement) can be found in the F<examples>
+directory of the Builder distribution, along with similar
+variants of other common modules.
+
+=head1 ERROR HANDLING AND BAD PARSES
+
+Often, I will speak of C<undef> being returned, however
+that's not strictly true.
+
+When a simple single specification is given for a method,
+the method isn't given a single parser directly. It's given
+a wrapper that will call C<die()> if the single parser
+returns C<undef>. The single parser must return C<undef> so
+that a multiple parser can work nicely and actual errors can
+be thrown from any of the callbacks.
+
+Similarly, any multiple parsers will only throw an error
+right at the end when it's tried all it could.
+
+That said, don't throw real errors from callbacks in
+multiple parser specifications unless you really want
+parsing to stop right there and not try any other parsers.
+
+In summary: calling a B<method> will result in either a
+C<DateTime> object being returned or an error being thrown.
+
+Individual B<parsers> (be they multiple parsers or single
+parsers) will return either the C<DateTime> object or
+C<undef>.
+
+=head1 SINGLE SPECIFICATIONS
+
+A single specification can take the following keys and
+values:
+
+=over 4
+
+=item *
+
+B<regex> is a regular expression that should capture
+elements of the datetime string.
+This is a required element.
+
+=item *
+
+B<params> is an arrayref of key names. The captures from the
+regex are mapped to these (C<$1> to the first element, C<$2>
+to the second, and so on) and handed to
+C<< DateTime->new() >>.
+This is a required element.
+
+=item *
+
+B<extra> is a hashref of extra arguments you wish to give to
+C<< DateTime->new() >>. For example, you could set the
+C<year> or C<time_zone> to defaults:
+
+    extra => { year => 2004, time_zone => "Australia/Sydney" },
+
+=item *
+
+B<length> is an optional parameter that can be used to
+specify that this particular I<regex> is only applicable to
+strings of a certain fixed length. This can be used to make
+parsers more efficient. It's strongly recommended that any
+parser that can use this parameter does.
+
+Due to the implementation, you cannot specify the same
+I<length> twice for one parser. This will be made possible
+if anyone finds a need for it, or submits a patch.
+
+If any specifications without I<length>s are given and the
+particular I<length> parser fails, then the non-I<length>
+parsers are tried.
+
+This parameter is ignored unless the specification is part
+of a multiple parser specification.
+
+=item *
+
+B<label> provides a name for the specification and is passed
+to some of the callbacks about to mentioned.
+
+=item *
+
+B<on_match> and B<on_fail> are callbacks. Both routines will
+be called with parameters of:
+
+=over 4
+
+=item *
+
+B<input>, being the input to the parser (after any
+preprocessing callbacks).
+
+=item *
+
+B<label>, being the label of the parser, if there is one.
+
+=back
+
+These routines will be called depending on whether the
+B<regex> match succeeded or failed.
+
+=item *
+
+B<preprocess> is a callback provided for cleaning up input
+prior to parsing. It's given a hash as arguments with two
+keys:
+
+=over 4
+
+=item *
+
+B<input> being the datetime string the parser was given (if
+using multiple specifications and an overall I<preprocess>
+then this is the date after it's been through that
+preprocessor).
+
+=item *
+
+B<parsed> being the state of parsing so far. Usually empty
+at this point unless an overall I<preprocess> was given.
+Items may be placed in it and will be given to any
+B<postprocess>or and C<< DateTime->new >> (unless the
+postprocessor deletes it).
+
+=back
+
+The return value from the routine is what is given to the
+I<regex>. Note that this is last code stop before the match.
+
+B<Note>: mixing I<length> and a I<preprocess> that modifies
+the length of the input string is probably not what you
+meant to do. You probably meant to use the
+I<multiple parser> variant of I<preprocess> which is done
+B<before> any length calculations. This C<single parser> variant
+of I<preprocess> is performed B<after> any length
+calculations.
+
+=item *
+
+B<postprocess> is the last code stop before
+C<< DateTime->new() >> is called. It's given the same
+arguments as I<preprocess>. This allows it to modify the
+parsed parameters after the parse and before the creation
+of the object. For example, you might use:
+
+    {
+        regex  => qr/^(\d\d) (\d\d) (\d\d)$/,
+	params => [qw( year  month  day   )],
+	postprocess => \&_fix_year,
+    }
+
+where C<_fix_year> is defined as:
+
+    sub _fix_year
+    {
+        my %args = @_;
+	my ($date, $p) = @args{qw( input parsed )};
+	$p->{year} += $p->{year} > 69 ? 1900 : 2000;
+	return 1;
+    }
+
+This will cause the two digit years to be corrected
+according to the cut off. If the year was '69' or lower,
+then it is made into 2069 (or 2045, or whatever the year was
+parsed as). Otherwise it is assumed to be 19xx. The
+L<DateTime::Format::Mail> module uses code similar to this
+(only it allows the cut off to be configured and it doesn't
+use Builder).
+
+B<Note>: It is B<very important> to return an explicit value
+from the I<postprocess> callback. If the return value is
+false then the parse is taken to have failed. If the return
+value is true, then the parse is taken to have succeeded and
+C<< DateTime->new() >> is called.
+
+=back
+
+=head2 Subroutines / coderefs as specifications.
+
+A single parser specification can be a coderef. This was
+added mostly because it could be and because I knew someone,
+somewhere, would want to use it.
+
+If the specification is a reference to a piece of code, be
+it a subroutine, anonymous, or whatever, then it's passed
+more or less straight through. The code should return
+C<undef> in event of failure (or any false value,
+but C<undef> is strongly preferred), or a true value in the
+event of success (ideally a C<DateTime> object or some
+object that has the same interface).
+
+This all said, I generally wouldn't recommend using this
+feature unless you have to.
+
+=head1 MULTIPLE SPECIFICATIONS
+
+These are very easily described as an array of single
+specifications.
+
+Note that if the first element of the array is an arrayref,
+then you're specifying options.
+
+At present, only one option is available:
+
+=over 4
+
+=item *
+
+B<preprocess> lets you specify a preprocessor that is called
+before any of the parsers are tried. This lets you do things
+like strip off timezones or any unnecessary data. The most
+common use people have for it at present is to get the input
+date to a particular length so that the I<length> is usable
+(L<DateTime::Format::ICal> would use it to strip off the
+variable length timezone).
+
+Arguments are as for the I<single parser> I<preprocess>
+variant.
+
+=back
+
+=head1 EXECUTION FLOW
+
+Builder allows you to plug in a fair few callbacks, which
+can make following how a parse failed (or succeeded
+unexpectedly) somewhat tricky.
+
+=head2 For Single Specifications
+
+A single specification will do the following:
+
+User calls parser:
+
+       my $dt = $class->parse_datetime( $string );
+
+=over 4
+
+=item 1
+
+I<preprocess> is called. It's given C<$string> and a
+reference to the parsing workspace hash, which we'll call
+C<$p>. At this point, C<$p> is empty. The return value is
+used as C<$date> for the rest of this single parser.
+Anything put in C<$p> is also used for the rest of this
+single parser.
+
+=item 2
+
+I<regex> is applied.
+
+=item 3
+
+If I<regex> B<did not> match, then I<on_fail> is called (and is given
+C<$date> and also I<label> if it was defined). Any return
+value is ignored and the next thing is for the single
+parser to return C<undef>.
+
+If I<regex> B<did> match, then I<on_match> is called with
+the same arguments as would be given to I<on_fail>. The
+return value is similarly ignored, but we then move to step
+4 rather than exiting the parser.
+
+=item 4
+
+I<postprocess> is called with C<$date> and a filled out
+C<$p>. The return value is taken as a indication of whether
+the parse was a success or not. If it wasn't a success then
+the single parser will exit at this point, returning undef.
+
+=item 5
+
+C<< DateTime->new() >> is called and the user is given the
+resultant C<DateTime> object.
+
+=back
+
+See the section on L<error handling|/"ERROR HANDLING AND BAD PARSES">
+regarding the C<undef>s mentioned above.
+
+=head2 For Multiple Specifications
+
+With multiple specifications:
+
+User calls parser:
+
+      my $dt = $class->complex_parse( $string );
+
+=over 4
+
+=item 1
+
+The overall I<preprocess>or is called and is given C<$string>
+and the hashref C<$p> (identically to the per parser
+I<preprocess> mentioned in the previous flow). 
+
+If the callback modifies C<$p> then a B<copy> of C<$p> is
+given to each of the individual parsers.  This is so parsers
+won't accidentally pollute each other's workspace.
+
+=item 2
+
+If an appropriate length specific parser is found, then it
+is called and the single parser flow (see the previous
+section) is followed, and the parser is given a copy of
+C<$p> and the return value of the overall I<preprocess>or as
+C<$date>.
+
+If a C<DateTime> object was returned so we go straight back
+to the user.
+
+If no appropriate parser was found, or the parser returned
+C<undef>, then we progress to step 3!
+
+=item 3
+
+Any non-I<length> based parsers are tried in the order they
+were specified.
+
+For each of those the single specification flow above is
+performed, and is given a copy of the output from the
+overall preprocessor.
+
+If a real C<DateTime> object is returned then we exit back
+to the user.
+
+If no parser could parse, then an error is thrown.
+
+=back
+
+See the section on L<error handling|/ERROR HANDLING AND BAD PARSES>
+regarding the C<undef>s mentioned above.
+
+=head1 METHODS
+
+In the general course of things you won't need any of the
+methods. Life often throws unexpected things at us so the
+methods are all available for use.
+
+=head2 create_class
+
+This method can be used as the runtime equivalent of
+C<import()>. That is, it takes the exact same parameters as
+when one does:
+
+   use DateTime::Format::Builder ( blah blah blah )
+
+That can be (almost) equivalently written as:
+
+   use DateTime::Format::Builder;
+   DateTime::Format::Builder->create_class( blah blah blah );
+
+The difference being that the first is done at compile time
+while the second is done at run time.
+
+In the tutorial I said there was only one parameter at
+present. I lied. There are actually three of them.
+
+=over 4
+
+=item *
+
+B<parsers> takes a hashref of methods and their parser
+specifications. See the
+L<tutorial above|/"CREATING A CLASS"> for details.
+
+=item *
+
+B<class> is optional and specifies the name of the class in
+which to create the specified methods.
+
+If using this method in the guise of C<import()> then this
+field is overridden so it is only of use when calling as
+C<create_class()>.
+
+=item *
+
+B<version> is also optional and specifies the value to give
+C<$VERSION> in the class. It's generally not recommended
+unless you're combining with the I<class> option. A
+C<ExtUtils::MakeMaker> / C<CPAN> compliant version
+specification is much better.
+
+=back
+
+In addition to creating any of the methods it also creates a
+C<new()> method that can instantiate (or clone) objects.
+
+=head2 create_parser
+
+C<create_class()> is mostly a wrapper around
+C<create_parser()> that does loops and stuff and calls
+C<create_parser()> to create the actual parsers.
+
+C<create_parser()> takes the parser specifications (be they
+single specifications or multiple specifications) and
+returns an anonymous coderef that is suitable for use as a
+method. The coderef will call C<croak()> in the event of
+being unable to parse the single string it expects as input.
+
+The simplest input is that of a single specification,
+presented just as a plain hash, not a hashref. This is
+passed directly to C<create_single_parser()> with the return
+value from that being wrapped in a function that lets it
+C<croak()> on failure, with that wrapper being returned.
+
+If the first argument to C<create_parser()> is an arrayref,
+then that is taken to be an options block (as per the
+multiple parser specification documented earlier).
+
+Any further arguments should be either hashrefs or coderefs.
+If the first argument after the optional arrayref is not a
+hashref or coderef then that argument and all remaining
+arguments are passed off to C<create_single_parser()>
+directly. If the first argument is a hashref or coderef,
+then it and the remaining arguments are passed to
+C<create_multiple_parsers()>.
+
+The resultant coderef from calling either of the creation
+methods is then wrapped in a function that calls C<croak()>
+in event of failure or the C<DateTime> object in event of
+success.
+
+=head2 create_multiple_parsers
+
+Given the options block (as made from C<create_parser()>)
+and a list of single parser specifications, this returns a
+coderef that returns either the resultant C<DateTime> object
+or C<undef>.
+
+It first sorts the specifications using C<sort_parsers()>
+and then creates the function based on what that returned.
+
+=head2 sort_parsers
+
+This takes the list of specifications and sorts them while
+turning the specifications into parsers. It returns two
+values: the first is a hashref containing all the length
+based parsers. The second is an array containing all the
+other parsers.
+
+If any of the specs are not code or hash references, then it
+will call C<croak()>.
+
+Code references are put directly into the 'other' array. Any
+hash references without I<length> keys are run through
+C<create_single_parser()> and the resultant parser is placed
+in the 'other' array.
+
+Hash references B<with> I<length> keys are run through
+C<create_single_parser()>, but the resultant parser is used
+as the value in the length hashref with the length being the
+key. If two or more parsers have the same I<length>
+specified then an error is thrown.
+
+=head2 create_single_parser
+
+This takes a single specification and returns a coderef that
+is a parser that suits that specification. This is the end
+of the line for all the parser creation methods. It
+delegates no further.
+
+If a coderef is specified, then that coderef is immediately
+returned (it is assumed to be appropriate).
+
+The single specification (if not a coderef) can be either a
+hashref or a hash. The keys and values must be as per the
+L<specification|/"SINGLE SPECIFICATIONS">.
+
+The returned parser will return either a C<DateTime> object
+or C<undef>.
+
+=head1 USING BUILDER OBJECTS aka USERS USING BUILDER
+
+The methods listed in the L<METHODS> section are all you
+generally need when creating your own class. Sometimes
+you may not want a full blown class to parse something just
+for this one program. Some methods are provided to make that
+task easier.
+
+=head2 new
+
+The basic constructor. It takes no arguments, merely returns
+a new C<DateTime::Format::Builder> object.
+
+    my $parser = DateTime::Format::Builder->new();
+
+If called as a method on an object (rather than as a class
+method), then it clones the object.
+
+    my $clone = $parser->new();
+
+=head2 clone
+
+Provided for those who prefer an explicit C<clone()> method
+rather than using C<new()> as an object method.
+
+    my $clone_of_clone = $clone->clone();
+
+=head2 parser
+
+Given either a single or multiple parser specification, sets
+the object to have a parser based on that specification.
+
+    $parser->parser(
+	regex  => qr/^ (\d{4}) (\d\d) (\d\d) $/x;
+	params => [qw( year    month  day    )],
+    );
+
+The arguments given to C<parser()> are handed directly to
+C<create_parser()>. The resultant parser is passed to
+C<set_parser()>.
+
+If called as an object method, it returns the object.
+
+If called as a class method, it creates a new object, sets
+its parser and returns that object.
+
+=head2 set_parser
+
+Sets the parser of the object to the given parser.
+
+   $parser->set_parser( $coderef );
+
+Note: this method does not take specifications. It also does
+not take anything except coderefs. Luckily, coderefs are
+what most of the other methods produce.
+
+The method return value is the object itself.
+
+=head2 get_parser
+
+Returns the parser the object is using.
+
+   my $code = $parser->get_parser();
+
+=head2 parse_datetime
+
+Given a string, it calls the parser and returns the
+C<DateTime> object that results.
+
+   my $dt = $parser->parse_datetime( "1979 07 16" );
+
+The return value, if not a C<DateTime> object, is whatever
+the parser wants to return. Generally this means that if the
+parse failed an error will be thrown.
+
+=head2 format_datetime
+
+If you call this function, it will throw an errror.
+
+=head1 LONGER EXAMPLES
+
+Some longer examples are provided in the distribution. These
+implement some of the common parsing DateTime modules using
+Builder. Each of them are, or were, drop in replacements for
+the modules at the time of writing them.
+
+=head1 THANKS
+
+Dave Rolsky (DROLSKY) for kickstarting the DateTime project,
+writing L<DateTime::Format::ICal> and
+L<DateTime::Format::MySQL>, and some much needed review.
+
+Joshua Hoblitt (JHOBLITT) for the concept, some of the API,
+and more much needed review.
+
+Kellan Elliott-McCrea (KELLAN) for even more review,
+suggestions, L<DateTime::Format::W3CDTF> and the encouragement to
+rewrite these docs almost 100%!
+
+Simon Cozens (SIMON) for saying it was cool.
+
+=head1 SUPPORT
+
+Support for this module is provided via the datetime@perl.org email
+list. See http://lists.perl.org/ for more details.
+
+Alternatively, log them via the CPAN RT system via the web or email:
+
+    http://perl.dellah.org/rt/dtbuilder
+    bug-datetime-format-builder@rt.cpan.org
+
+This makes it much easier for me to track things and thus means
+your problem is less likely to be neglected.
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright E<copy> Iain Truskett, 2003. All rights reserved.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+The full text of the licenses can be found in the F<Artistic> and
+F<COPYING> files included with this module.
+
+=head1 AUTHOR
+
+Iain Truskett <spoon@cpan.org>
+
+=head1 SEE ALSO
+
+C<datetime@perl.org> mailing list.
+
+http://datetime.perl.org/
+
+L<perl>, L<DateTime>
+
+=cut
+
