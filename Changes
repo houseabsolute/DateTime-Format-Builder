@@ -1,6 +1,17 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.60
+date:    12 Apr 2003
+changes:
+    - Fixed missing '\' from a few '\d' in the docs.
+    - Added ICal.pm example.
+    - Added import() feature, to save lots of typing.
+    - Completely revised documentation.
+    - croak is same length is given twice.
+    - Assorted refactoring, retouching.
+
+---
 version: 0.25
 date:    29 Mar 2003
 changes:
