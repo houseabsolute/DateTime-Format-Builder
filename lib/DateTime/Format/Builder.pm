@@ -247,7 +247,7 @@ sub create_single_parser
 	    input => $date,
 	);
 
-	return DateTime->new( %p, %{ $args{default} } );
+	return DateTime->new( %p, %{ $args{extra} } );
     };
 }
 
