@@ -43,6 +43,7 @@ t/newclass.t
 t/nocon.t
 t/noredef.t
 t/on_fail.t
+t/on_fail_regex.t
 t/on_fail_sub.t
 t/param.t
 t/quick.t
