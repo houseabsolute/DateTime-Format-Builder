@@ -10,7 +10,7 @@ Note: there is no API documentation in this file. You want F<Builder.pod> instea
 use strict;
 use 5.005;
 use Carp;
-use DateTime 0.07;
+use DateTime 0.12;
 use Params::Validate qw(
     validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
 );
