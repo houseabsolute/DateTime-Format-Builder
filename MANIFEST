@@ -12,8 +12,8 @@ lib/DateTime/Format/Builder.pm
 lib/DateTime/Format/Builder.pod
 LICENSE
 Makefile.PL
-MANIFEST			This list of files
 MANIFEST.SKIP
+MANIFEST			This list of files
 META.yml
 README
 SIGNATURE
@@ -25,7 +25,7 @@ t/create.t
 t/extra.t
 t/import.t
 t/newclass.t
-t/wholeclass.t
 t/nocon.t
-t/verbose.t
 t/noredef.t
+t/verbose.t
+t/wholeclass.t
