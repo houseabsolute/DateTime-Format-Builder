@@ -8,6 +8,8 @@ BEGIN {
     use_ok $class;
 }
 
+my $sample = 'SampleClassWithArgs1';
+
 {
     my $parser = $class->parser( {
 	    params => [ qw( year month day hour minute second ) ],
@@ -25,7 +27,7 @@ BEGIN {
 
 {
     $class->create_class(
-	class	 => 'DateTime::Format::Builder::Test1',
+	class	 => $sample,
 	parsers    => {
 	    parse_datetime => [    
 	    [
@@ -42,23 +44,21 @@ BEGIN {
 	    ],
 	},
     );
-    @DateTime::Format::Builder::Test1::ISA = ($class);
 
-    my $dt = DateTime::Format::Builder::Test1->parse_datetime(
-	"20030716T163245", 'Asia/Singapore' );
+    my $dt = $sample->parse_datetime( "20030716T163245", 'Asia/Singapore' );
     is( $dt->time_zone->name, 'Asia/Singapore' );
 }
 
 {
-
+    $sample++;
     $class->create_class(
-	class	 => 'DateTime::Format::Builder::Test2',
+	class	 => $sample,
 	parsers    => {
 	    parse_datetime => [    
 	    [
 		preprocess =>  sub {
-		    my %p=(@_);
-		    my %o=(@{$p{args}}); 
+		    my %p = @_;
+		    my %o = @{ $p{args} }; 
 		    $p{parsed}->{time_zone} = $o{global} if $o{global};
 		    return $p{input};
 		},
@@ -67,14 +67,14 @@ BEGIN {
 		params => [ qw( year month day hour minute second ) ],
 		regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
 		preprocess =>  sub {
-		    my %p=(@_);
-		    my %o=(@{$p{args}}); 
+		    my %p = @_;
+		    my %o = @{ $p{args} }; 
 		    $p{parsed}->{time_zone} = $o{pre} if $o{pre}; 
 		    return $p{input};
 		},
 		postprocess => sub {
-		    my %p=(@_);
-		    my %o=(@{$p{args}}); 
+		    my %p = @_;
+		    my %o = @{ $p{args} }; 
 		    $p{parsed}->{time_zone} = $o{post} if $o{post}; 
 		    return 1;
 		},
@@ -82,17 +82,16 @@ BEGIN {
 	    ],
 	}
     );
-    @DateTime::Format::Builder::Test2::ISA = ($class);
 
-    my $dt = DateTime::Format::Builder::Test2->parse_datetime(
+    my $dt = $sample->parse_datetime(
 	"20030716T163245", 'global' => 'Africa/Cairo' );
     is( $dt->time_zone->name, 'Africa/Cairo' );
 
-    $dt = DateTime::Format::Builder::Test2->parse_datetime(
+    $dt = $sample->parse_datetime(
 	"20030716T163245", 'pre' => 'Europe/London' );
     is( $dt->time_zone->name, 'Europe/London' );
 
-    $dt = DateTime::Format::Builder::Test2->parse_datetime(
+    $dt = $sample->parse_datetime(
 	"20030716T163245", 'post' => 'Australia/Sydney' );
     is( $dt->time_zone->name, 'Australia/Sydney' );
 }
