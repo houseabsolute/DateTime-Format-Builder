@@ -7,7 +7,8 @@ changes:
     - Fixed erroneous call to on_fail()
     - Added 'verbose' debugging capability.
     - Added 'constructor' option to create_class/import.
-    - Avoid overriding developers own new() functions.
+    - Avoid overwriting developers' own new() functions.
+    - Complain if asked to overwrite methods.
 
 ---
 version: 0.60
