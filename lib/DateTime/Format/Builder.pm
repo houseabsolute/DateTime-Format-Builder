@@ -200,6 +200,14 @@ this if you like.
 sub on_fail
 {
     my ($class, $input) = @_;
+
+    my $pkg;
+    my $i = 0;
+    while (($pkg) = caller($i++)) {
+        last if (!UNIVERSAL::isa($pkg, 'DateTime::Format::Builder') &&
+            !UNIVERSAL::isa($pkg, 'DateTime::Format::Builder::Parser'));
+    }
+    local $Carp::CarpLevel = $i;
     croak "Invalid date format: $input";
 }
 
