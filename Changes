@@ -1,6 +1,13 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.64
+date:    27 Apr 2003
+changes:
+    - Callbacks are given 'args' and 'self' keys.
+    - Callbacks can be arrays of callbacks.
+
+---
 version: 0.62
 date:    20 Apr 2003
 changes:
