@@ -52,12 +52,12 @@ sub create_class
 {
     my $class = shift;
     my %args = validate( @_, {
-	class	=> { type => SCALAR, optional => 1 },
+	class	=> { type => SCALAR, default => (caller)[0] },
 	version => { type => SCALAR, optional => 1 },
 	parsers	=> { type => HASHREF },
     });
 
-    my $target = $args{class} || (caller)[0];
+    my $target = $args{class};
 
     # Create own lovely new package
     {
