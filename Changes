@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.75
+date:    29 Jun 2003
+changes:
+    - Silly MANIFEST.SKIP entry caused dispatch stuff to be skipped.
+
+---
 version: 0.74
 date:    28 Jun 2003
 changes:
