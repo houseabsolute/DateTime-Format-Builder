@@ -313,6 +313,7 @@ sub create_multiple_parsers
     # These are the innards of a multi-parser.
     return sub {
 	my ($self, $date, @args) = @_;
+	return unless defined $date;
 
 	# Parameters common to the callbacks. Pre-prepared.
 	my %param = (

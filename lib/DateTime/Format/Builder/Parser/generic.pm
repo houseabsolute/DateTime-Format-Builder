@@ -78,6 +78,7 @@ sub generic_parser {
     return sub
     {
 	my ($self, $date, $p, @args) = @_;
+	return unless defined $date;
 	my %p;
 	%p = %$p if $p; # Look! A Copy!
 
