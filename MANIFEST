@@ -8,6 +8,7 @@ examples/Fall.pm
 examples/ICal.pm
 examples/MySQL.pm
 examples/Simple.pm
+examples/Tivoli.pm
 examples/W3CDTF.pm
 inc/Module/Install.pm
 inc/Module/Install/Base.pm
@@ -15,12 +16,9 @@ inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Versions/Report.pm
-inc/Test.pm
 inc/Test/Builder.pm
 inc/Test/More.pm
 inc/Test/Signature.pm
-inc/threads.pm
-inc/warnings.pm
 inc/YAML.pm
 inc/YAML/Error.pm
 inc/YAML/Family.pm
@@ -36,7 +34,7 @@ lib/DateTime/Format/Builder/Parser/Quick.pm
 lib/DateTime/Format/Builder/Parser/Regex.pm
 lib/DateTime/Format/Builder/Parser/Strptime.pm
 lib/DateTime/Format/Builder/Tutorial.pod
-LICENSE
+LICENCE
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP

@@ -15,3 +15,5 @@
 ^patch
 \.patch$
 ^log$
+^data\.yaml$
+^blibdirs$

@@ -1,19 +1,16 @@
 DateTime::Format::Builder
 
-
-   Create DateTime parser classes and objects.
-
+    Create DateTime parser classes and objects.
 
 For installation details, see INSTALL.
 
 For usage, see the doco. Either use perldoc or view it
 on the web at:
-    <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
+    <http://search.cpan.org/dist/DateTime-Format-Builder/>
 
-Changes for 0.77 (14 Aug 2003)
-   - Correct package name for Quick.
-   - Augment license conditions.
-   - Fixed timezones in fall.t and quick.t tests.
+Changes for 0.78 (1 Dec 2003)
+   - Fix multigroup bug in Dispatch
+   - Add Tivoli example.
 
 
 For a complete list of changes, see the Changes file.

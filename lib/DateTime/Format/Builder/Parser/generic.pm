@@ -202,7 +202,7 @@ Alternatively, log them via the CPAN RT system via the web or email:
 This makes it much easier for me to track things and thus means
 your problem is less likely to be neglected.
 
-=head1 LICENSE AND COPYRIGHT
+=head1 LICENCE AND COPYRIGHT
 
 Copyright E<copy> Iain Truskett, 2003. All rights reserved.
 
@@ -210,7 +210,7 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.000 or,
 at your option, any later version of Perl 5 you may have available.
 
-The full text of the licenses can be found in the F<Artistic> and
+The full text of the licences can be found in the F<Artistic> and
 F<COPYING> files included with this module, or in L<perlartistic> and
 L<perlgpl> as supplied with Perl 5.8.1 and later.
 

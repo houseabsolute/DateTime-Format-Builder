@@ -2,21 +2,23 @@
 # http://module-build.sourceforge.net/META-spec.html
 distribution_type: module
 name: DateTime-Format-Builder
-date: 14 Aug 2003
+date: 1 Dec 2003
 author: SPOON
-version: 0.77
+version: 0.78
 license: perl
 
 conflicts: {}
 
 build_requires:
+  Module::Versions::Report: 1.02
+  Test::More: 0.47
 recommends:
-  File::Find::Rule: 0.11
-  Test::Pod: 0.95
+  Test::Pod: 1.02
+  Test::Signature: 1.05
 requires:
-  DateTime: 0.1601
-  Params::Validate: 0.65
+  DateTime: 0.18
   DateTime::Format::Strptime: 1.04
+  Params::Validate: 0.70
 
 private:
   directory:
@@ -27,12 +29,15 @@ private:
 provides:
   DateTime::Format::Builder:
     file: lib/DateTime/Format/Builder.pm
-    version: 0.77
+    version: 0.78
   DateTime::Format::Builder::Parser:
     file: lib/DateTime/Format/Builder/Parser.pm
     version: 0.77
   DateTime::Format::Builder::Parser::Dispatch:
     file: lib/DateTime/Format/Builder/Parser/Dispatch.pm
+    version: 0.78
+  DateTime::Format::Builder::Parser::generic:
+    file: lib/DateTime/Format/Builder/Parser/generic.pm
     version: 0.77
   DateTime::Format::Builder::Parser::Quick:
     file: lib/DateTime/Format/Builder/Parser/Quick.pm
@@ -43,9 +48,6 @@ provides:
   DateTime::Format::Builder::Parser::Strptime:
     file: lib/DateTime/Format/Builder/Parser/Strptime.pm
     version: 0.77
-  DateTime::Format::Builder::Parser::generic:
-    file: lib/DateTime/Format/Builder/Parser/generic.pm
-    version: 0.77
 
 dynamic_config: 0
-generated_by: docmaker version 0.91
+generated_by: docmaker version 1.01

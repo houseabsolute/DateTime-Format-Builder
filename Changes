@@ -1,6 +1,13 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.78
+date:    1 Dec 2003
+changes:
+    - Fix multigroup bug in Dispatch
+    - Add Tivoli example.
+
+---
 version: 0.77
 date:    14 Aug 2003
 changes:
