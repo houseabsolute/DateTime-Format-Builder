@@ -1,10 +1,11 @@
-CREDITS FOR DateTime::Format::Builder 0.72
+CREDITS FOR DateTime::Format::Builder 0.73
 
 Dave Rolsky (DROLSKY) for kickstarting the DateTime project,
 writing DateTime::Format::ICal and
 DateTime::Format::MySQL, and some much needed review.
 
 Joshua Hoblitt (JHOBLITT) for the concept, some of the API,
+impetus for writing the multilength code,
 and more much needed review.
 
 Kellan Elliott-McCrea (KELLAN) for even more review,

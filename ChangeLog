@@ -1,7 +1,55 @@
 
 ChangeLog generated directly from CVS logs.
 
-Release Datetime-Format-Builder 0.72:
+Release DateTime-Format-Builder 0.73:
+  - lib/DateTime/Format/Builder/Parser/Regex.pm v1.4
+  - lib/DateTime/Format/Builder.pm v1.23
+  - lib/DateTime/Format/Builder/Parser/Strptime.pm v1.4
+  - lib/DateTime/Format/Builder/Parser/generic.pm v1.4
+  - lib/DateTime/Format/Builder/Parser.pm v1.8
+        - Increment version numbers.
+        (koschei)
+
+  - t/verbose.t v1.3
+  - t/strptime.t v1.4
+  - t/param.t v1.5
+  - t/extra.t v1.4
+  - t/newclass.t v1.3
+  - t/mergecb.t v1.4
+  - t/create.t v1.4
+  - t/self.t v1.4
+  - t/lengths.t v1.2
+  - t/basic.t v1.3
+  - t/noredef.t v1.3
+  - t/wholeclass.t v1.3
+  - t/import.t v1.3
+  - t/nocon.t v1.3
+  - t/clone.t v1.3
+        - Added 'use blib' to fix 5.005_03 problem with relative
+          @INC entries.
+        - > Include Module::Versions::Report for better diagnostics if
+          people have problems.
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.22
+        - Up our DateTime requirement.
+        (koschei)
+
+  - t/lengths.t v1.1
+  - lib/DateTime/Format/Builder.pod v1.22
+  - lib/DateTime/Format/Builder/Parser.pm v1.7
+  - Changes v1.14
+        - Multiple same length parsers accepted.
+        (koschei)
+
+  - lib/DateTime/Format/Builder/Parser/generic.pm v1.3
+  - lib/DateTime/Format/Builder/Parser.pm v1.6
+  - Changes v1.13
+        - Exit parser more quickly if able.
+        (koschei)
+
+
+Release DateTime-Format-Builder 0.72:
   - lib/DateTime/Format/Builder/Parser/Regex.pm v1.3
   - lib/DateTime/Format/Builder.pm v1.21
   - lib/DateTime/Format/Builder/Parser/Strptime.pm v1.3
@@ -212,14 +260,13 @@ Release DateTime-Format-Builder 0.60:
         - Clearing file so diffs aren't weird.
         (koschei)
 
+  - lib/DateTime/Format/Builder.pod v1.9
+- Oh my! It's completely rewritten DateTime::Format::Builder documentation!
+        (koschei)
+
   - lib/DateTime/Format/Builder.pm v1.5
         croak if same length is given twice
         (autarch)
-
-  - lib/DateTime/Format/Builder.pod v1.9
-        - Oh my! It's completely rewritten DateTime::Format::Builder
-          documentation!
-        (koschei)
 
   - lib/DateTime/Format/Builder.pm v1.8
         - Routines organised in order of relevance / importance /
@@ -263,25 +310,9 @@ Release DateTime-Format-Builder 0.25:
         - 0.25
         (koschei)
 
-  - Changes v1.2
-        - DateTime-Format-Builder 0.25
-        (koschei)
-
   - lib/DateTime/Format/Builder.pod v1.2
         don't imply that user should use extra to set things like hour
         to 0, cause that's already the DateTime default
-        (autarch)
-
-  - lib/DateTime/Format/Builder.pm v1.3
-        extra was being ignore. looks like a bug
-        (autarch)
-
-  - lib/DateTime/Format/Builder.pm v1.2
-        stick default in validation spec
-        (autarch)
-
-  - t/extra.t v1.2
-        fix tests and test count
         (autarch)
 
   - t/extra.t v1.1
@@ -290,8 +321,24 @@ Release DateTime-Format-Builder 0.25:
         (autarch)
 
   - lib/DateTime/Format/Builder.pod v1.3
-        - Renders better with Pod::Simple::HTML
+- Renders better with Pod::Simple::HTML
         (koschei)
+
+  - Changes v1.2
+        - DateTime-Format-Builder 0.25
+        (koschei)
+
+  - lib/DateTime/Format/Builder.pm v1.2
+        stick default in validation spec
+        (autarch)
+
+  - lib/DateTime/Format/Builder.pm v1.3
+        extra was being ignore. looks like a bug
+        (autarch)
+
+  - t/extra.t v1.2
+        fix tests and test count
+        (autarch)
 
 
 Release DateTime-Format-Builder 0.24:

@@ -8,8 +8,10 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.72 (28 May 2003)
-   - Minor tweaks for the 'private' tag in META.yml
+Changes for 0.73 (22 Jun 2003)
+   - Exit parser more quickly if able.
+   - Multiple same length parsers accepted.
+   - Fixed some perl 5.005 testing problems.
 
 For a complete list of changes, see the Changes file.
 

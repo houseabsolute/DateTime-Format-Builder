@@ -6,13 +6,12 @@ license: perl
 name: DateTime-Format-Builder
 recommends:
   File::Find::Rule: 0.10
-  Test::More: 0.47
   Test::Pod: 0.95
 requires:
   DateTime: 0.12
-  Params::Validate: 0.59
-  DateTime::Format::Strptime: 1.0102
-version: 0.72
+  Params::Validate: 0.60
+  DateTime::Format::Strptime: 1.02
+version: 0.73
 private:
   directory:
     - examples
@@ -21,18 +20,18 @@ private:
 provides:
   DateTime::Format::Builder:
     file: lib/DateTime/Format/Builder.pm
-    version: 0.72
+    version: 0.73
   DateTime::Format::Builder::Parser:
     file: lib/DateTime/Format/Builder/Parser.pm
-    version: 0.15
+    version: 0.16
   DateTime::Format::Builder::Parser::Regex:
     file: lib/DateTime/Format/Builder/Parser/Regex.pm
-    version: 0.17
+    version: 0.18
   DateTime::Format::Builder::Parser::Strptime:
     file: lib/DateTime/Format/Builder/Parser/Strptime.pm
-    version: 0.14
+    version: 0.15
   DateTime::Format::Builder::Parser::generic:
     file: lib/DateTime/Format/Builder/Parser/generic.pm
-    version: 0.23
+    version: 0.24
 
 generated_by: docmaker version 0.89
