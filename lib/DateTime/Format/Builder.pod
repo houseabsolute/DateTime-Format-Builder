@@ -528,6 +528,14 @@ object that has the same interface).
 This all said, I generally wouldn't recommend using this
 feature unless you have to.
 
+=head2 Callbacks
+
+I mention a number of callbacks in this document.
+
+Any time you see a callback being mentioned, you can,
+if you like, substitute an arrayref of coderefs rather
+than having the straight coderef.
+
 =head1 MULTIPLE SPECIFICATIONS
 
 These are very easily described as an array of single
@@ -973,8 +981,8 @@ suggestions, L<DateTime::Format::W3CDTF> and the encouragement to
 rewrite these docs almost 100%!
 
 Claus FE<auml>rber for having me get around to fixing the
-auto-constructor writing, and providing the 'args'/'self'
-patch.
+auto-constructor writing, providing the 'args'/'self'
+patch, and suggesting the multi-callbacks.
 
 Simon Cozens (SIMON) for saying it was cool.
 

@@ -16,7 +16,7 @@ use Params::Validate qw(
 );
 use vars qw( $VERSION );
 
-$VERSION = '0.63';
+$VERSION = '0.64';
 
 # Developer oriented methods
 
@@ -227,6 +227,9 @@ sub create_multiple_parsers
 
     # Organise the specs, and transform them into parsers.
     my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
+    for ('preprocess') {
+	$options{$_} = $class->merge_callbacks( $options{$_} ) if $options{$_};
+    }
 
     # These are the innards of a multi-parser.
     return sub {
@@ -330,6 +333,7 @@ sub create_single_parser
     my $class = shift;
     return $_[0] if ref $_[0] eq 'CODE'; # already code
     @_ = %{ $_[0] } if ref $_[0] eq 'HASH'; # turn hashref into hash
+    my @callbacks = qw( on_match on_fail postprocess preprocess );
     # ordinary boring sort
     my %args = validate( @_, {
 	    # How to match
@@ -356,11 +360,8 @@ sub create_single_parser
 	    },
 
 	    # Stuff used by callbacks
-	    on_match	=> { type => CODEREF,	optional => 1 },
-	    on_fail	=> { type => CODEREF,	optional => 1 },
-	    postprocess => { type => CODEREF,	optional => 1 },
-	    preprocess  => { type => CODEREF,	optional => 1 },
 	    label	=> { type => SCALAR,	optional => 1 },
+	    ( map { $_ => { type => CODEREF, optional => 1 } } @callbacks ),
 	}
     );
 
@@ -368,6 +369,10 @@ sub create_single_parser
     my $callback = (exists $args{on_match}
 	    or exists $args{on_fail}) ? 1 : undef;
     my $label = exists $args{label} ? $args{label} : undef;
+    for (@callbacks)
+    {
+	$args{$_} = $class->merge_callbacks( $args{$_} ) if $args{$_};
+    }
 
     # Create our parser
     return sub {
@@ -420,6 +425,46 @@ sub create_single_parser
 	# A successful match!
 	$log->("Good parse");
 	return DateTime->new( %p, %{ $args{extra} } );
+    };
+}
+
+=pod
+
+Produce either undef or a single coderef from either undef,
+an empty array, a single coderef or an array of coderefs
+
+=cut
+
+sub merge_callbacks
+{
+    my $self = shift;
+
+    return undef unless @_; # No arguments
+    return undef unless $_[0]; # Irrelevant argument
+    my @callbacks = @_;
+    if (@_ == 1)
+    {
+	return $_[0] if ref $_[0] eq 'CODE';
+	@callbacks = @{ $_[0] } if ref $_[0] eq 'ARRAY';
+    }
+    return undef unless @callbacks;
+
+    for (@callbacks)
+    {
+	croak "All callbacks must be coderefs!" unless ref $_ eq 'CODE';
+    }
+
+    return sub {
+	my $rv;
+	my %args = @_;
+	for my $cb (@callbacks)
+	{
+	    $rv = $cb->( %args );
+	    return $rv unless $rv;
+	    # Ugh. Symbiotic. All but postprocessor return the date.
+	    $args{input} = $rv unless $args{parsed};
+	}
+	$rv;
     };
 }
 
