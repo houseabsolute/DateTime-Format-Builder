@@ -10,24 +10,29 @@ recommends:
   Test::Pod: 0.95
 requires:
   DateTime: 0.12
-  Params::Validate: 0.58
+  Params::Validate: 0.59
   DateTime::Format::Strptime: 1.0102
-version: 0.71
+version: 0.72
+private:
+  directory:
+    - examples
+    - inc
+    - t
 provides:
   DateTime::Format::Builder:
     file: lib/DateTime/Format/Builder.pm
-    version: 0.71
+    version: 0.72
   DateTime::Format::Builder::Parser:
     file: lib/DateTime/Format/Builder/Parser.pm
-    version: 0.14
+    version: 0.15
   DateTime::Format::Builder::Parser::Regex:
     file: lib/DateTime/Format/Builder/Parser/Regex.pm
-    version: 0.16
+    version: 0.17
   DateTime::Format::Builder::Parser::Strptime:
     file: lib/DateTime/Format/Builder/Parser/Strptime.pm
-    version: 0.13
+    version: 0.14
   DateTime::Format::Builder::Parser::generic:
     file: lib/DateTime/Format/Builder/Parser/generic.pm
-    version: ~
+    version: 0.23
 
 generated_by: docmaker version 0.89

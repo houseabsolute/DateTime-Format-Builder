@@ -1,6 +1,17 @@
 
 ChangeLog generated directly from CVS logs.
 
+Release Datetime-Format-Builder 0.72:
+  - lib/DateTime/Format/Builder/Parser/Regex.pm v1.3
+  - lib/DateTime/Format/Builder.pm v1.21
+  - lib/DateTime/Format/Builder/Parser/Strptime.pm v1.3
+  - lib/DateTime/Format/Builder/Parser/generic.pm v1.2
+  - lib/DateTime/Format/Builder/Parser.pm v1.5
+  - Changes v1.12
+        - Minor release for changse to META.yml
+        (koschei)
+
+
 Release DateTime-Format-Builder 0.71:
   - examples/Apache.pm v1.2
   - examples/W3CDTF.pm v1.2
