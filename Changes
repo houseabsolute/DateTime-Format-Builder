@@ -1,6 +1,12 @@
 # Change log for DateTime::Format::Builder
 
 ---
+version: 0.72
+date:    28 May 2003
+changes:
+    - Minor tweaks for the 'private' tag in META.yml
+
+---
 version: 0.71
 date:    23 May 2003
 changes:

@@ -6,6 +6,8 @@ use Params::Validate qw(
     validate SCALAR CODEREF UNDEF
 );
 
+$VERSION = '0.23';
+
 =head1 NAME
 
 DateTime::Format::Builder::Parser::generic - Useful routines
