@@ -118,10 +118,12 @@ your problem is less likely to be neglected.
 Copyright E<copy> Iain Truskett, 2003. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+it under the same terms as Perl itself, either Perl version 5.000 or,
+at your option, any later version of Perl 5 you may have available.
 
 The full text of the licenses can be found in the F<Artistic> and
-F<COPYING> files included with this module.
+F<COPYING> files included with this module, or in L<perlartistic> and
+L<perlgpl> as supplied with Perl 5.8.1 and later.
 
 =head1 AUTHOR
 
