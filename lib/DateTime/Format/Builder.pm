@@ -10,42 +10,12 @@ use vars qw( $VERSION );
 
 $VERSION = '0.59';
 
-sub new
+# Developer oriented methods
+
+sub import
 {
     my $class = shift;
-    croak "Constructor 'new' takes no parameters" if @_;
-    my $self = bless {
-	parser => sub { croak "No parser set." }
-    }, ref($class)||$class;
-    if (ref $class)
-    {
-	# If called on an object, clone
-	$self->set_parser( $class->get_parser );
-	# and that's it. we don't store that much info per object
-    }
-    return $self;
-}
-
-sub parser
-{
-    my $class = shift;
-    my $parser = $class->create_parser( @_ );
-
-    # Do we need to instantiate a new object for return,
-    # or are we modifying an existing object?
-    my $self;
-    $self = ref $class ? $class : $class->new();
-
-    $self->set_parser( $parser );
-
-    $self;
-}
-
-sub clone
-{
-    my $self = shift;
-    croak "Calling object method as class method!" unless ref $self;
-    return $self->new();
+    $class->create_class( @_, class => (caller)[0] ) if @_;
 }
 
 sub create_class
@@ -84,12 +54,6 @@ sub create_class
 	}
     }
 
-}
-
-sub import
-{
-    my $class = shift;
-    $class->create_class( @_, class => (caller)[0] ) if @_;
 }
 
 sub create_parser
@@ -279,6 +243,48 @@ sub create_single_parser
 
 	return DateTime->new( %p, %{ $args{extra} } );
     };
+}
+
+#
+# User oriented methods
+#
+
+sub new
+{
+    my $class = shift;
+    croak "Constructor 'new' takes no parameters" if @_;
+    my $self = bless {
+	parser => sub { croak "No parser set." }
+    }, ref($class)||$class;
+    if (ref $class)
+    {
+	# If called on an object, clone
+	$self->set_parser( $class->get_parser );
+	# and that's it. we don't store that much info per object
+    }
+    return $self;
+}
+
+sub parser
+{
+    my $class = shift;
+    my $parser = $class->create_parser( @_ );
+
+    # Do we need to instantiate a new object for return,
+    # or are we modifying an existing object?
+    my $self;
+    $self = ref $class ? $class : $class->new();
+
+    $self->set_parser( $parser );
+
+    $self;
+}
+
+sub clone
+{
+    my $self = shift;
+    croak "Calling object method as class method!" unless ref $self;
+    return $self->new();
 }
 
 sub set_parser
