@@ -635,6 +635,7 @@ Joshua Hoblitt (JHOBLITT) for the concept, some of the API,
 impetus for writing the multilength code (both one length with
 multiple parsers and single parser with multiple lengths),
 blame for the Regex custom constructor code,
+spotting a bug in Dispatch,
 and more much needed review.
 
 Kellan Elliott-McCrea (KELLAN) for even more review,
