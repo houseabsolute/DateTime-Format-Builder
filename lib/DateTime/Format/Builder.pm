@@ -16,7 +16,7 @@ use Params::Validate qw(
 );
 use vars qw( $VERSION );
 
-$VERSION = '0.62';
+$VERSION = '0.63';
 
 # Developer oriented methods
 
@@ -228,9 +228,14 @@ sub create_multiple_parsers
     # Organise the specs, and transform them into parsers.
     my ($lengths, $others) = $class->sort_parsers( $options, \@specs );
 
-    # This is the innards of a multi-parser.
+    # These are the innards of a multi-parser.
     return sub {
-	my ($self, $date) = @_;
+	my ($self, $date, @args) = @_;
+
+	my %param = (
+	    self => $self,
+	    ( @args ? (args => \@args) : () ),
+	);
 
 	my %p;
 	# Preprocess and potentially fill %p
@@ -238,7 +243,7 @@ sub create_multiple_parsers
 	{
 	    $log->("Calling preprocessor on <$date>");
 	    $date = $options->{preprocess}->(
-		input => $date, parsed => \%p
+		input => $date, parsed => \%p, %param
 	    );
 	    $log_parse->("Master preprocess results <$date>", \%p );
 	}
@@ -252,7 +257,7 @@ sub create_multiple_parsers
 	    {
 		# Found one, call it with _copy_ of %p
 		$log->("Trying length parse (length = $length) <$date>");
-		my $dt = $parser->( $self, $date, { %p } );
+		my $dt = $parser->( $self, $date, { %p }, @args );
 		return $dt if defined $dt;
 	    }
 	}
@@ -260,7 +265,7 @@ sub create_multiple_parsers
 	for my $parser (@$others)
 	{
 	    $log->("Trying parse <$date>");
-	    my $dt = $parser->( $self, $date, { %p } );
+	    my $dt = $parser->( $self, $date, { %p }, @args );
 	    return $dt if defined $dt;
 	}
 	# Failed, return undef.
@@ -366,15 +371,21 @@ sub create_single_parser
 
     # Create our parser
     return sub {
-	my ($self, $date, $p) = @_;
+	my ($self, $date, $p, @args) = @_;
 	my %p;
 	%p = %$p if $p; # Look! A copy!
+
+	my %param = (
+	    self => $self,
+	    ( defined $label ? ( label => $label ) : ()),
+	    (@args ? (args => \@args) : ()),
+	);
 
 	# Preprocess - can modify $date and fill %p
 	if ($args{preprocess})
 	{
 	    $log->("Single preprocess <$date>");
-	    $date = $args{preprocess}->( input => $date, parsed => \%p );
+	    $date = $args{preprocess}->( input => $date, parsed => \%p, %param );
 	    $log_parse->("Preprocess results <$date>", \%p );
 	}
 
@@ -386,12 +397,7 @@ sub create_single_parser
 	{
 	    my $type = @matches ? "on_match" : "on_fail";
 	    $log->("Calling $type callback <$date>");
-	    if ($args{$type}) {
-		$args{$type}->(
-		    input => $date,
-		    ( defined $label ? ( label => $label ) : ())
-		);
-	    }
+	    $args{$type}->( input => $date, %param ) if $args{$type};
 	}
 	return undef unless @matches;
 
@@ -405,6 +411,7 @@ sub create_single_parser
 	    my $rv = $args{postprocess}->(
 		parsed => \%p,
 		input => $date,
+		%param,
 	    );
 	    $log_parse->("Postprocess of <$date> gave us", \%p);
 	    return undef unless $rv;

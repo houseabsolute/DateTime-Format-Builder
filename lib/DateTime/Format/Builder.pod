@@ -414,6 +414,18 @@ preprocessing callbacks).
 
 B<label>, being the label of the parser, if there is one.
 
+=item *
+
+B<self>, being the object on which the method has been
+invoked (which may just be a class name). Naturally, you
+can then invoke your own methods on it do get information
+you want.
+
+=item *
+
+B<args>, being an arrayref of any passed arguments, if any.
+If there were no arguments, then this parameter is not given.
+
 =back
 
 These routines will be called depending on whether the
@@ -422,8 +434,8 @@ B<regex> match succeeded or failed.
 =item *
 
 B<preprocess> is a callback provided for cleaning up input
-prior to parsing. It's given a hash as arguments with two
-keys:
+prior to parsing. It's given a hash as arguments with the
+following keys:
 
 =over 4
 
@@ -441,6 +453,10 @@ at this point unless an overall I<preprocess> was given.
 Items may be placed in it and will be given to any
 B<postprocess>or and C<< DateTime->new >> (unless the
 postprocessor deletes it).
+
+=item *
+
+B<self>, B<args>, B<label> as per I<on_match> and I<on_fail>.
 
 =back
 
@@ -535,7 +551,7 @@ date to a particular length so that the I<length> is usable
 variable length timezone).
 
 Arguments are as for the I<single parser> I<preprocess>
-variant.
+variant with the exception that I<label> is never given.
 
 =back
 
