@@ -27,6 +27,7 @@ INSTALL
 lib/DateTime/Format/Builder.pm
 lib/DateTime/Format/Builder.pod
 lib/DateTime/Format/Builder/Parser.pm
+lib/DateTime/Format/Builder/Parser/Dispatch.pm
 lib/DateTime/Format/Builder/Parser/generic.pm
 lib/DateTime/Format/Builder/Parser/Regex.pm
 lib/DateTime/Format/Builder/Parser/Strptime.pm
@@ -44,6 +45,7 @@ t/altcon.t
 t/basic.t
 t/clone.t
 t/create.t
+t/dispatch.t
 t/extra.t
 t/import.t
 t/lengths.t

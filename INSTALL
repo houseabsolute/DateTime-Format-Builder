@@ -42,19 +42,19 @@ DateTime::Format::Builder is distributed as a gzipped tar archive file:
 
     DateTime-Format-Builder-<version>.tar.gz
 
-where <version> represents the current version number, e.g. 0.74.
+where <version> represents the current version number, e.g. 0.75.
 
 To install the module, unpack the distribution archive to
 create an installation directory.  Something like this:
 
-    tar zxf DateTime-Format-Builder-0.74.tar.gz
+    tar zxf DateTime-Format-Builder-0.75.tar.gz
 or
-    gunzip DateTime-Format-Builder-0.74.tar.gz
-    tar xf DateTime-Format-Builder-0.74.tar
+    gunzip DateTime-Format-Builder-0.75.tar.gz
+    tar xf DateTime-Format-Builder-0.75.tar
 
 You can then 'cd' into the directory created,
 
-    cd DateTime-Format-Builder-0.74
+    cd DateTime-Format-Builder-0.75
 
 
 INSTALLING MANUALLY
@@ -123,7 +123,7 @@ If you have a copy of cpantest installed, type:
     % cpantest -g pass -nc -p `basename \`pwd\`` -auto
 
 Or:
-    % cpantest -g pass -nc -p DateTime-Format-Builder-0.74 -auto
+    % cpantest -g pass -nc -p DateTime-Format-Builder-0.75 -auto
 
 That will tell both me and other potential users that the module
 built correctly on your machine.

@@ -10,5 +10,6 @@
 ^Makefile.[a-z]+$
 .cvsignore$
 ^diff
-patch
+^patch
+\.patch$
 ^log$

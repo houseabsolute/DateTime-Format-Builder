@@ -8,7 +8,9 @@ For usage, see the doco. Either use perldoc or view it
 on the web at:
     <http://search.cpan.org/author/SPOON/DateTime-Format-Builder/>
 
-Changes for 0.74 (28 Jun 2003)
+Changes for 0.75 (29 Jun 2003)
+   - Silly MANIFEST.SKIP entry caused dispatch stuff to
+     be skipped.
    - Dispatch Parser class added, which allows us to make
      groups of parsers and hop quickly to them.
    - length parameter can now be an arrayref, hence we can
