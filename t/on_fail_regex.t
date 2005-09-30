@@ -30,6 +30,5 @@ BEGIN {
     my $str = eval { $o->parse_datetime("FooBlah") };
     my $e = $@;
     my $file = __FILE__;
-    like($e, qr(at $file), "Should croak from this file");
+    like($e, qr(at \Q$file\E), "Should croak from this file");
 }
-    
