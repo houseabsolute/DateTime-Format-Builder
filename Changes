@@ -1,5 +1,11 @@
 # Change log for DateTime::Format::Builder
 
+
+version: 0.7807
+date:    09 09 2004
+changes:
+    - Fix a test failure in on_fail_regex.t on Win32 (bug in the test code).  Reported by Ben Thul.
+
 version: 0.7806
 date:    09 09 2004
 changes:
