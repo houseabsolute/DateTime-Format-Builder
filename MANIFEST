@@ -38,6 +38,7 @@ t/extra.t
 t/fall.t
 t/import.t
 t/lengths.t
+t/memory-cycle.t
 t/mergecb.t
 t/newclass.t
 t/nocon.t
