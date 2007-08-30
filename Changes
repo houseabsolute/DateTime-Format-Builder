@@ -1,4 +1,4 @@
-0.78     2007-08-30
+0.79     2007-08-30
 
 - Fix several circular references in
   DateTime::Format::Builder::Parser. This would be triggered by any
