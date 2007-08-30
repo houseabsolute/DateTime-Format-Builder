@@ -5,6 +5,7 @@ use Carp qw( croak );
 use Params::Validate qw(
     validate SCALAR CODEREF UNDEF ARRAYREF
 );
+use Scalar::Util qw( weaken );
 
 =head1 NAME
 
@@ -59,7 +60,18 @@ sub new
 }
 
 sub maker { $_[0]->{maker} }
-sub set_maker { $_[0]->{maker} = $_[1]; $_[0] }
+
+sub set_maker
+{
+    my $self  = shift;
+    my $maker = shift;
+
+    $self->{maker} = $maker;
+    weaken $self->{maker}
+        if ref $self->{maker};
+
+    return $self;
+}
 
 sub fail
 {
@@ -395,6 +407,11 @@ sub create_multiple_parsers
     # Who's our maker?
     $obj->set_maker( $options->{maker} ) if exists $options->{maker};
 
+    # We don't want to save the whole options hash as a closure, since
+    # that can cause a circular reference when $options->{maker} is
+    # set.
+    my $preprocess = $options->{preprocess};
+
     # These are the innards of a multi-parser.
     my $parser = sub {
 	my ($self, $date, @args) = @_;
@@ -408,9 +425,9 @@ sub create_multiple_parsers
 
 	my %p;
 	# Preprocess and potentially fill %p
-	if ($options->{preprocess})
+	if ($preprocess)
 	{
-	    $date = $options->{preprocess}->(
+	    $date = $preprocess->(
 		input => $date, parsed => \%p, %param
 	    );
 	}
