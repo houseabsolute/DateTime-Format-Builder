@@ -6,9 +6,9 @@ use lib 't/lib';
 use DateTime::Format::Builder;
 use Test::More;
 
-unless ( eval "use Test::Memory::Cycle; 1;" )
+unless ( eval "use Test::Memory::Cycle; Devel::Cycle->can('_find_cycle_SCALAR'); " )
 {
-    plan skip_all => 'These tests require Test::Memory::Cycle.';
+    plan skip_all => 'These tests require Test::Memory::Cycle a working Devel::Cycle (> 1.07).';
     exit;
 }
 

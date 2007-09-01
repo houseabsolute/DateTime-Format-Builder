@@ -1,3 +1,10 @@
+0.7901   2007-09-01
+
+- The memory-cycle.t test will fail if you have PadWalker and the
+  current Devel::Cycle (1.07) installed. I forgot I had patched my
+  local Devel::Cycle to fix this bug.
+
+
 0.79     2007-08-30
 
 - Fix several circular references in
