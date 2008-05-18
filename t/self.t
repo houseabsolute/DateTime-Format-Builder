@@ -1,18 +1,13 @@
-# $Id$
-use lib 'inc';
-use blib;
 use strict;
-use Test::More tests => 4;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 3;
+
+use DateTime::Format::Builder;
+
 
 {
     my $sample = 'SampleClassWithSelf';
-    $class->create_class(
+    DateTime::Format::Builder->create_class(
 	class	 => $sample,
 	parsers    => {
 	    parse_datetime => [    

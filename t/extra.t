@@ -1,17 +1,12 @@
-# $Id$
-use lib 'inc';
-use blib;
 use strict;
-use Test::More tests => 2;
 
-BEGIN {
-    use_ok 'DateTime::Format::Builder';
-}
+use Test::More tests => 1;
 
-my $class = 'DateTime::Format::Builder';
+use DateTime::Format::Builder;
+
 
 {
-    my $parser = $class->parser( {
+    my $parser = DateTime::Format::Builder->parser( {
 	params => [ qw( year month day hour minute second ) ],
 	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
 	extra  => { time_zone => 'America/Chicago' },

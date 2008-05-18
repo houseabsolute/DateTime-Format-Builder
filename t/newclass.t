@@ -1,13 +1,9 @@
-# $Id$
-use lib 'inc';
-use blib;
 use strict;
-use Test::More tests => 16;
-use vars qw( $class );
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+
+use Test::More tests => 15;
+
+use DateTime::Format::Builder;
+
 
 my %common = (
     version => 4.00,
@@ -24,7 +20,7 @@ my %common = (
     my $sample = "20030716T163245";
     my $newclass = "DateTime::Format::ICal15";
 
-    $class->create_class( %common,
+    DateTime::Format::Builder->create_class( %common,
 	class => $newclass,
     );
 
@@ -63,7 +59,7 @@ my %common = (
 {
     my $newclass = "DateTime::Format::ICalTest";
 
-    $class->create_class( %common,
+    DateTime::Format::Builder->create_class( %common,
 	class => $newclass,
         constructor => sub { bless { "Foo" => "Bar" }, shift },
     );
@@ -78,7 +74,7 @@ my %common = (
     my $newclass = "DateTime::Format::ICalTestUndef";
 
     eval {
-        $class->create_class( %common,
+        DateTime::Format::Builder->create_class( %common,
             class => $newclass,
             constructor => undef,
         );

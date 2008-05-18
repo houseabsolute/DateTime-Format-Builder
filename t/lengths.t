@@ -1,14 +1,9 @@
-# $Id$
 use strict;
-use lib 'inc';
-use blib;
-use Test::More tests => 15;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 14;
+
+use DateTime::Format::Builder;
+
 
 # Test multiple parsers having the same length
 {
@@ -42,8 +37,8 @@ BEGIN {
     );
 
     {
-	my $parser = $class->parser( @parsers );
-	isa_ok( $parser => $class );
+	my $parser = DateTime::Format::Builder->parser( @parsers );
+	isa_ok( $parser => 'DateTime::Format::Builder' );
 
 	for my $length (sort keys %data)
 	{
@@ -78,8 +73,8 @@ BEGIN {
 	}
     );
 
-    my $parser = $class->parser( @parsers );
-    isa_ok( $parser => $class );
+    my $parser = DateTime::Format::Builder->parser( @parsers );
+    isa_ok( $parser => 'DateTime::Format::Builder' );
 
     my %data = (
 	4 => 2003,

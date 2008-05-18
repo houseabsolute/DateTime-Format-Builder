@@ -1,14 +1,9 @@
-# $Id$
 use strict;
-use lib 'inc';
-use blib;
-use Test::More tests => 3;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 2;
+
+use DateTime::Format::Builder;
+
 
 {
     eval q!package DTFB::FailRegexTest;

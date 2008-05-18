@@ -1,15 +1,11 @@
 #!/usr/bin/perl -w
-# $Id$
-use lib 'inc';
-use blib;
-use Test::More tests => 25;
-use strict;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use strict;
+
+use Test::More tests => 24;
+
+use DateTime::Format::Builder;
+
 
 my @tests = (
 	# Simple dates
@@ -37,8 +33,8 @@ my @tests = (
 for my $test (@tests)
 {
     my ($pattern, $data) = @$test;
-    my $parser = $class->create_parser( strptime => $pattern );
-    my $parsed = $parser->parse( $class, $data );
+    my $parser = DateTime::Format::Builder->create_parser( strptime => $pattern );
+    my $parsed = $parser->parse( 'DateTime::Format::Builder', $data );
     isa_ok( $parsed => 'DateTime' );
     is( $parsed->strftime($pattern) => $data, $pattern);
 }

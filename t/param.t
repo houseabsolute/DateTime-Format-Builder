@@ -1,19 +1,14 @@
-# $Id$
-use lib 'inc';
-use blib;
 use strict;
-use Test::More tests => 6;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 5;
+
+use DateTime::Format::Builder;
+
 
 my $sample = 'SampleClassWithArgs1';
 
 {
-    my $parser = $class->parser( {
+    my $parser = DateTime::Format::Builder->parser( {
 	    params => [ qw( year month day hour minute second ) ],
 	    regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
 	    postprocess => sub {
@@ -28,7 +23,7 @@ my $sample = 'SampleClassWithArgs1';
 }
 
 {
-    $class->create_class(
+    DateTime::Format::Builder->create_class(
 	class	 => $sample,
 	parsers    => {
 	    parse_datetime => [    
@@ -53,7 +48,7 @@ my $sample = 'SampleClassWithArgs1';
 
 {
     $sample++;
-    $class->create_class(
+    DateTime::Format::Builder->create_class(
 	class	 => $sample,
 	parsers    => {
 	    parse_datetime => [    

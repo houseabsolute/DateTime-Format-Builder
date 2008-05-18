@@ -1,21 +1,16 @@
-# $Id$
 use strict;
-use lib 'inc';
-use blib;
-use Test::More tests => 20;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 19;
+
+use DateTime::Format::Builder;
+
 
 # ------------------------------------------------------------------------
 
 sub do_check
 {
     my ($parser, $date, $values) = @_;
-    my $parsed = $parser->parse( $class, $date );
+    my $parsed = $parser->parse( 'DateTime::Format::Builder', $date );
     isa_ok( $parsed => 'DateTime' );
     is( $parsed->year()  => $values->[0], "Year is right" );
     is( $parsed->month() => $values->[1], "Month is right" );
@@ -24,7 +19,7 @@ sub do_check
 
 
 {
-    my $parser = $class->create_parser(
+    my $parser = DateTime::Format::Builder->create_parser(
 	{
 	    #YYYY-DDD 1985-102
 	    regex => qr/^ (\d{4}) -?? (\d{3}) $/x,
@@ -56,7 +51,7 @@ sub do_check
 }
 
 {
-    my $parser = $class->create_parser(
+    my $parser = DateTime::Format::Builder->create_parser(
 	{
 	    regex => qr/^ (\d+) $/x,
 	    params => [qw( epoch ) ],
@@ -69,7 +64,7 @@ sub do_check
     for my $epoch (sort keys %epochs)
     {
 	my $check = $epochs{$epoch};
-	my $dt = $parser->parse( $class, $epoch );
+	my $dt = $parser->parse( 'DateTime::Format::Builder', $epoch );
 	isa_ok( $dt => 'DateTime' );
 	is( $dt->datetime => $check, "Epoch of $epoch to $check" );
     }

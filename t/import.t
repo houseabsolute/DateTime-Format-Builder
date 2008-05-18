@@ -1,13 +1,7 @@
-# $Id$
-use Test::More tests => 8;
-use lib 'inc';
-use blib;
-use vars qw( $class );
+use strict;
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 7;
+
 
 {
     eval q[

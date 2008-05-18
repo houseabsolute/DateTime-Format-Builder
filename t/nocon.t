@@ -1,16 +1,11 @@
-# $Id$
-use lib 'inc';
-use blib;
 use strict;
-use Test::More tests => 10;
-use vars qw( $class %parsers );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 9;
 
-%parsers = (
+use DateTime::Format::Builder;
+
+
+my %parsers = (
     parsers => {
 	parse_datetime =>
 	{
@@ -30,7 +25,7 @@ BEGIN {
 	package SampleClass1;
 	use DateTime::Format::Builder
 	    constructor => undef,
-	    %::parsers;
+	    %parsers;
 	1;
     ];
     ok( !$@, "No errors when creating the class." );
@@ -55,7 +50,7 @@ BEGIN {
 	package SampleClassHasNew;
 	use DateTime::Format::Builder
 	    constructor => 1,
-	    %::parsers;
+	    %parsers;
 	1;
     ];
     ok( $@, "Error when creating class." );
@@ -69,7 +64,7 @@ BEGIN {
 	package SampleClassDont;
 	use DateTime::Format::Builder
 	    constructor => 0,
-	    %::parsers;
+	    %parsers;
 	1;
     ];
     ok( !$@, "No error when creating class." );
@@ -86,7 +81,7 @@ BEGIN {
 	package SampleClassGiven;
 	use DateTime::Format::Builder
 	    constructor => sub { return "6" },
-	    %::parsers;
+	    %parsers;
 	1;
     ];
     ok( !$@, "No error when creating class." );

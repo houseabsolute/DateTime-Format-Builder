@@ -1,10 +1,10 @@
 #!/usr/bin/perl -w
-use lib 'inc';
 use strict;
-use blib;
 
-use Test::More tests => 4;
-BEGIN { use_ok 'DateTime::Format::Builder' }
+use Test::More tests => 3;
+
+use DateTime::Format::Builder;
+
 
 SKIP: {
     my @mods;

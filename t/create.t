@@ -1,14 +1,9 @@
-# $Id$
 use strict;
-use lib 'inc';
-use blib;
-use Test::More tests => 47;
-use vars qw( $class );
 
-BEGIN {
-    $class = 'DateTime::Format::Builder';
-    use_ok $class;
-}
+use Test::More tests => 46;
+
+use DateTime::Format::Builder;
+
 
 my $should_fail;
 
@@ -43,8 +38,8 @@ my @parsers = (
 );
 
 {
-    my $parser = $class->parser( %{ $parsers[0] } );
-    isa_ok( $parser => $class );
+    my $parser = DateTime::Format::Builder->parser( %{ $parsers[0] } );
+    isa_ok( $parser => 'DateTime::Format::Builder' );
     {
 	$should_fail = 0;
 	my $dt = $parser->parse_datetime( "20030716T163245" );
@@ -65,8 +60,8 @@ my @parsers = (
 }
 
 {
-    my $parser = $class->parser( @parsers );
-    isa_ok( $parser => $class );
+    my $parser = DateTime::Format::Builder->parser( @parsers );
+    isa_ok( $parser => 'DateTime::Format::Builder' );
     my %times = (
         '20030716T163245' => {qw(
 		hour 16 minute 32 second 45 year 2003 month 7 day 16 )},
