@@ -14,5 +14,6 @@ Module::Build->new
                      },
       build_requires => { 'Module::Build' => 0 },
       sign        => 1,
-      create_makefile_pl => 'passthrough',
+      create_makefile_pl => 'traditional',
+      create_readme => 1,
     )->create_build_script;
