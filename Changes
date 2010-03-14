@@ -1,3 +1,15 @@
+0.80     2010-03-14
+
+- Remove the 00sig.t test, which seemed to cause random failures based on CPAN
+  testers reports.
+
+- Lots of cleanup in test code.
+
+- Future releases will all increment by 0.01 (0.81, 0.82, etc).
+
+- No code changes.
+
+
 0.7901   2007-09-01
 
 - The memory-cycle.t test will fail if you have PadWalker and the
