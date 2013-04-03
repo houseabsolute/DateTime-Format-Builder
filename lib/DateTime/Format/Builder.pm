@@ -1,9 +1,11 @@
 package DateTime::Format::Builder;
 
 use strict;
+use warnings;
+
 use 5.005;
 use Carp;
-use DateTime 0.12;
+use DateTime 1.00;
 use Params::Validate qw(
     validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
 );
