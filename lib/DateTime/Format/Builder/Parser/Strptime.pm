@@ -21,6 +21,7 @@ on valid patterns.
 =cut
 
 use strict;
+use warnings;
 use vars qw( @ISA );
 use Params::Validate qw( validate SCALAR HASHREF );
 

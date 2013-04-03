@@ -1,5 +1,6 @@
 package DateTime::Format::Builder::Parser::generic;
 use strict;
+use warnings;
 use Carp;
 use Params::Validate qw(
     validate SCALAR CODEREF UNDEF

@@ -1,5 +1,6 @@
 package DateTime::Format::Builder::Parser;
 use strict;
+use warnings;
 use Carp qw( croak );
 use Params::Validate qw(
     validate SCALAR CODEREF UNDEF ARRAYREF
