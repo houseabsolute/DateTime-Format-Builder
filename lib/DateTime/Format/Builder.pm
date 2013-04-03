@@ -603,7 +603,7 @@ User calls parser:
 
 The overall I<preprocess>or is called and is given C<$string>
 and the hashref C<$p> (identically to the per parser
-I<preprocess> mentioned in the previous flow). 
+I<preprocess> mentioned in the previous flow).
 
 If the callback modifies C<$p> then a B<copy> of C<$p> is
 given to each of the individual parsers.  This is so parsers
@@ -695,7 +695,7 @@ is used as C<new()>.
 
 The default is C<1> (that is, create a constructor using
 our default code which simply creates a hashref and blesses
-it). 
+it).
 
 If your class defines its own C<new()> method it will not be
 overwritten. If you define your own C<new()> and B<also> tell

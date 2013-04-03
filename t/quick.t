@@ -23,7 +23,7 @@ SKIP: {
             { Quick => 'DateTime::Format::Mail' },
             { Quick => 'DateTime::Format::IBeat' },
         ]});
-        
+
         1;
     |;
     die $@ if $@;
