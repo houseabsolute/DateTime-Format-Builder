@@ -10,7 +10,6 @@ use Params::Validate qw(
 use vars qw( $VERSION %dispatch_data );
 
 my $parser = 'DateTime::Format::Builder::Parser';
-$VERSION = '0.81';
 
 sub verbose {
     warn "Use of verbose() deprecated for the interim.";
@@ -223,11 +222,9 @@ require DateTime::Format::Builder::Parser;
 
 1;
 
+# ABSTRACT: Create DateTime parser classes and objects.
+
 __END__
-
-=head1 NAME
-
-DateTime::Format::Builder - Create DateTime parser classes and objects.
 
 =head1 SYNOPSIS
 
@@ -893,25 +890,6 @@ Alternatively, log them via the CPAN RT system via the web or email:
 
 This makes it much easier for me to track things and thus means
 your problem is less likely to be neglected.
-
-=head1 LICENCE AND COPYRIGHT
-
-Copyright E<copy> Iain Truskett, 2003. All rights reserved.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.000 or,
-at your option, any later version of Perl 5 you may have available.
-
-The full text of the licences can be found in the F<Artistic> and
-F<COPYING> files included with this module, or in L<perlartistic> and
-L<perlgpl> as supplied with Perl 5.8.1 and later.
-
-=head1 AUTHOR
-
-Originally written by Iain Truskett <spoon@cpan.org>, who died on
-December 29, 2003.
-
-Maintained by Dave Rolsky <autarch@urth.org>.
 
 =head1 SEE ALSO
 

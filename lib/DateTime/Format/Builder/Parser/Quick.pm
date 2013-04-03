@@ -4,10 +4,6 @@ use vars qw( $VERSION %dispatch_data );
 use Params::Validate qw( SCALAR OBJECT CODEREF validate );
 use base qw( DateTime::Format::Builder::Parser );
 
-=head1 NAME
-
-DateTime::Format::Builder::Parser::Quick - Use another formatter, simply
-
 =head1 SYNOPSIS
 
     use DateTime::Format::Builder (
@@ -57,7 +53,6 @@ In any case, the resultant code ends up looking like:
 
 =cut
 
-$VERSION = '0.81';
 
 __PACKAGE__->valid_params(
     Quick => {
@@ -93,40 +88,13 @@ sub create_parser {
 
 1;
 
+# ABSTRACT: Use another formatter, simply
+
 __END__
-
-=head1 THANKS
-
-See L<the main module's section|DateTime::Format::Builder/"THANKS">.
 
 =head1 SUPPORT
 
-Support for this module is provided via the datetime@perl.org email
-list. See http://lists.perl.org/ for more details.
-
-Alternatively, log them via the CPAN RT system via the web or email:
-
-    http://perl.dellah.org/rt/dtbuilder
-    bug-datetime-format-builder@rt.cpan.org
-
-This makes it much easier for me to track things and thus means
-your problem is less likely to be neglected.
-
-=head1 LICENCE AND COPYRIGHT
-
-Copyright E<copy> Iain Truskett, 2003. All rights reserved.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.000 or,
-at your option, any later version of Perl 5 you may have available.
-
-The full text of the licences can be found in the F<Artistic> and
-F<COPYING> files included with this module, or in L<perlartistic> and
-L<perlgpl> as supplied with Perl 5.8.1 and later.
-
-=head1 AUTHOR
-
-Iain Truskett <spoon@cpan.org>
+See L<DateTime::Format::Builder> for details.
 
 =head1 SEE ALSO
 

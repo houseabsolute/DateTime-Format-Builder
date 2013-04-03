@@ -6,11 +6,6 @@ use Params::Validate qw(
     validate SCALAR CODEREF UNDEF
 );
 
-$VERSION = '0.81';
-
-=head1 NAME
-
-DateTime::Format::Builder::Parser::generic - Useful routines
 
 =head1 METHODS
 
@@ -180,6 +175,8 @@ Instead we get to type:
 
 1;
 
+# ABSTRACT: Useful routines
+
 __END__
 
 =head1 WRITING A SUBCLASS
@@ -188,38 +185,9 @@ Rather than attempt to explain how it all works, I think it's best if
 you take a look at F<Regex.pm> and F<Strptime.pm> as examples and
 work from there.
 
-=head1 THANKS
-
-See L<DateTime::Format::Builder>.
-
 =head1 SUPPORT
 
-Support for this module is provided via the datetime@perl.org email
-list. See http://lists.perl.org/ for more details.
-
-Alternatively, log them via the CPAN RT system via the web or email:
-
-    http://perl.dellah.org/rt/dtbuilder
-    bug-datetime-format-builder@rt.cpan.org
-
-This makes it much easier for me to track things and thus means
-your problem is less likely to be neglected.
-
-=head1 LICENCE AND COPYRIGHT
-
-Copyright E<copy> Iain Truskett, 2003. All rights reserved.
-
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself, either Perl version 5.000 or,
-at your option, any later version of Perl 5 you may have available.
-
-The full text of the licences can be found in the F<Artistic> and
-F<COPYING> files included with this module, or in L<perlartistic> and
-L<perlgpl> as supplied with Perl 5.8.1 and later.
-
-=head1 AUTHOR
-
-Iain Truskett <spoon@cpan.org>
+See L<DateTime::Format::Builder> for details.
 
 =head1 SEE ALSO
 

@@ -1,6 +1,8 @@
-=head1 NAME
+package DateTime::Format::Builder::Tutorial;
 
-DateTime::Format::Builder::Tutorial - Quick class on using Builder
+# ABSTRACT: Quick class on using Builder
+
+__END__
 
 =head1 CREATING A CLASS
 
@@ -303,10 +305,6 @@ it under the same terms as Perl itself.
 
 The full text of the licenses can be found in the F<Artistic> and
 F<COPYING> files included with this document.
-
-=head1 AUTHOR
-
-Iain Truskett <spoon@cpan.org>
 
 =head1 SEE ALSO
 
