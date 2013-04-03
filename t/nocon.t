@@ -21,11 +21,11 @@ my %parsers = (
 {
     my $class = 'SampleClass1';
     eval q[
-	package SampleClass1;
-	use DateTime::Format::Builder
-	    constructor => undef,
-	    %parsers;
-	1;
+    package SampleClass1;
+    use DateTime::Format::Builder
+        constructor => undef,
+        %parsers;
+    1;
     ];
     ok( !$@, "No errors when creating the class." );
 
@@ -49,11 +49,11 @@ my %parsers = (
     my $class = 'SampleClassHasNew';
     sub SampleClassHasNew::new { return "4" }
     eval q[
-	package SampleClassHasNew;
-	use DateTime::Format::Builder
-	    constructor => 1,
-	    %parsers;
-	1;
+    package SampleClassHasNew;
+    use DateTime::Format::Builder
+        constructor => 1,
+        %parsers;
+    1;
     ];
     ok( $@, "Error when creating class." );
 }
@@ -63,11 +63,11 @@ my %parsers = (
     my $class = 'SampleClassDont';
     sub SampleClassDont::new { return "5" }
     eval q[
-	package SampleClassDont;
-	use DateTime::Format::Builder
-	    constructor => 0,
-	    %parsers;
-	1;
+    package SampleClassDont;
+    use DateTime::Format::Builder
+        constructor => 0,
+        %parsers;
+    1;
     ];
     ok( !$@, "No error when creating class." );
     diag $@ if $@;
@@ -80,11 +80,11 @@ my %parsers = (
 {
     my $class = 'SampleClassGiven';
     eval q[
-	package SampleClassGiven;
-	use DateTime::Format::Builder
-	    constructor => sub { return "6" },
-	    %parsers;
-	1;
+    package SampleClassGiven;
+    use DateTime::Format::Builder
+        constructor => sub { return "6" },
+        %parsers;
+    1;
     ];
     ok( !$@, "No error when creating class." );
     diag $@ if $@;

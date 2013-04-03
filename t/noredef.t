@@ -22,11 +22,11 @@ my %parsers = (
     my $class = 'SampleClassHasParser';
     sub SampleClassHasParser::parse_datetime { return "4" }
     eval q[
-	package SampleClassHasParser;
-	use DateTime::Format::Builder
-	    constructor => 1,
-	    %parsers;
-	1;
+    package SampleClassHasParser;
+    use DateTime::Format::Builder
+        constructor => 1,
+        %parsers;
+    1;
     ];
     ok( $@, "Error when creating class." );
 }

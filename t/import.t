@@ -5,20 +5,20 @@ use Test::More;
 
 {
     eval q[
-	package SampleClass1;
-	use DateTime::Format::Builder
-	    parsers => {
-		parse_datetime => [
-		{
-		    regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
-		    params => [qw( year month day hour minute second )],
-		},
-		{
-		    regex => qr/^(\d{4})(\d\d)(\d\d)$/,
-		    params => [qw( year month day )],
-		},
-		],
-	    };
+    package SampleClass1;
+    use DateTime::Format::Builder
+        parsers => {
+        parse_datetime => [
+        {
+            regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
+            params => [qw( year month day hour minute second )],
+        },
+        {
+            regex => qr/^(\d{4})(\d\d)(\d\d)$/,
+            params => [qw( year month day )],
+        },
+        ],
+        };
     ];
     ok( !$@, "No errors when creating the class." );
 

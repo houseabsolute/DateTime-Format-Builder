@@ -7,27 +7,27 @@ use DateTime::Format::Builder;
 
 {
     eval q[
-	package SampleDispatch;
-	use DateTime::Format::Builder
-	(
-	    parsers => {
-		parse_datetime => [
-		    {
-			Dispatch => sub {
-			    return 'fnerk';
-			}
-		    }
-		]
-	    },
-	    groups => {
-		fnerk => [
-		    {
-			regex => qr/^(\d{4})(\d\d)(\d\d)$/,
-			params => [qw( year month day )],
-		    },
-		]
-	    }
-	);
+    package SampleDispatch;
+    use DateTime::Format::Builder
+    (
+        parsers => {
+        parse_datetime => [
+            {
+            Dispatch => sub {
+                return 'fnerk';
+            }
+            }
+        ]
+        },
+        groups => {
+        fnerk => [
+            {
+            regex => qr/^(\d{4})(\d\d)(\d\d)$/,
+            params => [qw( year month day )],
+            },
+        ]
+        }
+    );
     ];
     ok( !$@, "No errors when creating the class." );
     if ($@) { diag $@; exit }

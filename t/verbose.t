@@ -13,38 +13,38 @@ SKIP: {
     my $str;
     undef $SampleClass1::fh;    # just to un-warn
     eval q{
-	open $SampleClass1::fh, '>', \$str
-	    or die "Cannot open string for writing!";
+    open $SampleClass1::fh, '>', \$str
+        or die "Cannot open string for writing!";
     };
 
     eval q[
-	package SampleClass1;
-	use DateTime::Format::Builder
-	    verbose => $SampleClass1::fh,
-	    parsers => {
-		parse_datetime => [
-		[
-		    preprocess => sub { my %args = @_; $args{input} },
-		],
-		{
-		    regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
-		    params => [qw( year month day hour minute second )],
-		    on_fail => sub { my %args = @_; $args{input} },
-		},
-		{
-		    preprocess => sub { my %args = @_; $args{input} },
-		    postprocess => sub { my %args = @_; $args{input} },
-		    on_match => sub { my %args = @_; $args{input} },
-		    regex => qr/^(\d{4})(\d\d)(\d\d)$/,
-		    params => [qw( year month day )],
-		},
-		{
-		    length => 8,
-		    regex => qr/^abcdef$/,
-		    params => [qw( year month day )],
-		}
-		],
-	    };
+    package SampleClass1;
+    use DateTime::Format::Builder
+        verbose => $SampleClass1::fh,
+        parsers => {
+        parse_datetime => [
+        [
+            preprocess => sub { my %args = @_; $args{input} },
+        ],
+        {
+            regex => qr/^(\d{4})(\d\d)(d\d)(\d\d)(\d\d)(\d\d)$/,
+            params => [qw( year month day hour minute second )],
+            on_fail => sub { my %args = @_; $args{input} },
+        },
+        {
+            preprocess => sub { my %args = @_; $args{input} },
+            postprocess => sub { my %args = @_; $args{input} },
+            on_match => sub { my %args = @_; $args{input} },
+            regex => qr/^(\d{4})(\d\d)(\d\d)$/,
+            params => [qw( year month day )],
+        },
+        {
+            length => 8,
+            regex => qr/^abcdef$/,
+            params => [qw( year month day )],
+        }
+        ],
+        };
     ];
     ok( !$@, "No errors when creating the class." );
 
