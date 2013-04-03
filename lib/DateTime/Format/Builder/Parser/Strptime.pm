@@ -23,6 +23,7 @@ on valid patterns.
 use strict;
 use warnings;
 use vars qw( @ISA );
+use DateTime::Format::Strptime 1.04;
 use Params::Validate qw( validate SCALAR HASHREF );
 
 use DateTime::Format::Builder::Parser::generic;
@@ -42,7 +43,6 @@ sub create_parser {
     my $pattern = $args{strptime};
 
     # Create our strptime parser
-    require DateTime::Format::Strptime;
     my $strptime = DateTime::Format::Strptime->new(
         ( ref $pattern ? %$pattern : ( pattern => $pattern ) ),
     );

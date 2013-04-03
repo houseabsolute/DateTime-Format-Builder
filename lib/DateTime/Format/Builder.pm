@@ -6,7 +6,7 @@ use warnings;
 use 5.005;
 use Carp;
 use DateTime 1.00;
-use Params::Validate qw(
+use Params::Validate 0.72 qw(
     validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
 );
 use vars qw( %dispatch_data );

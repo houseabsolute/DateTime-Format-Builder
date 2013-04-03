@@ -593,7 +593,7 @@ letter. These are ignored.
 
 # Find all our workers
 {
-    use Class::Factory::Util;
+    use Class::Factory::Util 1.6;
 
     foreach my $worker ( __PACKAGE__->subclasses ) {
         eval "use DateTime::Format::Builder::Parser::$worker;";
