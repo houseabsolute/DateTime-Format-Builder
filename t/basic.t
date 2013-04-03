@@ -1,8 +1,7 @@
-#!/usr/bin/perl -w
-
 use strict;
+use warnings;
 
-use Test::More tests => 4;
+use Test::More 0.88;
 
 use DateTime::Format::Builder;
 
@@ -19,3 +18,5 @@ use DateTime::Format::Builder;
     ok( ( $@ and $@ =~ /No parser/ ), "No parser exception" );
 
 }
+
+done_testing();

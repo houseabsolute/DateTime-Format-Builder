@@ -14,7 +14,6 @@ unless (
     exit;
 }
 
-plan tests => 4;
 
 {
     my $builder = DateTime::Format::Builder->new();
@@ -51,3 +50,4 @@ plan tests => 4;
     );
 }
 
+done_testing();

@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 8;
+use Test::More;
 
 package DateTime::Format::ICal15;
 use DateTime::Format::Builder;
@@ -39,3 +40,5 @@ cmp_ok( $newclass->VERSION, '==', '4.00', "Version matches" );
         );
     }
 }
+
+done_testing();

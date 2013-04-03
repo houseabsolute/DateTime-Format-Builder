@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 15;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -85,3 +86,5 @@ my %common = (
     ok( !$@, "Should be no errors with undef new" );
     ok( !( UNIVERSAL::can( $newclass, 'new' ) ), "Should be no constructor" );
 }
+
+done_testing();

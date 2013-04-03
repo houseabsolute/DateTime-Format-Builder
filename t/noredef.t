@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 1;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -29,3 +30,5 @@ my %parsers = (
     ];
     ok( $@, "Error when creating class." );
 }
+
+done_testing();

@@ -1,8 +1,7 @@
-#!/usr/bin/perl -w
-
 use strict;
+use warnings;
 
-use Test::More tests => 24;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -37,3 +36,5 @@ for my $test (@tests) {
     isa_ok( $parsed => 'DateTime' );
     is( $parsed->strftime($pattern) => $data, $pattern );
 }
+
+done_testing();

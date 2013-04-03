@@ -1,8 +1,8 @@
-#!/usr/bin/perl -wT
-
 use strict;
+use warnings;
 
-use Test::More tests => 1;
+use Test::More;
 
 use_ok 'DateTime::Format::Builder';
 
+done_testing();

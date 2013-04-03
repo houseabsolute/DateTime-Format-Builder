@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 22;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -118,3 +119,4 @@ use DateTime::Format::Builder;
 
 pass "All done.";
 
+done_testing();

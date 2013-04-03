@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 5;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -96,3 +97,5 @@ my $sample = 'SampleClassWithArgs1';
         is( $dt->time_zone->name, $value );
     }
 }
+
+done_testing();

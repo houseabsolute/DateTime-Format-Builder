@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 4;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -60,3 +61,5 @@ SKIP: {
     close $SampleClass1::fh;
     like( $str, qr/$input/, "Logging data contains input." );
 }
+
+done_testing();

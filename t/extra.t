@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 1;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -17,3 +18,5 @@ use DateTime::Format::Builder;
 
     is( $dt->time_zone->name, 'America/Chicago' );
 }
+
+done_testing();

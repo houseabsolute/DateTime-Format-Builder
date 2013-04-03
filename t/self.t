@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 3;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -54,3 +55,5 @@ use DateTime::Format::Builder;
         is( $dt->time_zone->name, $value );
     }
 }
+
+done_testing();

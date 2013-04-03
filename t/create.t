@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 46;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -158,3 +159,5 @@ my @parsers = (
         "Don't overwrite existing new() method"
     );
 }
+
+done_testing();

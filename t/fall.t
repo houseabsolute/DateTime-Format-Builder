@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 3;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -47,3 +48,5 @@ SKIP: {
         ok( !defined $dt, "Shouldn't parse [$_]" );
     }
 }
+
+done_testing();

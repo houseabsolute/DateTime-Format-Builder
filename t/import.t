@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 7;
+use Test::More;
 
 {
     eval q[
@@ -35,3 +36,4 @@ use Test::More tests => 7;
     ok( $@, "There is no fnerk." );
 }
 
+done_testing();

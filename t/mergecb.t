@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 7;
+use Test::More;
 
 use DateTime::Format::Builder::Parser;
 
@@ -43,3 +44,5 @@ use DateTime::Format::Builder::Parser;
     };
     ok( $@, "Correctly faulted on bad arguments." );
 }
+
+done_testing();

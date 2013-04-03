@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 9;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -91,3 +92,5 @@ my %parsers = (
     my $parser = eval { $class->new() };
     is( $parser => 6, "Used given new()" );
 }
+
+done_testing();

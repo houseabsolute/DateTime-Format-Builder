@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 5;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -20,3 +21,5 @@ isa_ok( $obj => 'DateTime::Format::Builder' );
 for my $method (qw( new clone )) {
     $clone_it->( $obj, $method );
 }
+
+done_testing();

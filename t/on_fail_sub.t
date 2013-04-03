@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 7;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -45,3 +46,5 @@ use DateTime::Format::Builder;
     diag $@ if $@;
     ok( ( !defined($bad_parse) ), "Bad parse correctly gives undef" );
 }
+
+done_testing();

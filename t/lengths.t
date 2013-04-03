@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 14;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -88,3 +89,5 @@ use DateTime::Format::Builder;
     }
 
 }
+
+done_testing();

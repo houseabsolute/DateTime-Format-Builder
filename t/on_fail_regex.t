@@ -1,6 +1,7 @@
 use strict;
+use warnings;
 
-use Test::More tests => 2;
+use Test::More;
 
 use DateTime::Format::Builder;
 
@@ -26,3 +27,5 @@ use DateTime::Format::Builder;
     my $file = __FILE__;
     like( $e, qr(at \Q$file\E), "Should croak from this file" );
 }
+
+done_testing();
