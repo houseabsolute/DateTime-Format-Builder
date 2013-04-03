@@ -21,7 +21,7 @@ on valid patterns.
 =cut
 
 use strict;
-use vars qw( $VERSION @ISA );
+use vars qw( @ISA );
 use Params::Validate qw( validate SCALAR HASHREF );
 
 use DateTime::Format::Builder::Parser::generic;

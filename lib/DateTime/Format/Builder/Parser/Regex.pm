@@ -62,7 +62,7 @@ it likes. So long as it's 'true'.
 =cut
 
 use strict;
-use vars qw( $VERSION @ISA );
+use vars qw( @ISA );
 use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF CODEREF );
 
 use DateTime::Format::Builder::Parser::generic;

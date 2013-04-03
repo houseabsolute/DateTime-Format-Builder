@@ -1,6 +1,6 @@
 package DateTime::Format::Builder::Parser::Dispatch;
 use strict;
-use vars qw( $VERSION %dispatch_data );
+use vars qw( %dispatch_data );
 use Params::Validate qw( CODEREF validate );
 use DateTime::Format::Builder::Parser;
 
