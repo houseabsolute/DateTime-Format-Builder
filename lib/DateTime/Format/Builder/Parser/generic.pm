@@ -6,7 +6,7 @@ use Params::Validate qw(
     validate SCALAR CODEREF UNDEF
 );
 
-$VERSION = '0.77';
+$VERSION = '0.81';
 
 =head1 NAME
 

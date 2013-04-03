@@ -24,7 +24,7 @@ most of its responsibilities.
 
 =cut
 
-$VERSION = '0.77';
+$VERSION = '0.81';
 
 =head1 CONSTRUCTORS
 

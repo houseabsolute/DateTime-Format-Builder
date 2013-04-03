@@ -57,7 +57,7 @@ In any case, the resultant code ends up looking like:
 
 =cut
 
-$VERSION = '0.77';
+$VERSION = '0.81';
 
 __PACKAGE__->valid_params(
     Quick => {
