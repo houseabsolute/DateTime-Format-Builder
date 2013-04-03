@@ -229,7 +229,7 @@ __END__
 =head1 SYNOPSIS
 
     package DateTime::Format::Brief;
-    our $VERSION = '0.07';
+
     use DateTime::Format::Builder
     (
         parsers => {
