@@ -114,7 +114,7 @@ my @callbacks = qw( on_match on_fail postprocess preprocess );
 
 These parameters appear for all parser implementations.
 These are primarily documented in
-L<the main docs|DateTime::Format::Builder/"SINGLE SPECIFICATIONS">.
+L<DateTime::Format::Builder>.
 
 =over 4
 
@@ -261,7 +261,7 @@ returned (it is assumed to be appropriate).
 
 The single specification (if not a coderef) can be either a
 hashref or a hash. The keys and values must be as per the
-L<specification|/"SINGLE SPECIFICATIONS">.
+specification.
 
 It is here that any arrays of callbacks are unified. It is
 also here that any parser implementations are used. With

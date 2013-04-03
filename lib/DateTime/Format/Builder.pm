@@ -679,7 +679,7 @@ present. I lied. There are actually three of them.
 
 B<parsers> takes a hashref of methods and their parser
 specifications. See the
-L<tutorial above|/"CREATING A CLASS"> for details.
+L<DateTime::Format::Builder::Tutorial> for details.
 
 Note that if you define a subroutine of the same name as one
 of the methods you define here, an error will be thrown.
