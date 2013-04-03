@@ -33,14 +33,14 @@ use DateTime::Format::Builder::Parser::generic;
 @ISA = qw( DateTime::Format::Builder::Parser::generic );
 
 __PACKAGE__->valid_params(
-    strptime	=> {
-	type	=> SCALAR|HASHREF, # straight pattern or options to DTF::Strptime
+    strptime => {
+        type => SCALAR
+            | HASHREF,    # straight pattern or options to DTF::Strptime
     },
 );
 
-sub create_parser
-{
-    my ($self, %args) = @_;
+sub create_parser {
+    my ( $self, %args ) = @_;
 
     # Arguments to DTF::Strptime
     my $pattern = $args{strptime};
@@ -48,35 +48,35 @@ sub create_parser
     # Create our strptime parser
     require DateTime::Format::Strptime;
     my $strptime = DateTime::Format::Strptime->new(
-	( ref $pattern ? %$pattern : ( pattern => $pattern ) ),
+        ( ref $pattern ? %$pattern : ( pattern => $pattern ) ),
     );
-    unless (ref $self)
-    {
-	$self = $self->new( %args );
+    unless ( ref $self ) {
+        $self = $self->new(%args);
     }
     $self->{strptime} = $strptime;
 
     # Create our parser
     return $self->generic_parser(
-	( map { exists $args{$_} ? ( $_ => $args{$_} ) : () } qw(
-	    on_match on_fail preprocess postprocess
-	    ) ),
-	label => $args{label},
+        (
+            map { exists $args{$_} ? ( $_ => $args{$_} ) : () }
+                qw(
+                on_match on_fail preprocess postprocess
+                )
+        ),
+        label => $args{label},
     );
 }
 
-sub do_match
-{
+sub do_match {
     my $self = shift;
     my $date = shift;
-    local $^W; # bizarre bug
-    # Do the match!
-    my $dt = eval { $self->{strptime}->parse_datetime( $date ) };
+    local $^W;    # bizarre bug
+                  # Do the match!
+    my $dt = eval { $self->{strptime}->parse_datetime($date) };
     return $@ ? undef : $dt;
 }
 
-sub post_match
-{
+sub post_match {
     return $_[2];
 }
 

@@ -4,7 +4,6 @@ use Test::More tests => 22;
 
 use DateTime::Format::Builder;
 
-
 {
     eval q[
 	package SampleDispatch;
@@ -35,14 +34,14 @@ use DateTime::Format::Builder;
     my $parser = SampleDispatch->new();
     isa_ok( $parser => 'SampleDispatch' );
 
-    my $dt = eval { $parser->parse_datetime( "20040506" ) };
+    my $dt = eval { $parser->parse_datetime("20040506") };
     ok( !$@, "No errors when parsing." );
     if ($@) { diag $@; exit }
     isa_ok( $dt => 'DateTime' );
 
-    is( $dt->year	=> 2004, 'Year is 2004' );
-    is( $dt->month	=> 5,    'Month is 5' );
-    is( $dt->day	=> 6,    'Day is 6' );
+    is( $dt->year  => 2004, 'Year is 2004' );
+    is( $dt->month => 5,    'Month is 5' );
+    is( $dt->day   => 6,    'Day is 6' );
 
     eval { $parser->fnerk };
     ok( $@, "There is no fnerk." );
@@ -82,7 +81,6 @@ use DateTime::Format::Builder;
         );
     ];
 
-
     ok( !$@, "No errors when creating the class." );
     if ($@) { diag $@; exit }
 
@@ -90,33 +88,31 @@ use DateTime::Format::Builder;
     isa_ok( $parser => 'SampleDispatchB' );
 
     {
-        my $dt = eval { $parser->parse_datetime( "20040506" ) };
+        my $dt = eval { $parser->parse_datetime("20040506") };
         ok( !$@, "No errors when parsing." );
         if ($@) { diag $@; exit }
         isa_ok( $dt => 'DateTime' );
 
-        is( $dt->year	=> 2004, 'Year is 2004' );
-        is( $dt->month	=> 5,    'Month is 5' );
-        is( $dt->day	=> 6,    'Day is 6' );
+        is( $dt->year  => 2004, 'Year is 2004' );
+        is( $dt->month => 5,    'Month is 5' );
+        is( $dt->day   => 6,    'Day is 6' );
     }
 
     {
-        my $dt = eval { $parser->parse_datetime( "200311" ) };
+        my $dt = eval { $parser->parse_datetime("200311") };
         ok( !$@, "No errors when parsing." );
         if ($@) { diag $@; exit }
         isa_ok( $dt => 'DateTime' );
 
-        is( $dt->year	=> 2003, 'Year is 2003' );
-        is( $dt->month	=> 11,   'Month is 11' );
-        is( $dt->day	=> 1,    'Day is 1' );
+        is( $dt->year  => 2003, 'Year is 2003' );
+        is( $dt->month => 11,   'Month is 11' );
+        is( $dt->day   => 1,    'Day is 1' );
     }
-
 
     eval { $parser->fnerk };
     ok( $@, "There is no fnerk." );
 
 }
-
 
 # ------------------------------------------------------------------------
 

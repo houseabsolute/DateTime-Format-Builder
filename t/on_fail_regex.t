@@ -4,7 +4,6 @@ use Test::More tests => 2;
 
 use DateTime::Format::Builder;
 
-
 {
     eval q!package DTFB::FailRegexTest;
         use DateTime::Format::Builder (
@@ -21,9 +20,9 @@ use DateTime::Format::Builder;
     ok( !$@, "Made class" );
     diag $@ if $@;
 
-    my $o = DTFB::FailRegexTest->new();
-    my $str = eval { $o->parse_datetime("FooBlah") };
-    my $e = $@;
+    my $o    = DTFB::FailRegexTest->new();
+    my $str  = eval { $o->parse_datetime("FooBlah") };
+    my $e    = $@;
     my $file = __FILE__;
-    like($e, qr(at \Q$file\E), "Should croak from this file");
+    like( $e, qr(at \Q$file\E), "Should croak from this file" );
 }

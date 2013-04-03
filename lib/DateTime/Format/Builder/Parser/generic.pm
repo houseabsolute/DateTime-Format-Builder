@@ -23,10 +23,9 @@ in the hash. This is useful for storing information between methods.
 
 =cut
 
-sub new
-{
+sub new {
     my $class = shift;
-    bless { @_ }, $class;
+    bless {@_}, $class;
 }
 
 =head3 generic_parser
@@ -65,63 +64,68 @@ postprocess
 
 sub generic_parser {
     my $class = shift;
-    my %args = validate( @_, {
-	    ( map { $_ => { type => CODEREF, optional => 1 } } qw(
-	      on_match on_fail preprocess postprocess
-	    ) ),
-	    label => { type => SCALAR|UNDEF, optional => 1 },
-	});
+    my %args  = validate(
+        @_,
+        {
+            (
+                map { $_ => { type => CODEREF, optional => 1 } }
+                    qw(
+                    on_match on_fail preprocess postprocess
+                    )
+            ),
+            label => { type => SCALAR | UNDEF, optional => 1 },
+        }
+    );
     my $label = $args{label};
 
-    my $callback = (exists $args{on_match} or exists $args{on_fail}) ? 1 : undef;
+    my $callback
+        = ( exists $args{on_match} or exists $args{on_fail} ) ? 1 : undef;
 
-    return sub
-    {
-	my ($self, $date, $p, @args) = @_;
-	return unless defined $date;
-	my %p;
-	%p = %$p if $p; # Look! A Copy!
+    return sub {
+        my ( $self, $date, $p, @args ) = @_;
+        return unless defined $date;
+        my %p;
+        %p = %$p if $p;    # Look! A Copy!
 
-	my %param = (
-	    self => $self,
-	    ( defined $label ? ( label => $label ) : ()),
-	    (@args ? (args => \@args) : ()),
-	);
+        my %param = (
+            self => $self,
+            ( defined $label ? ( label => $label ) : () ),
+            ( @args          ? ( args  => \@args ) : () ),
+        );
 
-	# Preprocess - can modify $date and fill %p
-	if ($args{preprocess})
-	{
-	    $date = $args{preprocess}->( input => $date, parsed => \%p, %param );
-	}
+        # Preprocess - can modify $date and fill %p
+        if ( $args{preprocess} ) {
+            $date = $args{preprocess}
+                ->( input => $date, parsed => \%p, %param );
+        }
 
-	my $rv = $class->do_match( $date, @args ) if $class->can('do_match');
+        my $rv = $class->do_match( $date, @args ) if $class->can('do_match');
 
-	# Funky callback thing
-	if ($callback)
-	{
-	    my $type = defined $rv ? "on_match" : "on_fail";
-	    $args{$type}->( input => $date, %param ) if $args{$type};
-	}
-	return unless defined $rv;
+        # Funky callback thing
+        if ($callback) {
+            my $type = defined $rv ? "on_match" : "on_fail";
+            $args{$type}->( input => $date, %param ) if $args{$type};
+        }
+        return unless defined $rv;
 
-	my $dt;
-	$dt = $class->post_match( $date, $rv, \%p ) if $class->can('post_match');
+        my $dt;
+        $dt = $class->post_match( $date, $rv, \%p )
+            if $class->can('post_match');
 
-	# Allow post processing. Return undef if regarded as failure
-	if ($args{postprocess})
-	{
-	    my $rv = $args{postprocess}->(
-		parsed => \%p,
-		input => $date,
-		post => $dt,
-		%param,
-	    );
-	    return unless $rv;
-	}
+        # Allow post processing. Return undef if regarded as failure
+        if ( $args{postprocess} ) {
+            my $rv = $args{postprocess}->(
+                parsed => \%p,
+                input  => $date,
+                post   => $dt,
+                %param,
+            );
+            return unless $rv;
+        }
 
-	# A successful match!
-	$dt = $class->make( $date, $dt, \%p ) if $class->can('make');
-	return $dt;
+        # A successful match!
+        $dt = $class->make( $date, $dt, \%p ) if $class->can('make');
+        return $dt;
     };
 }
 
@@ -169,9 +173,8 @@ Instead we get to type:
 
 {
     no strict 'refs';
-    for (qw( valid_params params ))
-    {
-	*$_ = *{"DateTime::Format::Builder::Parser::$_"};
+    for (qw( valid_params params )) {
+        *$_ = *{"DateTime::Format::Builder::Parser::$_"};
     }
 }
 

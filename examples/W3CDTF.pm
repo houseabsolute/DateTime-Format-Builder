@@ -3,102 +3,97 @@
 
 use strict;
 
-use DateTime::Format::Builder
-(
+use DateTime::Format::Builder (
     parsers => {
-	parse_datetime => [
-	[ preprocess => \&_parse_tz ],
-	{
-	    params => [ qw( year month day hour minute second) ],
-	    regex  => qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)\.(\d\d)$/,
-	    length => 22,
-	},
-	{
-	    params => [ qw( year month day hour minute second) ],
-	    regex  => qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$/,
-	    length => 19,
-	},
-	{
-	    params => [ qw( year month day hour minute) ],
-	    regex  => qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)$/,
-	    length => 16,
-	},
-	{
-	    params => [ qw( year month day ) ],
-	    regex  => qr/^(\d{4})-(\d\d)-(\d\d)$/,
-	    length => 10,
-	},
-	{
-	    params => [ qw( year month ) ],
-	    regex  => qr/^(\d{4})-(\d\d)$/,
-	    length => 7,
-	    extra   => { day => 1 },
-	},
-	{
-	    params => [ qw( year ) ],
-	    regex  => qr/^(\d\d\d\d)$/,
-	    length => 4,
-	    extra   => { month => 1, day => 1 }
-	}
-	]
+        parse_datetime => [
+            [ preprocess => \&_parse_tz ],
+            {
+                params => [qw( year month day hour minute second)],
+                regex =>
+                    qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)\.(\d\d)$/,
+                length => 22,
+            },
+            {
+                params => [qw( year month day hour minute second)],
+                regex  => qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)$/,
+                length => 19,
+            },
+            {
+                params => [qw( year month day hour minute)],
+                regex  => qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d)$/,
+                length => 16,
+            },
+            {
+                params => [qw( year month day )],
+                regex  => qr/^(\d{4})-(\d\d)-(\d\d)$/,
+                length => 10,
+            },
+            {
+                params => [qw( year month )],
+                regex  => qr/^(\d{4})-(\d\d)$/,
+                length => 7,
+                extra  => { day => 1 },
+            },
+            {
+                params => [qw( year )],
+                regex  => qr/^(\d\d\d\d)$/,
+                length => 4,
+                extra  => { month => 1, day => 1 }
+            }
+        ]
     }
 );
 
-sub _parse_tz
-{
+sub _parse_tz {
     my %args = @_;
-    my ($date, $p) = @args{qw( input parsed )};
-    if ( $date =~ s/([+-]\d\d:\d\d)$// )
-    {
+    my ( $date, $p ) = @args{qw( input parsed )};
+    if ( $date =~ s/([+-]\d\d:\d\d)$// ) {
         $p->{time_zone} = $1;
     }
+
     # Z at end means UTC
-    elsif ( $date =~ s/Z$// )
-    {
+    elsif ( $date =~ s/Z$// ) {
         $p->{time_zone} = 'UTC';
     }
-    else
-    {
+    else {
         $p->{time_zone} = 'floating';
     }
     return $date;
 }
 
-
-sub format_datetime
-{
+sub format_datetime {
     my ( $self, $dt ) = @_;
 
-    my $base =
-        ( $dt->hour || $dt->min || $dt->sec ?
-          sprintf( '%04d-%02d-%02dT%02d:%02d:%02d',
-                   $dt->year, $dt->month, $dt->day,
-                   $dt->hour, $dt->minute, $dt->second ) :
-          sprintf( '%04d-%02d-%02d', $dt->year, $dt->month, $dt->day )
-        );
-
+    my $base = (
+        $dt->hour || $dt->min || $dt->sec
+        ? sprintf(
+            '%04d-%02d-%02dT%02d:%02d:%02d',
+            $dt->year, $dt->month,  $dt->day,
+            $dt->hour, $dt->minute, $dt->second
+            )
+        : sprintf( '%04d-%02d-%02d', $dt->year, $dt->month, $dt->day )
+    );
 
     my $tz = $dt->time_zone;
 
     return $base if $tz->is_floating;
 
-	# if there is a time component
-	if ( $dt->hour || $dt->min || $dt->sec ) {
-    	return $base . 'Z' if $tz->is_utc;
+    # if there is a time component
+    if ( $dt->hour || $dt->min || $dt->sec ) {
+        return $base . 'Z' if $tz->is_utc;
 
-		if ( $tz->{'offset'} ) {
-			return $base . offset_as_string( $tz->{'offset'} );
-		}
-	}
-	else {
-		return $base;
-	}
+        if ( $tz->{'offset'} ) {
+            return $base . offset_as_string( $tz->{'offset'} );
+        }
+    }
+    else {
+        return $base;
+    }
 }
 
 # minor offset_as_string variant w/ :
 #
-sub offset_as_string
-{
+sub offset_as_string {
     my $offset = shift;
 
     return undef unless defined $offset;
@@ -112,10 +107,11 @@ sub offset_as_string
 
     my $secs = $offset % 60;
 
-    return ( $secs ?
-             sprintf( '%s%02d:%02d:%02d', $sign, $hours, $mins, $secs ) :
-             sprintf( '%s%02d:%02d', $sign, $hours, $mins )
-           );
+    return (
+        $secs
+        ? sprintf( '%s%02d:%02d:%02d', $sign, $hours, $mins, $secs )
+        : sprintf( '%s%02d:%02d',      $sign, $hours, $mins )
+    );
 }
 
 1;

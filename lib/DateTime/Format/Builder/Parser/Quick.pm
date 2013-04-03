@@ -61,34 +61,33 @@ $VERSION = '0.77';
 
 __PACKAGE__->valid_params(
     Quick => {
-	type => SCALAR|OBJECT,
+        type      => SCALAR | OBJECT,
         callbacks => {
             good_classname => sub {
-                (ref $_[0]) or ( $_[0] =~ /^\w+[:'\w+]*\w+/ )
+                ( ref $_[0] ) or ( $_[0] =~ /^\w+[:'\w+]*\w+/ );
             },
         }
     },
     method => {
         optional => 1,
-        type => SCALAR|CODEREF,
+        type     => SCALAR | CODEREF,
     },
 );
 
-sub create_parser
-{
-    my ($self, %args) = @_;
-    my $class = $args{Quick};
+sub create_parser {
+    my ( $self, %args ) = @_;
+    my $class  = $args{Quick};
     my $method = $args{method};
     $method = 'parse_datetime' unless defined $method;
     eval "use $class";
     die $@ if $@;
 
     return sub {
-        my ($self, $date) = @_;
-	return unless defined $date;
-        my $rv = eval { $class->$method( $date ) };
+        my ( $self, $date ) = @_;
+        return unless defined $date;
+        my $rv = eval { $class->$method($date) };
         return $rv if defined $rv;
-	return;
+        return;
     };
 }
 

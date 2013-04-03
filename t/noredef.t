@@ -4,15 +4,13 @@ use Test::More tests => 1;
 
 use DateTime::Format::Builder;
 
-
 my %parsers = (
     parsers => {
-	parse_datetime =>
-	{
-	    length => 8,
-	    regex => qr/^abcdef$/,
-	    params => [qw( year month day )],
-	}
+        parse_datetime => {
+            length => 8,
+            regex  => qr/^abcdef$/,
+            params => [qw( year month day )],
+        }
     }
 );
 

@@ -7,66 +7,72 @@ use DateTime;
 
 # Builder relevant stuff starts here.
 
-use DateTime::Format::Builder
-    ( parsers =>
-      { parse_date =>
-        { params => [ qw( year month day ) ],
-          regex  => qr/^(\d{1,4})-(\d\d)-(\d\d)$/,
+use DateTime::Format::Builder (
+    parsers => {
+        parse_date => {
+            params => [qw( year month day )],
+            regex  => qr/^(\d{1,4})-(\d\d)-(\d\d)$/,
         },
 
-        parse_datetime =>
-        { params => [ qw( year month day hour minute second ) ],
-          regex  => qr/^(\d{1,4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/,
-          extra  => { time_zone => 'floating' },
+        parse_datetime => {
+            params => [qw( year month day hour minute second )],
+            regex  => qr/^(\d{1,4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/,
+            extra  => { time_zone => 'floating' },
         },
 
-        parse_timestamp =>
-        [ { length => 14,
-            params => [ qw( year month day hour minute second ) ],
-            regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-          },
-          { length => 12,
-            params => [ qw( year month day hour minute second ) ],
-            regex  => qr/^(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-            postprocess => \&_fix_2_digit_year,
-          },
-          { length => 10,
-            params => [ qw( year month day hour minute ) ],
-            regex  => qr/^(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-            postprocess => \&_fix_2_digit_year,
-          },
-          { length => 8,
-            params => [ qw( year month day ) ],
-            regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-          },
-          { length => 6,
-            params => [ qw( year month day ) ],
-            regex  => qr/^(\d\d)(\d\d)(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-            postprocess => \&_fix_2_digit_year,
-          },
-          { length => 4,
-            params => [ qw( year month ) ],
-            regex  => qr/^(\d\d)(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-            postprocess => \&_fix_2_digit_year,
-          },
-          { length => 2,
-            params => [ qw( year ) ],
-            regex  => qr/^(\d\d)$/,
-            extra  => { time_zone => 'floating' },
-            postprocess => \&_fix_2_digit_year,
-          },
+        parse_timestamp => [
+            {
+                length => 14,
+                params => [qw( year month day hour minute second )],
+                regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+                extra  => { time_zone => 'floating' },
+            },
+            {
+                length      => 12,
+                params      => [qw( year month day hour minute second )],
+                regex       => qr/^(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+                extra       => { time_zone => 'floating' },
+                postprocess => \&_fix_2_digit_year,
+            },
+            {
+                length      => 10,
+                params      => [qw( year month day hour minute )],
+                regex       => qr/^(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+                extra       => { time_zone => 'floating' },
+                postprocess => \&_fix_2_digit_year,
+            },
+            {
+                length => 8,
+                params => [qw( year month day )],
+                regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
+                extra  => { time_zone => 'floating' },
+            },
+            {
+                length      => 6,
+                params      => [qw( year month day )],
+                regex       => qr/^(\d\d)(\d\d)(\d\d)$/,
+                extra       => { time_zone => 'floating' },
+                postprocess => \&_fix_2_digit_year,
+            },
+            {
+                length      => 4,
+                params      => [qw( year month )],
+                regex       => qr/^(\d\d)(\d\d)$/,
+                extra       => { time_zone => 'floating' },
+                postprocess => \&_fix_2_digit_year,
+            },
+            {
+                length      => 2,
+                params      => [qw( year )],
+                regex       => qr/^(\d\d)$/,
+                extra       => { time_zone => 'floating' },
+                postprocess => \&_fix_2_digit_year,
+            },
         ],
-      },
-    );
+    },
+);
 
-sub _fix_2_digit_year
-{
+sub _fix_2_digit_year {
     my %p = @_;
 
     $p{parsed}{year} += $p{parsed}{year} <= 69 ? 2000 : 1900;
@@ -74,27 +80,23 @@ sub _fix_2_digit_year
 
 # Builder relevant stuff ends here.
 
-sub format_date
-{
+sub format_date {
     my ( $self, $dt ) = @_;
 
     return $dt->ymd('-');
 }
 
-sub format_time
-{
+sub format_time {
     my ( $self, $dt ) = @_;
 
     return $dt->hms(':');
 }
 
-sub format_datetime
-{
+sub format_datetime {
     my ( $self, $dt ) = @_;
 
     return $self->format_date($dt) . ' ' . $self->format_time($dt);
 }
-
 
 1;
 

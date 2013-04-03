@@ -4,15 +4,13 @@ use Test::More tests => 9;
 
 use DateTime::Format::Builder;
 
-
 my %parsers = (
     parsers => {
-	parse_datetime =>
-	{
-	    length => 8,
-	    regex => qr/^abcdef$/,
-	    params => [qw( year month day )],
-	}
+        parse_datetime => {
+            length => 8,
+            regex  => qr/^abcdef$/,
+            params => [qw( year month day )],
+        }
     }
 );
 
@@ -33,13 +31,16 @@ my %parsers = (
     diag $@ if $@;
 
     {
-	no strict 'refs';
-	ok( !( *{"${class}::new"}{CV}), "There is indeed no 'new'" );
+        no strict 'refs';
+        ok( !( *{"${class}::new"}{CV} ), "There is indeed no 'new'" );
     }
 
     my $parser = eval { $class->new() };
-    ok( $@, "Error when trying to instantiate (no new)");
-    like( $@, qr/^Can't locate object method "new" via package "$class"/, "Right error" );
+    ok( $@, "Error when trying to instantiate (no new)" );
+    like(
+        $@, qr/^Can't locate object method "new" via package "$class"/,
+        "Right error"
+    );
 }
 
 # Ensure we don't have people wiping out their constructors
@@ -70,11 +71,11 @@ my %parsers = (
     ok( !$@, "No error when creating class." );
     diag $@ if $@;
 
-    my $parser = eval { $class->new()  };
+    my $parser = eval { $class->new() };
     is( $parser => 5, "Didn't override new()" );
 }
 
-# Ensure we use the given constructor 
+# Ensure we use the given constructor
 {
     my $class = 'SampleClassGiven';
     eval q[
@@ -87,6 +88,6 @@ my %parsers = (
     ok( !$@, "No error when creating class." );
     diag $@ if $@;
 
-    my $parser= eval { $class->new() };
+    my $parser = eval { $class->new() };
     is( $parser => 6, "Used given new()" );
 }

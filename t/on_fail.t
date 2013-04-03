@@ -4,7 +4,6 @@ use Test::More tests => 7;
 
 use DateTime::Format::Builder;
 
-
 {
     eval q|
         package DTFB::OnFailTest;
@@ -41,14 +40,14 @@ use DateTime::Format::Builder;
     ok( !$@, "Made class" );
     diag $@ if $@;
 
-    my $o = DTFB::OnFailTest->new;
-    my $good_parse = $o->parse_datetime( "2003/08/09" );
+    my $o          = DTFB::OnFailTest->new;
+    my $good_parse = $o->parse_datetime("2003/08/09");
     isa_ok( $good_parse, 'DateTime' );
-    is( $good_parse->year => 2003, "Year good" );
-    is( $good_parse->month => 8, "Month good" );
-    is( $good_parse->day => 9, "Day good" );
+    is( $good_parse->year  => 2003, "Year good" );
+    is( $good_parse->month => 8,    "Month good" );
+    is( $good_parse->day   => 9,    "Day good" );
 
-    my $bad_parse = eval { $o->parse_datetime( "Fnerk" ) };
+    my $bad_parse = eval { $o->parse_datetime("Fnerk") };
     ok( !$@, "Bad parse gives no error" );
-    ok( (!defined($bad_parse)), "Bad parse correctly gives undef" );
+    ok( ( !defined($bad_parse) ), "Bad parse correctly gives undef" );
 }

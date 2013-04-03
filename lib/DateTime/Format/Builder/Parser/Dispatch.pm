@@ -77,37 +77,35 @@ $VERSION = '0.78';
 {
     no strict 'refs';
     *dispatch_data = *DateTime::Format::Builder::dispatch_data;
-    *params = *DateTime::Format::Builder::Parser::params;
+    *params        = *DateTime::Format::Builder::Parser::params;
 }
 
 DateTime::Format::Builder::Parser->valid_params(
     Dispatch => {
-	type => CODEREF,
+        type => CODEREF,
     }
 );
 
-sub create_parser
-{
-    my ($self, %args) = @_;
+sub create_parser {
+    my ( $self, %args ) = @_;
     my $coderef = $args{Dispatch};
 
     return sub {
-	my ($self, $date, $p, @args) = @_;
-	return unless defined $date;
-	my $class = ref($self)||$self;
+        my ( $self, $date, $p, @args ) = @_;
+        return unless defined $date;
+        my $class = ref($self) || $self;
 
-	my @results = $coderef->( $date );
-	return unless @results;
-	return unless defined $results[0];
+        my @results = $coderef->($date);
+        return unless @results;
+        return unless defined $results[0];
 
-	for my $group (@results)
-	{
-	    my $parser = $dispatch_data{$class}{$group};
-	    die "Unknown parsing group: $class\n" unless defined $parser;
-	    my $rv = eval { $parser->parse( $self, $date, $p, @args ) };
-	    return $rv unless $@ or not defined $rv;
-	}
-	return;
+        for my $group (@results) {
+            my $parser = $dispatch_data{$class}{$group};
+            die "Unknown parsing group: $class\n" unless defined $parser;
+            my $rv = eval { $parser->parse( $self, $date, $p, @args ) };
+            return $rv unless $@ or not defined $rv;
+        }
+        return;
     };
 }
 
