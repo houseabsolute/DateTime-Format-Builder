@@ -101,7 +101,7 @@ They are presented, grouped according to use.
 
 These methods allow implementations to have validation of
 their arguments in a standard manner and due to C<Parser>'s
-impelementation, these methods also allow C<Parser> to
+implementation, these methods also allow C<Parser> to
 determine which implementation to use.
 
 =cut

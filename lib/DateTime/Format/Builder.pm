@@ -842,7 +842,7 @@ parse failed an error will be thrown.
 
 =head2 format_datetime
 
-If you call this function, it will throw an errror.
+If you call this function, it will throw an error.
 
 =head1 LONGER EXAMPLES
 
