@@ -11,23 +11,6 @@ use Params::Validate qw(
 );
 use Scalar::Util qw( weaken );
 
-=head1 SYNOPSIS
-
-    my $class = 'DateTime::Format::Builder::Parser';
-    my $parser = $class->create_single_parser( %specs );
-
-=head1 DESCRIPTION
-
-This is a utility class for L<DateTime::Format::Builder> that
-handles creation of parsers. It is to here that C<Builder> delegates
-most of its responsibilities.
-
-=cut
-
-=head1 CONSTRUCTORS
-
-=cut
-
 sub on_fail {
     my ( $self, $input ) = @_;
     my $maker = $self->maker;
@@ -92,65 +75,9 @@ sub set_fail {
     $self;
 }
 
-=head1 METHODS
-
-There are two sorts of methods in this class. Those used by
-parser implementations and those used by C<Builder>. It is
-generally unlikely the user will want to use any of them.
-
-They are presented, grouped according to use.
-
-=head2 Parameter Handling (implementations)
-
-These methods allow implementations to have validation of
-their arguments in a standard manner and due to C<Parser>'s
-implementation, these methods also allow C<Parser> to
-determine which implementation to use.
-
-=cut
-
 my @callbacks = qw( on_match on_fail postprocess preprocess );
 
 {
-
-=head3 Common parameters
-
-These parameters appear for all parser implementations.
-These are primarily documented in
-L<DateTime::Format::Builder>.
-
-=over 4
-
-=item *
-
-B<on_match>
-
-=item *
-
-B<on_fail>
-
-=item *
-
-B<postprocess>
-
-=item *
-
-B<preprocess>
-
-=item *
-
-B<label>
-
-=item *
-
-B<length> may be a number or an arrayref of numbers
-indicating the length of the input. This lets us optimise in
-the case of static length input. If supplying an arrayref of
-numbers, please keep the number of numbers to a minimum.
-
-=back
-
-=cut
 
     my %params = (
         common => {
@@ -172,30 +99,11 @@ numbers, please keep the number of numbers to a minimum.
         },
     );
 
-=head3 params
-
-    my $params = $self->params();
-    validate( @_, $params );
-
-Returns declared parameters and C<common> parameters in a hashref
-suitable for handing to L<Params::Validate>'s C<validate> function.
-
-=cut
-
     sub params {
         my $self = shift;
         my $caller = ref $self || $self;
         return { map {%$_} @params{ $caller, 'common' } };
     }
-
-=head3 params_all
-
-    my $all_params = $self->params_all();
-
-Returns a hash of all the valid options. Not recommended
-for general use.
-
-=cut
 
     my $all_params;
 
@@ -205,16 +113,6 @@ for general use.
         $_->{optional} = 1 for values %all_params;
         $all_params = \%all_params;
     }
-
-=head3 valid_params
-
-    __PACKAGE__->valid_params( %params );
-
-Arguments are as per L<Params::Validate>'s C<validate> function.
-This method is used to declare what your valid arguments are in
-a parser specification.
-
-=cut
 
     my %inverse;
 
@@ -235,55 +133,11 @@ a parser specification.
         1;
     }
 
-=head3 whose_params
-
-    my $class = whose_params( $key );
-
-Internal function which merely returns to which class a
-parameter is unique. If not unique, returns C<undef>.
-
-=cut
-
     sub whose_params {
         my $param = shift;
         return $inverse{$param};
     }
 }
-
-=head2 Organising and Creating Parsers
-
-=head3 create_single_parser
-
-This takes a single specification and returns a coderef that
-is a parser that suits that specification. This is the end
-of the line for all the parser creation methods. It
-delegates no further.
-
-If a coderef is specified, then that coderef is immediately
-returned (it is assumed to be appropriate).
-
-The single specification (if not a coderef) can be either a
-hashref or a hash. The keys and values must be as per the
-specification.
-
-It is here that any arrays of callbacks are unified. It is
-also here that any parser implementations are used. With
-the spec that's given, the keys are looked at and whichever
-module is the first to have a unique key in the spec is the
-one to whom the spec is given.
-
-B<Note>: please declare a C<valid_params> argument with an
-uppercase letter. For example, if you're writing
-C<DateTime::Format::Builder::Parser::Fnord>, declare a
-parameter called C<Fnord>. Similarly, C<DTFBP::Strptime>
-should have C<Strptime> and C<DTFBP::Regex> should have
-C<Regex>. These latter two don't for backwards compatibility
-reasons.
-
-The returned parser will return either a C<DateTime> object
-or C<undef>.
-
-=cut
 
 sub create_single_object {
     my ($self) = shift;
@@ -323,13 +177,6 @@ sub create_single_parser {
     $from->$method(%args);
 }
 
-=head3 merge_callbacks
-
-Produce either undef or a single coderef from either undef,
-an empty array, a single coderef or an array of coderefs
-
-=cut
-
 sub merge_callbacks {
     my $self = shift;
 
@@ -359,18 +206,6 @@ sub merge_callbacks {
         $rv;
     };
 }
-
-=head2 create_multiple_parsers
-
-Given the options block (as made from C<create_parser()>)
-and a list of single parser specifications, this returns a
-coderef that returns either the resultant C<DateTime> object
-or C<undef>.
-
-It first sorts the specifications using C<sort_parsers()>
-and then creates the function based on what that returned.
-
-=cut
 
 sub create_multiple_parsers {
     my $class = shift;
@@ -440,30 +275,6 @@ sub create_multiple_parsers {
     $obj->set_parser($parser);
 }
 
-=head2 sort_parsers
-
-This takes the list of specifications and sorts them while
-turning the specifications into parsers. It returns two
-values: the first is a hashref containing all the length
-based parsers. The second is an array containing all the
-other parsers.
-
-If any of the specs are not code or hash references, then it
-will call C<croak()>.
-
-Code references are put directly into the 'other' array. Any
-hash references without I<length> keys are run through
-C<create_single_parser()> and the resultant parser is placed
-in the 'other' array.
-
-Hash references B<with> I<length> keys are run through
-C<create_single_parser()>, but the resultant parser is used
-as the value in the length hashref with the length being the
-key. If two or more parsers have the same I<length>
-specified then an error is thrown.
-
-=cut
-
 sub sort_parsers {
     my $class = shift;
     shift;
@@ -520,6 +331,217 @@ sub chain_parsers {
     };
 }
 
+sub create_parser {
+    my $class = shift;
+    if ( not ref $_[0] ) {
+
+        # Simple case of single specification as a hash
+        return $class->create_single_object(@_);
+    }
+
+    # Let's see if we were given an options block
+    my %options;
+    while ( ref $_[0] eq 'ARRAY' ) {
+        my $options = shift;
+        %options = ( %options, @$options );
+    }
+
+    # Now, can we create a multi-parser out of the remaining arguments?
+    if ( ref $_[0] eq 'HASH' or ref $_[0] eq 'CODE' ) {
+        return $class->create_multiple_parsers( \%options, @_ );
+    }
+    else {
+        # If it wasn't a HASH or CODE, then it was (ideally)
+        # a list of pairs describing a single specification.
+        return $class->create_multiple_parsers( \%options, {@_} );
+    }
+}
+
+# Find all our workers
+{
+    use Class::Factory::Util 1.6;
+
+    foreach my $worker ( __PACKAGE__->subclasses ) {
+        eval "use DateTime::Format::Builder::Parser::$worker;";
+        die $@ if $@;
+    }
+}
+
+1;
+
+# ABSTRACT: Parser creation
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 SYNOPSIS
+
+    my $class = 'DateTime::Format::Builder::Parser';
+    my $parser = $class->create_single_parser( %specs );
+
+=head1 DESCRIPTION
+
+This is a utility class for L<DateTime::Format::Builder> that
+handles creation of parsers. It is to here that C<Builder> delegates
+most of its responsibilities.
+
+=head1 METHODS
+
+There are two sorts of methods in this class. Those used by
+parser implementations and those used by C<Builder>. It is
+generally unlikely the user will want to use any of them.
+
+They are presented, grouped according to use.
+
+=head2 Parameter Handling (implementations)
+
+These methods allow implementations to have validation of
+their arguments in a standard manner and due to C<Parser>'s
+implementation, these methods also allow C<Parser> to
+determine which implementation to use.
+
+=cut
+
+=head3 Common parameters
+
+These parameters appear for all parser implementations.
+These are primarily documented in
+L<DateTime::Format::Builder>.
+
+=over 4
+
+=item *
+
+B<on_match>
+
+=item *
+
+B<on_fail>
+
+=item *
+
+B<postprocess>
+
+=item *
+
+B<preprocess>
+
+=item *
+
+B<label>
+
+=item *
+
+B<length> may be a number or an arrayref of numbers
+indicating the length of the input. This lets us optimize in
+the case of static length input. If supplying an arrayref of
+numbers, please keep the number of numbers to a minimum.
+
+=back
+
+=head3 params
+
+    my $params = $self->params();
+    validate( @_, $params );
+
+Returns declared parameters and C<common> parameters in a hashref
+suitable for handing to L<Params::Validate>'s C<validate> function.
+
+=head3 params_all
+
+    my $all_params = $self->params_all();
+
+Returns a hash of all the valid options. Not recommended
+for general use.
+
+=head3 valid_params
+
+    __PACKAGE__->valid_params( %params );
+
+Arguments are as per L<Params::Validate>'s C<validate> function.
+This method is used to declare what your valid arguments are in
+a parser specification.
+
+=head3 whose_params
+
+    my $class = whose_params( $key );
+
+Internal function which merely returns to which class a
+parameter is unique. If not unique, returns C<undef>.
+
+=head2 Organizing and Creating Parsers
+
+=head3 create_single_parser
+
+This takes a single specification and returns a coderef that
+is a parser that suits that specification. This is the end
+of the line for all the parser creation methods. It
+delegates no further.
+
+If a coderef is specified, then that coderef is immediately
+returned (it is assumed to be appropriate).
+
+The single specification (if not a coderef) can be either a
+hashref or a hash. The keys and values must be as per the
+specification.
+
+It is here that any arrays of callbacks are unified. It is
+also here that any parser implementations are used. With
+the spec that's given, the keys are looked at and whichever
+module is the first to have a unique key in the spec is the
+one to whom the spec is given.
+
+B<Note>: please declare a C<valid_params> argument with an
+uppercase letter. For example, if you're writing
+C<DateTime::Format::Builder::Parser::Fnord>, declare a
+parameter called C<Fnord>. Similarly, C<DTFBP::Strptime>
+should have C<Strptime> and C<DTFBP::Regex> should have
+C<Regex>. These latter two don't for backwards compatibility
+reasons.
+
+The returned parser will return either a C<DateTime> object
+or C<undef>.
+
+=head3 merge_callbacks
+
+Produce either undef or a single coderef from either undef,
+an empty array, a single coderef or an array of coderefs
+
+=head2 create_multiple_parsers
+
+Given the options block (as made from C<create_parser()>)
+and a list of single parser specifications, this returns a
+coderef that returns either the resultant C<DateTime> object
+or C<undef>.
+
+It first sorts the specifications using C<sort_parsers()>
+and then creates the function based on what that returned.
+
+=head2 sort_parsers
+
+This takes the list of specifications and sorts them while
+turning the specifications into parsers. It returns two
+values: the first is a hashref containing all the length
+based parsers. The second is an array containing all the
+other parsers.
+
+If any of the specs are not code or hash references, then it
+will call C<croak()>.
+
+Code references are put directly into the 'other' array. Any
+hash references without I<length> keys are run through
+C<create_single_parser()> and the resultant parser is placed
+in the 'other' array.
+
+Hash references B<with> I<length> keys are run through
+C<create_single_parser()>, but the resultant parser is used
+as the value in the length hashref with the length being the
+key. If two or more parsers have the same I<length>
+specified then an error is thrown.
+
 =head2 create_parser
 
 C<create_class()> is mostly a wrapper around
@@ -555,34 +577,6 @@ methods is then wrapped in a function that calls C<croak()>
 in event of failure or the C<DateTime> object in event of
 success.
 
-=cut
-
-sub create_parser {
-    my $class = shift;
-    if ( not ref $_[0] ) {
-
-        # Simple case of single specification as a hash
-        return $class->create_single_object(@_);
-    }
-
-    # Let's see if we were given an options block
-    my %options;
-    while ( ref $_[0] eq 'ARRAY' ) {
-        my $options = shift;
-        %options = ( %options, @$options );
-    }
-
-    # Now, can we create a multi-parser out of the remaining arguments?
-    if ( ref $_[0] eq 'HASH' or ref $_[0] eq 'CODE' ) {
-        return $class->create_multiple_parsers( \%options, @_ );
-    }
-    else {
-        # If it wasn't a HASH or CODE, then it was (ideally)
-        # a list of pairs describing a single specification.
-        return $class->create_multiple_parsers( \%options, {@_} );
-    }
-}
-
 =head1 FINDING IMPLEMENTATIONS
 
 C<Parser> automatically loads any parser classes in C<@INC>.
@@ -592,24 +586,6 @@ C<DateTime::Format::Builder::Parser::XXX> module.
 
 To be invisible, and not loaded, start your class with a lower class
 letter. These are ignored.
-
-=cut
-
-# Find all our workers
-{
-    use Class::Factory::Util 1.6;
-
-    foreach my $worker ( __PACKAGE__->subclasses ) {
-        eval "use DateTime::Format::Builder::Parser::$worker;";
-        die $@ if $@;
-    }
-}
-
-1;
-
-# ABSTRACT: Parser creation
-
-__END__
 
 =head1 WRITING A PARSER IMPLEMENTATION
 
@@ -668,10 +644,6 @@ In particular, C<preprocess>, C<on_match>, C<on_fail> and
 C<postprocess>. See the L<main Builder|DateTime::Format::Builder>
 docs for the appropriate placing of calls to the callbacks.
 
-=head1 SUPPORT
-
-See L<DateTime::Format::Builder> for details.
-
 =head1 SEE ALSO
 
 C<datetime@perl.org> mailing list.
@@ -689,4 +661,3 @@ L<DateTime::Format::Builder::Parser::Regex>,
 L<DateTime::Format::Builder::Parser::Strptime>.
 
 =cut
-

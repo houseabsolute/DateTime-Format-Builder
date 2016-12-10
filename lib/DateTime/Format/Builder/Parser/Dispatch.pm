@@ -9,6 +9,51 @@ use vars qw( %dispatch_data );
 use Params::Validate qw( CODEREF validate );
 use DateTime::Format::Builder::Parser;
 
+{
+    no strict 'refs';
+    *dispatch_data = *DateTime::Format::Builder::dispatch_data;
+    *params        = *DateTime::Format::Builder::Parser::params;
+}
+
+DateTime::Format::Builder::Parser->valid_params(
+    Dispatch => {
+        type => CODEREF,
+    }
+);
+
+sub create_parser {
+    my ( $self, %args ) = @_;
+    my $coderef = $args{Dispatch};
+
+    return sub {
+        my ( $self, $date, $p, @args ) = @_;
+        return unless defined $date;
+        my $class = ref($self) || $self;
+
+        my @results = $coderef->($date);
+        return unless @results;
+        return unless defined $results[0];
+
+        for my $group (@results) {
+            my $parser = $dispatch_data{$class}{$group};
+            die "Unknown parsing group: $class\n" unless defined $parser;
+            my $rv = eval { $parser->parse( $self, $date, $p, @args ) };
+            return $rv unless $@ or not defined $rv;
+        }
+        return;
+    };
+}
+
+1;
+
+# ABSTRACT: Dispatch parsers by group
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
 =head1 SYNOPSIS
 
     package SampleDispatch;
@@ -66,57 +111,10 @@ A list of strings, meaning: use these groups in this order.
 Groups are specified much like the example in the L<SYNOPSIS>.
 They follow the same format as when you specify them for methods.
 
-=head1 SIDEEFFECTS
+=head1 SIDE EFFECTS
 
 Your group parser can also be a Dispatch parser. Thus you could
 potentially end up with an infinitely recursive parser.
-
-=cut
-
-{
-    no strict 'refs';
-    *dispatch_data = *DateTime::Format::Builder::dispatch_data;
-    *params        = *DateTime::Format::Builder::Parser::params;
-}
-
-DateTime::Format::Builder::Parser->valid_params(
-    Dispatch => {
-        type => CODEREF,
-    }
-);
-
-sub create_parser {
-    my ( $self, %args ) = @_;
-    my $coderef = $args{Dispatch};
-
-    return sub {
-        my ( $self, $date, $p, @args ) = @_;
-        return unless defined $date;
-        my $class = ref($self) || $self;
-
-        my @results = $coderef->($date);
-        return unless @results;
-        return unless defined $results[0];
-
-        for my $group (@results) {
-            my $parser = $dispatch_data{$class}{$group};
-            die "Unknown parsing group: $class\n" unless defined $parser;
-            my $rv = eval { $parser->parse( $self, $date, $p, @args ) };
-            return $rv unless $@ or not defined $rv;
-        }
-        return;
-    };
-}
-
-1;
-
-# ABSTRACT: Dispatch parsers by group
-
-__END__
-
-=head1 SUPPORT
-
-See L<DateTime::Format::Builder> for details.
 
 =head1 SEE ALSO
 
@@ -128,5 +126,3 @@ L<perl>, L<DateTime>,
 L<DateTime::Format::Builder>
 
 =cut
-
-

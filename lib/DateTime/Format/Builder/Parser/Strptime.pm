@@ -1,36 +1,14 @@
 package DateTime::Format::Builder::Parser::Strptime;
 
-=head1 SYNOPSIS
-
-   my $parser = DateTime::Format::Builder->create_parser(
-	strptime => '%e/%b/%Y:%H:%M:%S %z',
-   );
-
-=head1 SPECIFICATION
-
-=over 4
-
-=item *
-
-B<strptime> takes as its argument a strptime string.
-See L<DateTime::Format::Strptime> for more information
-on valid patterns.
-
-=back
-
-=cut
-
 use strict;
 use warnings;
 
 our $VERSION = '0.82';
 
-use vars qw( @ISA );
 use DateTime::Format::Strptime 1.04;
 use Params::Validate qw( validate SCALAR HASHREF );
 
-use DateTime::Format::Builder::Parser::generic;
-@ISA = qw( DateTime::Format::Builder::Parser::generic );
+use parent 'DateTime::Format::Builder::Parser::generic';
 
 __PACKAGE__->valid_params(
     strptime => {
@@ -85,9 +63,29 @@ sub post_match {
 
 __END__
 
-=head1 SUPPORT
+=pod
 
-See L<DateTime::Format::Builder> for details.
+=encoding UTF-8
+
+=head1 SYNOPSIS
+
+   my $parser = DateTime::Format::Builder->create_parser(
+	strptime => '%e/%b/%Y:%H:%M:%S %z',
+   );
+
+=head1 SPECIFICATION
+
+=over 4
+
+=item *
+
+B<strptime> takes as its argument a strptime string.
+See L<DateTime::Format::Strptime> for more information
+on valid patterns.
+
+=back
+
+=cut
 
 =head1 SEE ALSO
 

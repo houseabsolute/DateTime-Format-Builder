@@ -10,55 +10,10 @@ use Params::Validate qw(
     validate SCALAR CODEREF UNDEF
 );
 
-=head1 METHODS
-
-=head2 Useful
-
-=head3 new
-
-Standard constructor. Returns a blessed hash; any arguments are placed
-in the hash. This is useful for storing information between methods.
-
-=cut
-
 sub new {
     my $class = shift;
     bless {@_}, $class;
 }
-
-=head3 generic_parser
-
-This is a method provided solely for the benefit of
-C<Parser> implementations. It semi-neatly abstracts
-a lot of the work involved.
-
-Basically, it takes parameters matching the assorted
-callbacks from the parser declarations and makes a coderef
-out of it all.
-
-Currently recognized callbacks are:
-
-=over 4
-
-=item *
-
-on_match
-
-=item *
-
-on_fail
-
-=item *
-
-preprocess
-
-=item *
-
-postprocess
-
-=back
-
-=cut
 
 sub generic_parser {
     my $class = shift;
@@ -127,6 +82,64 @@ sub generic_parser {
     };
 }
 
+{
+    no strict 'refs';
+    for (qw( valid_params params )) {
+        *$_ = *{"DateTime::Format::Builder::Parser::$_"};
+    }
+}
+
+1;
+
+# ABSTRACT: Useful routines
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 METHODS
+
+=head2 Useful
+
+=head3 new
+
+Standard constructor. Returns a blessed hash; any arguments are placed
+in the hash. This is useful for storing information between methods.
+
+=head3 generic_parser
+
+This is a method provided solely for the benefit of
+C<Parser> implementations. It semi-neatly abstracts
+a lot of the work involved.
+
+Basically, it takes parameters matching the assorted
+callbacks from the parser declarations and makes a coderef
+out of it all.
+
+Currently recognized callbacks are:
+
+=over 4
+
+=item *
+
+on_match
+
+=item *
+
+on_fail
+
+=item *
+
+preprocess
+
+=item *
+
+postprocess
+
+=back
+
 =head2 Methods for subclassing
 
 These are methods you should define when writing your own subclass.
@@ -167,30 +180,11 @@ Instead we get to type:
     $self->valid_params( blah );
     __PACKAGE__->valid_params( blah );
 
-=cut
-
-{
-    no strict 'refs';
-    for (qw( valid_params params )) {
-        *$_ = *{"DateTime::Format::Builder::Parser::$_"};
-    }
-}
-
-1;
-
-# ABSTRACT: Useful routines
-
-__END__
-
 =head1 WRITING A SUBCLASS
 
 Rather than attempt to explain how it all works, I think it's best if
 you take a look at F<Regex.pm> and F<Strptime.pm> as examples and
 work from there.
-
-=head1 SUPPORT
-
-See L<DateTime::Format::Builder> for details.
 
 =head1 SEE ALSO
 

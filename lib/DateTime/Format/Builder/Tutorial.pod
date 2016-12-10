@@ -132,7 +132,7 @@ I<set_time_zone> method, or I<time_zone> argument.
 But how to get this scrap of code into your parser? You
 might be tempted to call the parser something else and build
 a small wrapper. There's no need though because an option is
-provided for preprocesing dates:
+provided for preprocessing dates:
 
     parse_datetime => [
         [ preprocess => \&_parse_tz ], # Only changed line!

@@ -6,8 +6,52 @@ use warnings;
 our $VERSION = '0.82';
 
 use vars qw( %dispatch_data );
+
 use Params::Validate qw( SCALAR OBJECT CODEREF validate );
-use base qw( DateTime::Format::Builder::Parser );
+
+use parent qw( DateTime::Format::Builder::Parser );
+
+__PACKAGE__->valid_params(
+    Quick => {
+        type      => SCALAR | OBJECT,
+        callbacks => {
+            good_classname => sub {
+                ( ref $_[0] ) or ( $_[0] =~ /^\w+[:'\w+]*\w+/ );
+            },
+        }
+    },
+    method => {
+        optional => 1,
+        type     => SCALAR | CODEREF,
+    },
+);
+
+sub create_parser {
+    my ( $self, %args ) = @_;
+    my $class  = $args{Quick};
+    my $method = $args{method};
+    $method = 'parse_datetime' unless defined $method;
+    eval "use $class";
+    die $@ if $@;
+
+    return sub {
+        my ( $self, $date ) = @_;
+        return unless defined $date;
+        my $rv = eval { $class->$method($date) };
+        return $rv if defined $rv;
+        return;
+    };
+}
+
+1;
+
+# ABSTRACT: Use another formatter, simply
+
+__END__
+
+=pod
+
+=encoding UTF-8
 
 =head1 SYNOPSIS
 
@@ -55,50 +99,6 @@ on the object, or a reference to a piece of code.
 In any case, the resultant code ends up looking like:
 
      my $rv = $Quick->$method( $date );
-
-=cut
-
-__PACKAGE__->valid_params(
-    Quick => {
-        type      => SCALAR | OBJECT,
-        callbacks => {
-            good_classname => sub {
-                ( ref $_[0] ) or ( $_[0] =~ /^\w+[:'\w+]*\w+/ );
-            },
-        }
-    },
-    method => {
-        optional => 1,
-        type     => SCALAR | CODEREF,
-    },
-);
-
-sub create_parser {
-    my ( $self, %args ) = @_;
-    my $class  = $args{Quick};
-    my $method = $args{method};
-    $method = 'parse_datetime' unless defined $method;
-    eval "use $class";
-    die $@ if $@;
-
-    return sub {
-        my ( $self, $date ) = @_;
-        return unless defined $date;
-        my $rv = eval { $class->$method($date) };
-        return $rv if defined $rv;
-        return;
-    };
-}
-
-1;
-
-# ABSTRACT: Use another formatter, simply
-
-__END__
-
-=head1 SUPPORT
-
-See L<DateTime::Format::Builder> for details.
 
 =head1 SEE ALSO
 

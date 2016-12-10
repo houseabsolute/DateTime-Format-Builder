@@ -1,76 +1,13 @@
 package DateTime::Format::Builder::Parser::Regex;
 
-=head1 SYNOPSIS
-
-   my $parser = DateTime::Format::Builder->create_parser(
-	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
-	params => [ qw( year month day hour minute second ) ],
-   );
-
-=head1 SPECIFICATION
-
-In addition to the
-L<common keys|DateTime::Format::Builder/"SINGLE SPECIFICATIONS">,
-C<Regex> supports:
-
-=over 4
-
-=item *
-
-B<regex> is a regular expression that should capture
-elements of the datetime string.
-This is a required element. This is the key whose presence
-indicates it's a specification that belongs to this class.
-
-=item *
-
-B<params> is an arrayref of key names. The captures from the
-regex are mapped to these (C<$1> to the first element, C<$2>
-to the second, and so on) and handed to
-C<< DateTime->new() >>.
-This is a required element.
-
-=item *
-
-B<extra> is a hashref of extra arguments you wish to give to
-C<< DateTime->new() >>. For example, you could set the
-C<year> or C<time_zone> to defaults:
-
-    extra => { year => 2004, time_zone => "Australia/Sydney" },
-
-=item *
-
-B<constructor> is either an arrayref or a coderef. If an arrayref
-then the first element is a class name or object, and the second
-element is a method name (or coderef since Perl allows that sort of
-thing).  The arguments to the call are anything in C<$p> and
-anything given in the C<extra> option above.
-
-If only a coderef is supplied, then it is called with arguments of
-C<$self>, C<$p> and C<extra>.
-
-In short:
-
-            $self->$coderef( %$p, %{ $self->{extra} } );
-
-The method is expected to return a valid L<DateTime> object,
-or undef in event of failure, but can conceivably return anything
-it likes. So long as it's 'true'.
-
-=back
-
-=cut
-
 use strict;
 use warnings;
 
 our $VERSION = '0.82';
 
-use vars qw( @ISA );
 use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF CODEREF );
 
-use DateTime::Format::Builder::Parser::generic;
-@ISA = qw( DateTime::Format::Builder::Parser::generic );
+use parent 'DateTime::Format::Builder::Parser::generic';
 
 __PACKAGE__->valid_params(
 
@@ -160,9 +97,68 @@ sub create_parser {
 
 __END__
 
-=head1 SUPPORT
+=pod
 
-See L<DateTime::Format::Builder> for details.
+=encoding UTF-8
+
+=head1 SYNOPSIS
+
+   my $parser = DateTime::Format::Builder->create_parser(
+	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+	params => [ qw( year month day hour minute second ) ],
+   );
+
+=head1 SPECIFICATION
+
+In addition to the
+L<common keys|DateTime::Format::Builder/"SINGLE SPECIFICATIONS">,
+C<Regex> supports:
+
+=over 4
+
+=item *
+
+B<regex> is a regular expression that should capture
+elements of the datetime string.
+This is a required element. This is the key whose presence
+indicates it's a specification that belongs to this class.
+
+=item *
+
+B<params> is an arrayref of key names. The captures from the
+regex are mapped to these (C<$1> to the first element, C<$2>
+to the second, and so on) and handed to
+C<< DateTime->new() >>.
+This is a required element.
+
+=item *
+
+B<extra> is a hashref of extra arguments you wish to give to
+C<< DateTime->new() >>. For example, you could set the
+C<year> or C<time_zone> to defaults:
+
+    extra => { year => 2004, time_zone => "Australia/Sydney" },
+
+=item *
+
+B<constructor> is either an arrayref or a coderef. If an arrayref
+then the first element is a class name or object, and the second
+element is a method name (or coderef since Perl allows that sort of
+thing).  The arguments to the call are anything in C<$p> and
+anything given in the C<extra> option above.
+
+If only a coderef is supplied, then it is called with arguments of
+C<$self>, C<$p> and C<extra>.
+
+In short:
+
+            $self->$coderef( %$p, %{ $self->{extra} } );
+
+The method is expected to return a valid L<DateTime> object,
+or undef in event of failure, but can conceivably return anything
+it likes. So long as it's 'true'.
+
+=back
 
 =head1 SEE ALSO
 
