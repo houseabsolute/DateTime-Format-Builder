@@ -96,7 +96,7 @@ __PACKAGE__->valid_params(
         callbacks => {
             'array has 2 elements' => sub {
                 ref( $_[0] ) eq 'ARRAY' ? ( @{ $_[0] } == 2 ) : 1;
-                }
+            }
         }
     },
 );

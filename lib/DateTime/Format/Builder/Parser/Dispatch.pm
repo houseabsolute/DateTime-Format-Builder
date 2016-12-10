@@ -73,7 +73,6 @@ potentially end up with an infinitely recursive parser.
 
 =cut
 
-
 {
     no strict 'refs';
     *dispatch_data = *DateTime::Format::Builder::dispatch_data;

@@ -24,13 +24,12 @@ most of its responsibilities.
 
 =cut
 
-
 =head1 CONSTRUCTORS
 
 =cut
 
 sub on_fail {
-    my ( $self, $input, $parent ) = @_;
+    my ( $self, $input ) = @_;
     my $maker = $self->maker;
     if ( $maker and $maker->can('on_fail') ) {
         $maker->on_fail($input);
@@ -47,7 +46,7 @@ sub no_parser {
 sub new {
     my $class = shift;
     $class = ref($class) || $class;
-    my $i    = 0;
+
     my $self = bless {
         on_fail => \&on_fail,
         parser  => \&no_parser,
@@ -186,7 +185,7 @@ suitable for handing to L<Params::Validate>'s C<validate> function.
     sub params {
         my $self = shift;
         my $caller = ref $self || $self;
-        return { map { %$_ } @params{ $caller, 'common' } };
+        return { map {%$_} @params{ $caller, 'common' } };
     }
 
 =head3 params_all
@@ -202,7 +201,7 @@ for general use.
 
     sub params_all {
         return $all_params if defined $all_params;
-        my %all_params = map { %$_ } values %params;
+        my %all_params = map {%$_} values %params;
         $_->{optional} = 1 for values %all_params;
         $all_params = \%all_params;
     }
@@ -467,7 +466,8 @@ specified then an error is thrown.
 
 sub sort_parsers {
     my $class = shift;
-    my ( $options, $specs ) = @_;
+    shift;
+    my ($specs) = @_;
     my ( %lengths, @others );
 
     for my $spec (@$specs) {

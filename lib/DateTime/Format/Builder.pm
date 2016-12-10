@@ -80,7 +80,7 @@ sub create_class {
 }
 
 sub create_constructor {
-    my $class = shift;
+    shift;
     my ( $target, $intended, $value ) = @_;
 
     my $new = $target . "::new";
@@ -137,15 +137,18 @@ sub create_end_parser {
 }
 
 sub create_method {
-    my ( $class, $parser ) = @_;
+    shift;
+    my ($parser) = @_;
+
     return sub {
         my $self = shift;
         $parser->parse( $self, @_ );
-        }
+    };
 }
 
 sub on_fail {
-    my ( $class, $input ) = @_;
+    shift;
+    my ($input) = @_;
 
     my $pkg;
     my $i = 0;

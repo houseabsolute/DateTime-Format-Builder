@@ -14,7 +14,6 @@ unless (
     exit;
 }
 
-
 {
     my $builder = DateTime::Format::Builder->new();
     my $parser = $builder->parser( { strptime => '%Y-%m-%d' } );

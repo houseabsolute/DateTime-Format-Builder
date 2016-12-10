@@ -58,7 +58,6 @@ In any case, the resultant code ends up looking like:
 
 =cut
 
-
 __PACKAGE__->valid_params(
     Quick => {
         type      => SCALAR | OBJECT,

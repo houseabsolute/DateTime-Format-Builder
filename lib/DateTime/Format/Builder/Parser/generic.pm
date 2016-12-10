@@ -10,7 +10,6 @@ use Params::Validate qw(
     validate SCALAR CODEREF UNDEF
 );
 
-
 =head1 METHODS
 
 =head2 Useful
