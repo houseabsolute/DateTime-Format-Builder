@@ -1,5 +1,7 @@
 package DateTime::Format::Builder::Tutorial;
 
+our $VERSION = '0.82';
+
 # ABSTRACT: Quick class on using Builder
 
 __END__

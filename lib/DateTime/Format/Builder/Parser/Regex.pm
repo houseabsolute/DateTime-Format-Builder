@@ -63,6 +63,9 @@ it likes. So long as it's 'true'.
 
 use strict;
 use warnings;
+
+our $VERSION = '0.82';
+
 use vars qw( @ISA );
 use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF CODEREF );
 

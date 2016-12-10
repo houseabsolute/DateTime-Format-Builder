@@ -22,6 +22,9 @@ on valid patterns.
 
 use strict;
 use warnings;
+
+our $VERSION = '0.82';
+
 use vars qw( @ISA );
 use DateTime::Format::Strptime 1.04;
 use Params::Validate qw( validate SCALAR HASHREF );

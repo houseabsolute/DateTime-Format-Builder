@@ -1,6 +1,10 @@
 package DateTime::Format::Builder::Parser::generic;
+
 use strict;
 use warnings;
+
+our $VERSION = '0.82';
+
 use Carp;
 use Params::Validate qw(
     validate SCALAR CODEREF UNDEF

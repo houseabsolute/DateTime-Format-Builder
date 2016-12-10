@@ -1,6 +1,10 @@
 package DateTime::Format::Builder::Parser::Quick;
+
 use strict;
 use warnings;
+
+our $VERSION = '0.82';
+
 use vars qw( %dispatch_data );
 use Params::Validate qw( SCALAR OBJECT CODEREF validate );
 use base qw( DateTime::Format::Builder::Parser );
