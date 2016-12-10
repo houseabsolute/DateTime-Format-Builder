@@ -228,6 +228,8 @@ require DateTime::Format::Builder::Parser;
 
 __END__
 
+=encoding utf8
+
 =head1 SYNOPSIS
 
     package DateTime::Format::Brief;
