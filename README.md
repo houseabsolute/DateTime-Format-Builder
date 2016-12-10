@@ -40,9 +40,6 @@ for exposing of the module's innards to any subclasses, or
 for when you need to do something slightly beyond what I
 expected.
 
-This creates the end methods. Coderefs die on bad parses,
-return `DateTime` objects on good parse.
-
 # TUTORIAL
 
 See [DateTime::Format::Builder::Tutorial](https://metacpan.org/pod/DateTime::Format::Builder::Tutorial).
@@ -67,7 +64,7 @@ to throw an error.
 
 Multiple parser specifications can also specify `on_fail`
 with a coderef as an argument in the options block. This
-will take precedence over the inheritable and over-ridable
+will take precedence over the inheritable and overrideable
 method.
 
 That said, don't throw real errors from callbacks in
@@ -534,30 +531,28 @@ the modules at the time of writing them.
 
 # THANKS
 
-Dave Rolsky (DROLSKY) for kickstarting the DateTime project,
-writing [DateTime::Format::ICal](https://metacpan.org/pod/DateTime::Format::ICal) and
-[DateTime::Format::MySQL](https://metacpan.org/pod/DateTime::Format::MySQL), and some much needed review.
+Dave Rolsky (DROLSKY) for kickstarting the DateTime project, writing
+[DateTime::Format::ICal](https://metacpan.org/pod/DateTime::Format::ICal) and [DateTime::Format::MySQL](https://metacpan.org/pod/DateTime::Format::MySQL), and some much needed
+review.
 
-Joshua Hoblitt (JHOBLITT) for the concept, some of the API,
-impetus for writing the multilength code (both one length with
-multiple parsers and single parser with multiple lengths),
-blame for the Regex custom constructor code,
-spotting a bug in Dispatch,
-and more much needed review.
+Joshua Hoblitt (JHOBLITT) for the concept, some of the API, impetus for
+writing the multi-length code (both one length with multiple parsers and
+single parser with multiple lengths), blame for the Regex custom constructor
+code, spotting a bug in Dispatch, and more much needed review.
 
-Kellan Elliott-McCrea (KELLAN) for even more review,
-suggestions, [DateTime::Format::W3CDTF](https://metacpan.org/pod/DateTime::Format::W3CDTF) and the encouragement to
-rewrite these docs almost 100%!
+Kellan Elliott-McCrea (KELLAN) for even more review, suggestions,
+[DateTime::Format::W3CDTF](https://metacpan.org/pod/DateTime::Format::W3CDTF) and the encouragement to rewrite these docs almost
+100%!
 
-Claus Färber (CFAERBER) for having me get around to
-fixing the auto-constructor writing, providing the
-'args'/'self' patch, and suggesting the multi-callbacks.
+Claus Färber (CFAERBER) for having me get around to fixing the
+auto-constructor writing, providing the 'args'/'self' patch, and suggesting
+the multi-callbacks.
 
-Rick Measham (RICKM) for [DateTime::Format::Strptime](https://metacpan.org/pod/DateTime::Format::Strptime)
-which Builder now supports.
+Rick Measham (RICKM) for [DateTime::Format::Strptime](https://metacpan.org/pod/DateTime::Format::Strptime) which Builder now
+supports.
 
-Matthew McGillis for pointing out that `on_fail` overriding
-should be simpler.
+Matthew McGillis for pointing out that `on_fail` overriding should be
+simpler.
 
 Simon Cozens (SIMON) for saying it was cool.
 
@@ -571,17 +566,6 @@ http://datetime.perl.org/
 [DateTime::Format::Builder::Parser](https://metacpan.org/pod/DateTime::Format::Builder::Parser)
 
 # SUPPORT
-
-Support for this module is provided via the datetime@perl.org email
-list. See http://lists.perl.org/ for more details.
-
-Alternatively, log them via the CPAN RT system via the web or email:
-
-    http://rt.cpan.org/NoAuth/ReportBug.html?Queue=DateTime%3A%3AFormat%3A%3ABuilder
-    bug-datetime-format-builder@rt.cpan.org
-
-This makes it much easier for me to track things and thus means
-your problem is less likely to be neglected.
 
 Bugs may be submitted through [the RT bug tracker](http://rt.cpan.org/Public/Dist/Display.html?Name=DateTime-Format-Builder)
 (or [bug-datetime-format-builder@rt.cpan.org](mailto:bug-datetime-format-builder@rt.cpan.org)).
