@@ -100,7 +100,7 @@ my @callbacks = qw( on_match on_fail postprocess preprocess );
     );
 
     sub params {
-        my $self = shift;
+        my $self   = shift;
         my $caller = ref $self || $self;
         return { map {%$_} @params{ $caller, 'common' } };
     }

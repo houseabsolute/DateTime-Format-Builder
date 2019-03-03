@@ -108,7 +108,7 @@ sub create_constructor {
 }
 
 sub create_parser {
-    my $class = shift;
+    my $class  = shift;
     my @common = ( maker => $class );
     if ( @_ == 1 ) {
         my $parsers = shift;
