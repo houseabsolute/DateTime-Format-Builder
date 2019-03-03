@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+0.82     2019-03-03
+
 - Removed use of Class::Factory::Util. That distro is poorly maintained (by
   me) and it has some issues with its use of Module::Build. This distro
   (DateTime-Format-Builder) really doesn't need to use Class::Factory::Util.

@@ -567,10 +567,13 @@ http://datetime.perl.org/
 
 # SUPPORT
 
-Bugs may be submitted through [the RT bug tracker](http://rt.cpan.org/Public/Dist/Display.html?Name=DateTime-Format-Builder)
-(or [bug-datetime-format-builder@rt.cpan.org](mailto:bug-datetime-format-builder@rt.cpan.org)).
+Bugs may be submitted at [http://rt.cpan.org/Public/Dist/Display.html?Name=DateTime-Format-Builder](http://rt.cpan.org/Public/Dist/Display.html?Name=DateTime-Format-Builder) or via email to [bug-datetime-format-builder@rt.cpan.org](mailto:bug-datetime-format-builder@rt.cpan.org).
 
 I am also usually active on IRC as 'autarch' on `irc://irc.perl.org`.
+
+# SOURCE
+
+The source code repository for DateTime-Format-Builder can be found at [https://github.com/houseabsolute/DateTime-Format-Builder](https://github.com/houseabsolute/DateTime-Format-Builder).
 
 # DONATIONS
 
@@ -602,8 +605,11 @@ button at [http://www.urth.org/~autarch/fs-donation.html](http://www.urth.org/~a
 
 # COPYRIGHT AND LICENSE
 
-This software is Copyright (c) 2016 by Dave Rolsky.
+This software is Copyright (c) 2019 by Dave Rolsky.
 
 This is free software, licensed under:
 
     The Artistic License 2.0 (GPL Compatible)
+
+The full text of the license can be found in the
+`LICENSE` file included with this distribution.
