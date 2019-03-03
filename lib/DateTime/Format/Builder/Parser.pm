@@ -357,15 +357,11 @@ sub create_parser {
     }
 }
 
-# Find all our workers
-{
-    use Class::Factory::Util 1.6;
-
-    foreach my $worker ( __PACKAGE__->subclasses ) {
-        eval "use DateTime::Format::Builder::Parser::$worker;";
-        die $@ if $@;
-    }
-}
+require DateTime::Format::Builder::Parser::Dispatch;
+require DateTime::Format::Builder::Parser::generic;
+require DateTime::Format::Builder::Parser::Quick;
+require DateTime::Format::Builder::Parser::Regex;
+require DateTime::Format::Builder::Parser::Strptime;
 
 1;
 
