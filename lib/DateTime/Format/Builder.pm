@@ -3,7 +3,7 @@ package DateTime::Format::Builder;
 use strict;
 use warnings;
 
-our $VERSION = '0.82';
+our $VERSION = '0.83';
 
 use Carp;
 use DateTime 1.00;

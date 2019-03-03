@@ -3,7 +3,7 @@ package DateTime::Format::Builder::Parser::Regex;
 use strict;
 use warnings;
 
-our $VERSION = '0.82';
+our $VERSION = '0.83';
 
 use Params::Validate qw( validate ARRAYREF SCALARREF HASHREF CODEREF );
 

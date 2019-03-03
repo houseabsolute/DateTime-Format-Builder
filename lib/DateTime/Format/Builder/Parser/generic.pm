@@ -3,7 +3,7 @@ package DateTime::Format::Builder::Parser::generic;
 use strict;
 use warnings;
 
-our $VERSION = '0.82';
+our $VERSION = '0.83';
 
 use Carp;
 use Params::Validate qw(
