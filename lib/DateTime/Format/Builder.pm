@@ -10,7 +10,7 @@ use DateTime 1.00;
 use Params::Validate 0.72 qw(
     validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
 );
-use vars qw( %dispatch_data );
+our %dispatch_data;
 
 my $parser = 'DateTime::Format::Builder::Parser';
 
