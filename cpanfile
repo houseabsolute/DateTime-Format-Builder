@@ -5,7 +5,6 @@ requires "Params::Validate" => "0.72";
 requires "Scalar::Util" => "0";
 requires "parent" => "0";
 requires "strict" => "0";
-requires "vars" => "0";
 requires "warnings" => "0";
 
 on 'test' => sub {

@@ -25,7 +25,6 @@ my %WriteMakefileArgs = (
     "Scalar::Util" => 0,
     "parent" => 0,
     "strict" => 0,
-    "vars" => 0,
     "warnings" => 0
   },
   "TEST_REQUIRES" => {
@@ -52,7 +51,6 @@ my %FallbackPrereqs = (
   "lib" => 0,
   "parent" => 0,
   "strict" => 0,
-  "vars" => 0,
   "warnings" => 0
 );
 

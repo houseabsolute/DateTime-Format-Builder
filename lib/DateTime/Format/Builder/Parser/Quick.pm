@@ -5,7 +5,7 @@ use warnings;
 
 our $VERSION = '0.83';
 
-use vars qw( %dispatch_data );
+our %dispatch_data;
 
 use Params::Validate qw( SCALAR OBJECT CODEREF validate );
 
