@@ -1,5 +1,8 @@
 {{$NEXT}}
 
+- Switched to GitHub issues.
+
+
 0.82     2019-03-03
 
 - Removed use of Class::Factory::Util. That distro is poorly maintained (by
