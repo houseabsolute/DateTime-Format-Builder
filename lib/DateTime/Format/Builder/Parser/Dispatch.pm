@@ -3,7 +3,7 @@ package DateTime::Format::Builder::Parser::Dispatch;
 use strict;
 use warnings;
 
-our $VERSION = '0.83';
+our $VERSION = '0.84';
 
 our %dispatch_data;
 use Params::Validate qw( CODEREF validate );

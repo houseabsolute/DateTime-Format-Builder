@@ -3,7 +3,7 @@ package DateTime::Format::Builder::Parser::Strptime;
 use strict;
 use warnings;
 
-our $VERSION = '0.83';
+our $VERSION = '0.84';
 
 use DateTime::Format::Strptime 1.04;
 use Params::Validate qw( validate SCALAR HASHREF );
