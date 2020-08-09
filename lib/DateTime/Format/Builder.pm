@@ -7,9 +7,11 @@ our $VERSION = '0.83';
 
 use Carp;
 use DateTime 1.00;
-use Params::Validate 0.72 qw(
-    validate SCALAR ARRAYREF HASHREF SCALARREF CODEREF GLOB GLOBREF UNDEF
-);
+use Params::ValidationCompiler qw( validation_for );
+use Specio::Declare;
+use Specio::Library::Builtins;
+use Specio::Library::String;
+
 our %dispatch_data;
 
 my $parser = 'DateTime::Format::Builder::Parser';
@@ -24,59 +26,89 @@ sub import {
     $class->create_class( @_, class => (caller)[0] ) if @_;
 }
 
-sub create_class {
-    my $class = shift;
-    my %args  = validate(
-        @_,
-        {
-            class   => { type => SCALAR, default  => (caller)[0] },
-            version => { type => SCALAR, optional => 1 },
-            verbose => { type => SCALAR | GLOBREF | GLOB, optional => 1 },
-            parsers => { type => HASHREF },
-            groups  => { type => HASHREF, optional => 1 },
-            constructor =>
-                { type => UNDEF | SCALAR | CODEREF, optional => 1 },
-        }
+{
+    my $verbose_type = union(
+        of => [ map { t($_) } qw( Undef Value GlobRef FileHandle ) ],
     );
 
-    verbose( $args{verbose} ) if exists $args{verbose};
+    my $constructor_type = union(
+        of => [ map { t($_) } qw( Undef NonEmptyStr CodeRef ) ],
+    );
 
-    my $target = $args{class};    # where we're writing our methods and such.
+    my $validator = validation_for(
+        name             => '_check_new_params',
+        name_is_optional => 1,
+        params           => {
+            class => {
+                type    => t('NonEmptyStr'),
+                default => sub { (caller(2))[0] },
+            },
+            version => {
+                type     => t('NonEmptyStr'),
+                optional => 1,
+            },
+            verbose => {
+                type     => $verbose_type,
+                optional => 1,
+            },
+            parsers => {
+                type => t('HashRef'),
+            },
+            groups => {
+                type     => t('HashRef'),
+                optional => 1,
+            },
+            constructor => {
+                type     => $constructor_type,
+                optional => 1,
+            },
+        },
+        slurpy => 1,
+    );
 
-    # Create own lovely new package
-    {
-        no strict 'refs';
+    sub create_class {
+        my $class = shift;
+        my %args  = $validator->(@_);
 
-        ${"${target}::VERSION"} = $args{version} if exists $args{version};
+        verbose( $args{verbose} ) if exists $args{verbose};
 
-        $class->create_constructor(
-            $target, exists $args{constructor},
-            $args{constructor}
-        );
+        my $target = $args{class}; # where we're writing our methods and such.
 
-        # Turn groups of parser specs in to groups of parsers
+        # Create own lovely new package
         {
-            my $specs = $args{groups};
-            my %groups;
+            no strict 'refs';
 
-            for my $label ( keys %$specs ) {
-                my $parsers = $specs->{$label};
-                my $code    = $class->create_parser($parsers);
-                $groups{$label} = $code;
+            ${"${target}::VERSION"} = $args{version}
+                if exists $args{version};
+
+            $class->create_constructor(
+                $target, exists $args{constructor},
+                $args{constructor}
+            );
+
+            # Turn groups of parser specs in to groups of parsers
+            {
+                my $specs = $args{groups};
+                my %groups;
+
+                for my $label ( keys %$specs ) {
+                    my $parsers = $specs->{$label};
+                    my $code    = $class->create_parser($parsers);
+                    $groups{$label} = $code;
+                }
+
+                $dispatch_data{$target} = \%groups;
             }
 
-            $dispatch_data{$target} = \%groups;
-        }
-
-        # Write all our parser methods, creating parsers as we go.
-        while ( my ( $method, $parsers ) = each %{ $args{parsers} } ) {
-            my $globname = $target . "::$method";
-            croak "Will not override a preexisting method $method()"
-                if defined &{$globname};
-            *$globname = $class->create_end_parser($parsers);
+            # Write all our parser methods, creating parsers as we go.
+            while ( my ( $method, $parsers ) = each %{ $args{parsers} } ) {
+                my $globname = $target . "::$method";
+                croak "Will not override a preexisting method $method()"
+                    if defined &{$globname};
+                *$globname = $class->create_end_parser($parsers);
+            }
         }
     }
-
 }
 
 sub create_constructor {
