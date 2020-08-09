@@ -57,36 +57,35 @@ __END__
 =head1 SYNOPSIS
 
     package SampleDispatch;
-    use DateTime::Format::Builder
-    (
-	parsers => {
-	    parse_datetime => [
-		{
-		    Dispatch => sub {
-			return 'fnerk';
-		    }
-		}
-	    ]
-	},
-	groups => {
-	    fnerk => [
-		{
-		    regex => qr/^(\d{4})(\d\d)(\d\d)$/,
-		    params => [qw( year month day )],
-		},
-	    ]
-	}
+    use DateTime::Format::Builder (
+        parsers => {
+            parse_datetime => [
+                {
+                    Dispatch => sub {
+                        return 'fnerk';
+                    }
+                }
+            ]
+        },
+        groups => {
+            fnerk => [
+                {
+                    regex  => qr/^(\d{4})(\d\d)(\d\d)$/,
+                    params => [qw( year month day )],
+                },
+            ]
+        }
     );
 
 =head1 DESCRIPTION
 
-C<Dispatch> adds another parser type to C<Builder> permitting
-dispatch of parsing according to group names.
+C<Dispatch> adds another parser type to C<Builder> permitting dispatch of
+parsing according to group names.
 
 =head1 SPECIFICATION
 
-C<Dispatch> has just one key: C<Dispatch>. The value should be a
-reference to a subroutine that returns one of:
+C<Dispatch> has just one key: C<Dispatch>. The value should be a reference to
+a subroutine that returns one of:
 
 =over 4
 
@@ -108,13 +107,13 @@ A list of strings, meaning: use these groups in this order.
 
 =back
 
-Groups are specified much like the example in the L<SYNOPSIS>.
-They follow the same format as when you specify them for methods.
+Groups are specified much like the example in the L<SYNOPSIS>. They follow the
+same format as when you specify them for methods.
 
 =head1 SIDE EFFECTS
 
-Your group parser can also be a Dispatch parser. Thus you could
-potentially end up with an infinitely recursive parser.
+Your group parser can also be a Dispatch parser. Thus you could potentially
+end up with an infinitely recursive parser.
 
 =head1 SEE ALSO
 

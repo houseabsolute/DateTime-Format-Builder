@@ -105,38 +105,28 @@ __END__
 
 =head3 new
 
-Standard constructor. Returns a blessed hash; any arguments are placed
-in the hash. This is useful for storing information between methods.
+Standard constructor. Returns a blessed hash; any arguments are placed in the
+hash. This is useful for storing information between methods.
 
 =head3 generic_parser
 
-This is a method provided solely for the benefit of
-C<Parser> implementations. It semi-neatly abstracts
-a lot of the work involved.
+This is a method provided solely for the benefit of C<Parser>
+implementations. It semi-neatly abstracts a lot of the work involved.
 
-Basically, it takes parameters matching the assorted
-callbacks from the parser declarations and makes a coderef
-out of it all.
+Basically, it takes parameters matching the assorted callbacks from the parser
+declarations and makes a coderef out of it all.
 
 Currently recognized callbacks are:
 
 =over 4
 
-=item *
+=item * on_match
 
-on_match
+=item * on_fail
 
-=item *
+=item * preprocess
 
-on_fail
-
-=item *
-
-preprocess
-
-=item *
-
-postprocess
+=item * postprocess
 
 =back
 
@@ -144,47 +134,44 @@ postprocess
 
 These are methods you should define when writing your own subclass.
 
-B<Note>: these methods do not exist in this class. There is no point
-trying to call C<< $self->SUPER::do_match( ... ) >>.
+B<Note>: these methods do not exist in this class. There is no point trying to
+call C<< $self->SUPER::do_match( ... ) >>.
 
 =head3 do_match
 
-C<do_match> is the first phase. Arguments are the date and @args.
-C<self>, C<label>, C<args>. Return value must be defined if you match
-successfully.
+C<do_match> is the first phase. Arguments are the date and @args. C<self>,
+C<label>, C<args>. Return value must be defined if you match successfully.
 
 =head3 post_match
 
 C<post_match> is called after the appropriate callback out of
-C<on_match>/C<on_fail> is done. It's passed the date, the return
-value from C<do_match> and the parsing hash.
+C<on_match>/C<on_fail> is done. It's passed the date, the return value from
+C<do_match> and the parsing hash.
 
 Its return value is used as the C<post> argument to the C<postprocess>
 callback, and as the second argument to C<make>.
 
 =head3 make
 
-C<make> takes the original input, the return value from C<post_match>
-and the parsing hash and should return a C<DateTime> object or
-undefined.
+C<make> takes the original input, the return value from C<post_match> and the
+parsing hash and should return a C<DateTime> object or undefined.
 
 =head2 Delegations
 
 For use of C<Parser>, this module also delegates C<valid_params> and
 C<params>. This is just convenience to save typing the following:
 
-    DateTime::Format::Builder::Parser->valid_params( blah )
+    DateTime::Format::Builder::Parser->valid_params(...)
 
 Instead we get to type:
 
-    $self->valid_params( blah );
-    __PACKAGE__->valid_params( blah );
+    $self->valid_params(...);
+    __PACKAGE__->valid_params(...);
 
 =head1 WRITING A SUBCLASS
 
-Rather than attempt to explain how it all works, I think it's best if
-you take a look at F<Regex.pm> and F<Strptime.pm> as examples and
-work from there.
+Rather than attempt to explain how it all works, I think it's best if you take
+a look at F<Regex.pm> and F<Strptime.pm> as examples and work from there.
 
 =head1 SEE ALSO
 

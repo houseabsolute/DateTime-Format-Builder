@@ -69,19 +69,18 @@ __END__
 
 =head1 SYNOPSIS
 
-   my $parser = DateTime::Format::Builder->create_parser(
-	strptime => '%e/%b/%Y:%H:%M:%S %z',
-   );
+    my $parser = DateTime::Format::Builder->create_parser(
+        strptime => '%e/%b/%Y:%H:%M:%S %z',
+    );
 
 =head1 SPECIFICATION
 
 =over 4
 
-=item *
+=item * strptime
 
-B<strptime> takes as its argument a strptime string.
-See L<DateTime::Format::Strptime> for more information
-on valid patterns.
+B<strptime> takes as its argument a strptime string. See
+L<DateTime::Format::Strptime> for more information on valid patterns.
 
 =back
 

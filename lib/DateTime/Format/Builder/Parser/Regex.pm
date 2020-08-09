@@ -13,7 +13,7 @@ __PACKAGE__->valid_params(
 
     # How to match
     params => {
-        type => ARRAYREF,    # mapping $1,$2,... to new() args
+        type => ARRAYREF,    # mapping $1,$2,... to new args
     },
     regex => {
         type      => SCALARREF,
@@ -103,60 +103,54 @@ __END__
 
 =head1 SYNOPSIS
 
-   my $parser = DateTime::Format::Builder->create_parser(
-	regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
-	params => [ qw( year month day hour minute second ) ],
-   );
+    my $parser = DateTime::Format::Builder->create_parser(
+        regex  => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
+        params => [qw( year month day hour minute second )],
+    );
 
 =head1 SPECIFICATION
 
-In addition to the
-L<common keys|DateTime::Format::Builder/"SINGLE SPECIFICATIONS">,
-C<Regex> supports:
+In addition to the L<common keys|DateTime::Format::Builder/"SINGLE
+SPECIFICATIONS">, C<Regex> supports:
 
 =over 4
 
-=item *
+=item * regex
 
-B<regex> is a regular expression that should capture
-elements of the datetime string.
-This is a required element. This is the key whose presence
-indicates it's a specification that belongs to this class.
+B<regex> is a regular expression that should capture elements of the datetime
+string. This is a required element. This is the key whose presence indicates
+it's a specification that belongs to this class.
 
-=item *
+=item * params
 
-B<params> is an arrayref of key names. The captures from the
-regex are mapped to these (C<$1> to the first element, C<$2>
-to the second, and so on) and handed to
-C<< DateTime->new() >>.
-This is a required element.
+B<params> is an arrayref of key names. The captures from the regex are mapped
+to these (C<$1> to the first element, C<$2> to the second, and so on) and
+handed to C<< DateTime->new >>. This is a required element.
 
-=item *
+=item * extra
 
-B<extra> is a hashref of extra arguments you wish to give to
-C<< DateTime->new() >>. For example, you could set the
-C<year> or C<time_zone> to defaults:
+B<extra> is a hashref of extra arguments you wish to give to C<< DateTime->new
+>>. For example, you could set the C<year> or C<time_zone> to defaults:
 
     extra => { year => 2004, time_zone => "Australia/Sydney" },
 
 =item *
 
-B<constructor> is either an arrayref or a coderef. If an arrayref
-then the first element is a class name or object, and the second
-element is a method name (or coderef since Perl allows that sort of
-thing).  The arguments to the call are anything in C<$p> and
-anything given in the C<extra> option above.
+B<constructor> is either an arrayref or a coderef. If an arrayref then the
+first element is a class name or object, and the second element is a method
+name (or coderef since Perl allows that sort of thing). The arguments to the
+call are anything in C<$p> and anything given in the C<extra> option above.
 
-If only a coderef is supplied, then it is called with arguments of
-C<$self>, C<$p> and C<extra>.
+If only a coderef is supplied, then it is called with arguments of C<$self>,
+C<$p> and C<extra>.
 
 In short:
 
-            $self->$coderef( %$p, %{ $self->{extra} } );
+    $self->$coderef( %{$p}, %{ $self->{extra} } );
 
-The method is expected to return a valid L<DateTime> object,
-or undef in event of failure, but can conceivably return anything
-it likes. So long as it's 'true'.
+The method is expected to return a valid L<DateTime> object, or C<undef> in
+event of failure, but can conceivably return anything it likes. So long as
+it's 'true'.
 
 =back
 
