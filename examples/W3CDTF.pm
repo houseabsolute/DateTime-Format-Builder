@@ -174,9 +174,9 @@ This module was inspired by C<DateTime::Format::ICal>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003 Kellan Elliott-McCrea.  All rights reserved.  This program
-is free software; you can redistribute it and/or modify it under the
-same terms as Perl itself.
+Copyright (c) 2003 Kellan Elliott-McCrea. All rights reserved. This program is
+free software; you can redistribute it and/or modify it under the same terms
+as Perl itself.
 
 The full text of the license can be found in the LICENSE file included
 with this module.
