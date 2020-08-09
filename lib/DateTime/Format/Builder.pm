@@ -33,7 +33,7 @@ sub create_class {
             version => { type => SCALAR, optional => 1 },
             verbose => { type => SCALAR | GLOBREF | GLOB, optional => 1 },
             parsers => { type => HASHREF },
-            groups => { type => HASHREF, optional => 1 },
+            groups  => { type => HASHREF, optional => 1 },
             constructor =>
                 { type => UNDEF | SCALAR | CODEREF, optional => 1 },
         }
