@@ -29,11 +29,11 @@ sub create_class {
     my %args  = validate(
         @_,
         {
-            class   => { type => SCALAR, default  => (caller)[0] },
-            version => { type => SCALAR, optional => 1 },
-            verbose => { type => SCALAR | GLOBREF | GLOB, optional => 1 },
-            parsers => { type => HASHREF },
-            groups  => { type => HASHREF, optional => 1 },
+            class       => { type => SCALAR, default  => (caller)[0] },
+            version     => { type => SCALAR, optional => 1 },
+            verbose     => { type => SCALAR | GLOBREF | GLOB, optional => 1 },
+            parsers     => { type => HASHREF },
+            groups      => { type => HASHREF, optional => 1 },
             constructor =>
                 { type => UNDEF | SCALAR | CODEREF, optional => 1 },
         }
@@ -277,31 +277,30 @@ if the single parser returns C<undef>. The single parser must return C<undef>
 so that a multiple parser can work nicely and actual errors can be thrown from
 any of the callbacks.
 
-Similarly, any multiple parsers will only call C<on_fail> right at the end
-when it's tried all it could.
+Similarly, any multiple parsers will only call C<on_fail> right at the end when
+it's tried all it could.
 
 C<on_fail> (see L<later|/on_fail>) is defined, by default, to throw an error.
 
-Multiple parser specifications can also specify C<on_fail> with a coderef as
-an argument in the options block. This will take precedence over the
-inheritable and overrideable method.
+Multiple parser specifications can also specify C<on_fail> with a coderef as an
+argument in the options block. This will take precedence over the inheritable
+and overrideable method.
 
 That said, don't throw real errors from callbacks in multiple parser
 specifications unless you really want parsing to stop right there and not try
 any other parsers.
 
 In summary: calling a B<method> will result in either a C<DateTime> object
-being returned or an error being thrown (unless you've overridden C<on_fail>
-or C<create_method>, or you've specified a C<on_fail> key to a multiple
-parser specification).
+being returned or an error being thrown (unless you've overridden C<on_fail> or
+C<create_method>, or you've specified a C<on_fail> key to a multiple parser
+specification).
 
 Individual B<parsers> (be they multiple parsers or single parsers) will return
 either the C<DateTime> object or C<undef>.
 
 =head1 SINGLE SPECIFICATIONS
 
-A single specification is a hash ref of instructions on how to create a
-parser.
+A single specification is a hash ref of instructions on how to create a parser.
 
 The precise set of keys and values varies according to parser type. There are
 some common ones though:
@@ -311,9 +310,9 @@ some common ones though:
 =item * length
 
 B<length> is an optional parameter that can be used to specify that this
-particular I<regex> is only applicable to strings of a certain fixed
-length. This can be used to make parsers more efficient. It's strongly
-recommended that any parser that can use this parameter does.
+particular I<regex> is only applicable to strings of a certain fixed length.
+This can be used to make parsers more efficient. It's strongly recommended that
+any parser that can use this parameter does.
 
 You may happily specify the same length twice. The parsers will be tried in
 order of specification.
@@ -322,11 +321,11 @@ You can also specify multiple lengths by giving it an arrayref of numbers
 rather than just a single scalar. If doing so, please keep the number of
 lengths to a minimum.
 
-If any specifications without I<length>s are given and the particular
-I<length> parser fails, then the non-I<length> parsers are tried.
+If any specifications without I<length>s are given and the particular I<length>
+parser fails, then the non-I<length> parsers are tried.
 
-This parameter is ignored unless the specification is part of a multiple
-parser specification.
+This parameter is ignored unless the specification is part of a multiple parser
+specification.
 
 =item * label
 
@@ -350,8 +349,8 @@ B<label> is the label of the parser if there is one.
 
 =item * self
 
-B<self> is the object on which the method has been invoked (which may just be
-a class name). Naturally, you can then invoke your own methods on it do get
+B<self> is the object on which the method has been invoked (which may just be a
+class name). Naturally, you can then invoke your own methods on it do get
 information you want.
 
 =item *
@@ -361,13 +360,13 @@ arguments, then this parameter is not given.
 
 =back
 
-These routines will be called depending on whether the B<regex> match
-succeeded or failed.
+These routines will be called depending on whether the B<regex> match succeeded
+or failed.
 
 =item * preprocess
 
-B<preprocess> is a callback provided for cleaning up input prior to
-parsing. It's given a hash as arguments with the following keys:
+B<preprocess> is a callback provided for cleaning up input prior to parsing.
+It's given a hash as arguments with the following keys:
 
 =over 4
 
@@ -379,10 +378,10 @@ been through that preprocessor).
 
 =item * parsed
 
-B<parsed> is the state of parsing so far. Usually empty at this point unless
-an overall I<preprocess> was given.  Items may be placed in it and will be
-given to any B<postprocess>or and C<< DateTime->new >> (unless the
-postprocessor deletes it).
+B<parsed> is the state of parsing so far. Usually empty at this point unless an
+overall I<preprocess> was given. Items may be placed in it and will be given to
+any B<postprocess>or and C<< DateTime->new >> (unless the postprocessor deletes
+it).
 
 =item * self, args, label
 
@@ -401,10 +400,10 @@ performed B<after> any length calculations.
 
 =item * postprocess
 
-B<postprocess> is the last code stop before C<< DateTime->new >> is
-called. It's given the same arguments as I<preprocess>. This allows it to
-modify the parsed parameters after the parse and before the creation of the
-object. For example, you might use:
+B<postprocess> is the last code stop before C<< DateTime->new >> is called.
+It's given the same arguments as I<preprocess>. This allows it to modify the
+parsed parameters after the parse and before the creation of the object. For
+example, you might use:
 
     {
         regex       => qr/^(\d\d) (\d\d) (\d\d)$/,
@@ -421,9 +420,9 @@ where C<_fix_year> is defined as:
         return 1;
     }
 
-This will cause the two digit years to be corrected according to the cut
-off. If the year was '69' or lower, then it is made into 2069 (or 2045, or
-whatever the year was parsed as). Otherwise it is assumed to be 19xx. The
+This will cause the two digit years to be corrected according to the cut off.
+If the year was '69' or lower, then it is made into 2069 (or 2045, or whatever
+the year was parsed as). Otherwise it is assumed to be 19xx. The
 L<DateTime::Format::Mail> module uses code similar to this (only it allows the
 cut off to be configured and it doesn't use Builder).
 
@@ -442,8 +441,8 @@ Parsers at the time of writing are:
 
 =item *
 
-L<DateTime::Format::Builder::Parser::Regex> - provides regular expression
-based parsing.
+L<DateTime::Format::Builder::Parser::Regex> - provides regular expression based
+parsing.
 
 =item *
 
@@ -498,8 +497,8 @@ exception that I<label> is never given.
 
 B<on_fail> should be a reference to a subroutine that is called if the parser
 fails. If this is not provided, the default action is to call
-C<DateTime::Format::Builder::on_fail>, or the C<on_fail> method of the
-subclass of DTFB that was used to create the parser.
+C<DateTime::Format::Builder::on_fail>, or the C<on_fail> method of the subclass
+of DTFB that was used to create the parser.
 
 =back
 
@@ -522,7 +521,7 @@ User calls parser:
 
 I<preprocess> is called. It's given C<$string> and a reference to the parsing
 workspace hash, which we'll call C<$p>. At this point, C<$p> is empty. The
-return value is used as C<$date> for the rest of this single parser.  Anything
+return value is used as C<$date> for the rest of this single parser. Anything
 put in C<$p> is also used for the rest of this single parser.
 
 =item 2
@@ -535,15 +534,15 @@ If I<regex> B<did not> match, then I<on_fail> is called (and is given C<$date>
 and also I<label> if it was defined). Any return value is ignored and the next
 thing is for the single parser to return C<undef>.
 
-If I<regex> B<did> match, then I<on_match> is called with the same arguments
-as would be given to I<on_fail>. The return value is similarly ignored, but we
+If I<regex> B<did> match, then I<on_match> is called with the same arguments as
+would be given to I<on_fail>. The return value is similarly ignored, but we
 then move to step 4 rather than exiting the parser.
 
 =item 4
 
-I<postprocess> is called with C<$date> and a filled out C<$p>. The return
-value is taken as a indication of whether the parse was a success or not. If
-it wasn't a success then the single parser will exit at this point, returning
+I<postprocess> is called with C<$date> and a filled out C<$p>. The return value
+is taken as a indication of whether the parse was a success or not. If it
+wasn't a success then the single parser will exit at this point, returning
 undef.
 
 =item 5
@@ -553,8 +552,8 @@ object.
 
 =back
 
-See the section on L<error handling|/"ERROR HANDLING AND BAD PARSES">
-regarding the C<undef>s mentioned above.
+See the section on L<error handling|/"ERROR HANDLING AND BAD PARSES"> regarding
+the C<undef>s mentioned above.
 
 =head2 For Multiple Specifications
 
@@ -626,11 +625,11 @@ That can be (almost) equivalently written as:
     use DateTime::Format::Builder;
     DateTime::Format::Builder->create_class( ... );
 
-The difference being that the first is done at compile time while the second
-is done at run time.
+The difference being that the first is done at compile time while the second is
+done at run time.
 
-In the tutorial I said there were only two parameters at present. I
-lied. There are actually three of them.
+In the tutorial I said there were only two parameters at present. I lied. There
+are actually three of them.
 
 =over 4
 
@@ -639,8 +638,8 @@ lied. There are actually three of them.
 B<parsers> takes a hashref of methods and their parser specifications. See the
 L<DateTime::Format::Builder::Tutorial> for details.
 
-Note that if you define a subroutine of the same name as one of the methods
-you define here, an error will be thrown.
+Note that if you define a subroutine of the same name as one of the methods you
+define here, an error will be thrown.
 
 =item * constructor
 
@@ -648,11 +647,10 @@ B<constructor> determines whether and how to create a C<new> function in the
 new class. If given a true value, a constructor is created. If given a false
 value, one isn't.
 
-If given an anonymous sub or a reference to a sub then that is used as
-C<new>.
+If given an anonymous sub or a reference to a sub then that is used as C<new>.
 
-The default is C<1> (that is, create a constructor using our default code
-which simply creates a hashref and blesses it).
+The default is C<1> (that is, create a constructor using our default code which
+simply creates a hashref and blesses it).
 
 If your class defines its own C<new> method it will not be overwritten. If you
 define your own C<new> and B<also> tell Builder to define one an error will be
@@ -660,9 +658,9 @@ thrown.
 
 =item * verbose
 
-B<verbose> takes a value. If the value is C<undef>, then logging is
-disabled. If the value is a filehandle then that's where logging will go. If
-it's a true value, then output will go to C<STDERR>.
+B<verbose> takes a value. If the value is C<undef>, then logging is disabled.
+If the value is a filehandle then that's where logging will go. If it's a true
+value, then output will go to C<STDERR>.
 
 Alternatively, call C<$DateTime::Format::Builder::verbose> with the relevant
 value. Whichever value is given more recently is adhered to.
@@ -671,8 +669,8 @@ Be aware that verbosity is a global setting.
 
 =item * class
 
-B<class> is optional and specifies the name of the class in which to create
-the specified methods.
+B<class> is optional and specifies the name of the class in which to create the
+specified methods.
 
 If using this method in the guise of C<import> then this field will cause an
 error so it is only of use when calling as C<create_class>.
@@ -680,21 +678,21 @@ error so it is only of use when calling as C<create_class>.
 =item * version
 
 B<version> is also optional and specifies the value to give C<$VERSION> in the
-class. It's generally not recommended unless you're combining with the
-I<class> option. A C<ExtUtils::MakeMaker> / C<CPAN> compliant version
-specification is much better.
+class. It's generally not recommended unless you're combining with the I<class>
+option. A C<ExtUtils::MakeMaker> / C<CPAN> compliant version specification is
+much better.
 
 =back
 
-In addition to creating any of the methods it also creates a C<new> method
-that can instantiate (or clone) objects.
+In addition to creating any of the methods it also creates a C<new> method that
+can instantiate (or clone) objects.
 
 =head1 SUBCLASSING
 
 In the rest of the documentation I've often lied in order to get some of the
 ideas across more easily. The thing is, this module's very flexible. You can
-get markedly different behaviour from simply subclassing it and overriding
-some methods.
+get markedly different behaviour from simply subclassing it and overriding some
+methods.
 
 =head2 create_method
 
@@ -709,17 +707,17 @@ This is called in the event of a non-parse (unless you've overridden
 C<create_method> to do something else.
 
 The single argument is the input string. The default action is to call
-C<croak>. Above, where I've said parsers or methods throw errors, this is
-the method that is doing the error throwing.
+C<croak>. Above, where I've said parsers or methods throw errors, this is the
+method that is doing the error throwing.
 
 You could conceivably override this method to, say, return C<undef>.
 
 =head1 USING BUILDER OBJECTS aka USERS USING BUILDER
 
 The methods listed in the L<METHODS> section are all you generally need when
-creating your own class. Sometimes you may not want a full blown class to
-parse something just for this one program. Some methods are provided to make
-that task easier.
+creating your own class. Sometimes you may not want a full blown class to parse
+something just for this one program. Some methods are provided to make that
+task easier.
 
 =head2 new
 
@@ -742,8 +740,8 @@ C<new> as an object method.
 
 =head2 parser
 
-Given either a single or multiple parser specification, sets the object to
-have a parser based on that specification.
+Given either a single or multiple parser specification, sets the object to have
+a parser based on that specification.
 
     $parser->parser(
         regex  => qr/^ (\d{4}) (\d\d) (\d\d) $/x;
@@ -801,24 +799,23 @@ Dave Rolsky (DROLSKY) for kickstarting the DateTime project, writing
 L<DateTime::Format::ICal> and L<DateTime::Format::MySQL>, and some much needed
 review.
 
-Joshua Hoblitt (JHOBLITT) for the concept, some of the API, impetus for
-writing the multi-length code (both one length with multiple parsers and
-single parser with multiple lengths), blame for the Regex custom constructor
-code, spotting a bug in Dispatch, and more much needed review.
+Joshua Hoblitt (JHOBLITT) for the concept, some of the API, impetus for writing
+the multi-length code (both one length with multiple parsers and single parser
+with multiple lengths), blame for the Regex custom constructor code, spotting a
+bug in Dispatch, and more much needed review.
 
 Kellan Elliott-McCrea (KELLAN) for even more review, suggestions,
 L<DateTime::Format::W3CDTF> and the encouragement to rewrite these docs almost
 100%!
 
 Claus Färber (CFAERBER) for having me get around to fixing the
-auto-constructor writing, providing the 'args'/'self' patch, and suggesting
-the multi-callbacks.
+auto-constructor writing, providing the 'args'/'self' patch, and suggesting the
+multi-callbacks.
 
 Rick Measham (RICKM) for L<DateTime::Format::Strptime> which Builder now
 supports.
 
-Matthew McGillis for pointing out that C<on_fail> overriding should be
-simpler.
+Matthew McGillis for pointing out that C<on_fail> overriding should be simpler.
 
 Simon Cozens (SIMON) for saying it was cool.
 

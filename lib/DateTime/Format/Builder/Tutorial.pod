@@ -8,14 +8,13 @@ __END__
 
 =head1 CREATING A CLASS
 
-As most people who are writing modules know, you start a package with a
-package declaration and some indication of module version:
+As most people who are writing modules know, you start a package with a package
+declaration and some indication of module version:
 
     package DateTime::Format::ICal; our $VERSION = '0.04';
 
-After that, you call Builder with some options. There are
-only a few (detailed later). Right now, we're only interested
-in I<parsers>.
+After that, you call Builder with some options. There are only a few (detailed
+later). Right now, we're only interested in I<parsers>.
 
     use DateTime::Format::Builder ( parsers => {...} );
 
@@ -29,9 +28,8 @@ specifications:
 	}
 
 Builder will create methods in your class, each method being a parser that
-follows the given specifications. It is B<strongly> recommended that one
-method is called I<parse_datetime>, be it a Builder created method or one of
-your own.
+follows the given specifications. It is B<strongly> recommended that one method
+is called I<parse_datetime>, be it a Builder created method or one of your own.
 
 In addition to creating any of the parser methods it also creates a C<new>
 method that can instantiate (or clone) objects of this class. This behaviour
@@ -45,10 +43,9 @@ case.
     parse_briefdate => { params => [qw( year month day )], regex =>
         qr/^(\d\d\d\d)(\d\d)(\d\d)$/, },
 
-This will result in a method named I<parse_briefdate> which
-will take strings in the form C<20040716> and return
-DateTime objects representing that date. A user of the class
-might write:
+This will result in a method named I<parse_briefdate> which will take strings
+in the form C<20040716> and return DateTime objects representing that date. A
+user of the class might write:
 
     use DateTime::Format::ICal;
     my $date = '19790716';
@@ -61,8 +58,8 @@ C<$2>, ... are mapped to the I<params> given and handed to C<< DateTime->new
 
     my $rv = DateTime->new( year => $1, month => $2, day => $3 );
 
-There are more complicated things one can do within a single specification,
-but we'll cover those later.
+There are more complicated things one can do within a single specification, but
+we'll cover those later.
 
 Often, you'll want a method to be able to take one string, and run it against
 multiple parser specifications. It would be very irritating if the user had to
@@ -90,12 +87,12 @@ So, Builder lets you specify multiple specifications:
         },
     ],
 
-It's an arrayref of specifications. A parser will be created that will try
-each of these specifications sequentially, in the order you specified.
+It's an arrayref of specifications. A parser will be created that will try each
+of these specifications sequentially, in the order you specified.
 
 There's a flaw with this though. In this example, we're building a parser for
-ICal datetimes. One can place a timezone id at the start of an ICal
-datetime. You might extract such an id with the following code:
+ICal datetimes. One can place a timezone id at the start of an ICal datetime.
+You might extract such an id with the following code:
 
     if ( $date =~ s/^TZID=([^:]+):// ) {
         $time_zone = $1;
@@ -109,9 +106,9 @@ datetime. You might extract such an id with the following code:
         $time_zone = 'floating';
     }
 
-C<$date> would end up without the id, and C<$time_zone> would contain
-something appropriate to give to DateTime's I<set_time_zone> method, or
-I<time_zone> argument.
+C<$date> would end up without the id, and C<$time_zone> would contain something
+appropriate to give to DateTime's I<set_time_zone> method, or I<time_zone>
+argument.
 
 But how to get this scrap of code into your parser? You might be tempted to
 call the parser something else and build a small wrapper. There's no need
@@ -158,8 +155,8 @@ this:
     }
 
 On input it is given a hash containing two items: the input date and a hashref
-that will be used in the parsing. The return value from the routine is what
-the parser specifications will run against, and anything in the I<parsed> hash
+that will be used in the parsing. The return value from the routine is what the
+parser specifications will run against, and anything in the I<parsed> hash
 (C<$p> in the example) will be put in the call to C<< DateTime->new(...) >>.
 
 So, we now have a happily working ICal parser. It parses the assorted formats,

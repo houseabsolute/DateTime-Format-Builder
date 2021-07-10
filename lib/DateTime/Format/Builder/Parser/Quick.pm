@@ -103,8 +103,8 @@ The C<Quick> keyword should have an argument of either an object or a class
 name. If it's a class name then the class is C<use>d.
 
 The C<method> keyword is optional with a default of C<parse_datetime>. It's
-either name of the method to invoke on the object, or a reference to a piece
-of code.
+either name of the method to invoke on the object, or a reference to a piece of
+code.
 
 In any case, the resultant code ends up looking like:
 
@@ -114,8 +114,7 @@ In any case, the resultant code ends up looking like:
 
 C<datetime@perl.org> mailing list.
 
-L<perl>, L<DateTime>,
-L<DateTime::Format::Builder>
+L<perl>, L<DateTime>, L<DateTime::Format::Builder>
 
 =cut
 

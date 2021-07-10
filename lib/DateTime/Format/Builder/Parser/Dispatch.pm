@@ -84,8 +84,8 @@ parsing according to group names.
 
 =head1 SPECIFICATION
 
-C<Dispatch> has just one key: C<Dispatch>. The value should be a reference to
-a subroutine that returns one of:
+C<Dispatch> has just one key: C<Dispatch>. The value should be a reference to a
+subroutine that returns one of:
 
 =over 4
 
@@ -112,14 +112,13 @@ same format as when you specify them for methods.
 
 =head1 SIDE EFFECTS
 
-Your group parser can also be a Dispatch parser. Thus you could potentially
-end up with an infinitely recursive parser.
+Your group parser can also be a Dispatch parser. Thus you could potentially end
+up with an infinitely recursive parser.
 
 =head1 SEE ALSO
 
 C<datetime@perl.org> mailing list.
 
-L<perl>, L<DateTime>,
-L<DateTime::Format::Builder>
+L<perl>, L<DateTime>, L<DateTime::Format::Builder>
 
 =cut

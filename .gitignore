@@ -1,8 +1,8 @@
+/.tidyall.d
+/test-mydeps-*
 *~
 .\#*
 .build
-/.tidyall.d
-/test-mydeps-*
 Build
 DateTime-Format-Builder-*
 Debian_CPANTS.txt

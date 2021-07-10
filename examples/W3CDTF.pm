@@ -9,7 +9,7 @@ use DateTime::Format::Builder (
             [ preprocess => \&_parse_tz ],
             {
                 params => [qw( year month day hour minute second)],
-                regex =>
+                regex  =>
                     qr/^(\d{4})-(\d\d)-(\d\d)T(\d\d):(\d\d):(\d\d)\.(\d\d)$/,
                 length => 22,
             },
@@ -110,7 +110,7 @@ sub offset_as_string {
     return (
         $secs
         ? sprintf( '%s%02d:%02d:%02d', $sign, $hours, $mins, $secs )
-        : sprintf( '%s%02d:%02d',      $sign, $hours, $mins )
+        : sprintf( '%s%02d:%02d', $sign, $hours, $mins )
     );
 }
 
@@ -135,8 +135,8 @@ DateTime::Format::W3CDTF - Parse and format W3CDTF datetime strings
 =head1 DESCRIPTION
 
 This module understands the W3CDTF date/time format, an ISO 8601 profile,
-defined at http://www.w3.org/TR/NOTE-datetime.  This format as the native
-date format of RSS 1.0.
+defined at http://www.w3.org/TR/NOTE-datetime. This format as the native date
+format of RSS 1.0.
 
 It can be used to parse these formats in order to create the appropriate
 objects.
@@ -149,22 +149,21 @@ This API is currently experimental and may change in the future.
 
 =item * parse_datetime($string)
 
-Given a W3CDTF datetime string, this method will return a new
-C<DateTime> object.
+Given a W3CDTF datetime string, this method will return a new C<DateTime>
+object.
 
 If given an improperly formatted string, this method may die.
 
 =item * format_datetime($datetime)
 
-Given a C<DateTime> object, this methods returns a W3CDTF datetime
-string.
+Given a C<DateTime> object, this methods returns a W3CDTF datetime string.
 
 =back
 
 =head1 SUPPORT
 
-Support for this module is provided via the datetime@perl.org email
-list.  See http://lists.perl.org/ for more details.
+Support for this module is provided via the datetime@perl.org email list. See
+http://lists.perl.org/ for more details.
 
 =head1 AUTHOR
 
@@ -175,11 +174,11 @@ This module was inspired by C<DateTime::Format::ICal>
 =head1 COPYRIGHT
 
 Copyright (c) 2003 Kellan Elliott-McCrea. All rights reserved. This program is
-free software; you can redistribute it and/or modify it under the same terms
-as Perl itself.
+free software; you can redistribute it and/or modify it under the same terms as
+Perl itself.
 
-The full text of the license can be found in the LICENSE file included
-with this module.
+The full text of the license can be found in the LICENSE file included with
+this module.
 
 =head1 SEE ALSO
 

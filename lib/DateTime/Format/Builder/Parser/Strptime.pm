@@ -90,8 +90,7 @@ L<DateTime::Format::Strptime> for more information on valid patterns.
 
 C<datetime@perl.org> mailing list.
 
-L<perl>, L<DateTime>,
-L<DateTime::Format::Builder>
+L<perl>, L<DateTime>, L<DateTime::Format::Builder>
 
 =cut
 

@@ -110,8 +110,8 @@ hash. This is useful for storing information between methods.
 
 =head3 generic_parser
 
-This is a method provided solely for the benefit of C<Parser>
-implementations. It semi-neatly abstracts a lot of the work involved.
+This is a method provided solely for the benefit of C<Parser> implementations.
+It semi-neatly abstracts a lot of the work involved.
 
 Basically, it takes parameters matching the assorted callbacks from the parser
 declarations and makes a coderef out of it all.
@@ -158,8 +158,8 @@ parsing hash and should return a C<DateTime> object or undefined.
 
 =head2 Delegations
 
-For use of C<Parser>, this module also delegates C<valid_params> and
-C<params>. This is just convenience to save typing the following:
+For use of C<Parser>, this module also delegates C<valid_params> and C<params>.
+This is just convenience to save typing the following:
 
     DateTime::Format::Builder::Parser->valid_params(...)
 

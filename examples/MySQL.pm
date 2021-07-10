@@ -117,17 +117,16 @@ DateTime::Format::MySQL - Parse and format MySQL dates and times
 
 =head1 DESCRIPTION
 
-This module understands the formats used by MySQL for its DATE,
-DATETIME, TIME, and TIMESTAMP data types.  It can be used to parse
-these formats in order to create DateTime objects, and it can take a
-DateTime object and produce a string representing it in the MySQL
-format.
+This module understands the formats used by MySQL for its DATE, DATETIME, TIME,
+and TIMESTAMP data types. It can be used to parse these formats in order to
+create DateTime objects, and it can take a DateTime object and produce a string
+representing it in the MySQL format.
 
 =head1 METHODS
 
-This class offers the following methods.  All of the parsing methods
-set the returned DateTime object's time zone to the floating time
-zone, because MySQL does not provide time zone information.
+This class offers the following methods. All of the parsing methods set the
+returned DateTime object's time zone to the floating time zone, because MySQL
+does not provide time zone information.
 
 =over 4
 
@@ -148,15 +147,15 @@ If given an improperly formatted string, this method may die.
 
 =item * format_datetime($datetime)
 
-Given a C<DateTime> object, this methods returns an appropriately
-formatted string.
+Given a C<DateTime> object, this methods returns an appropriately formatted
+string.
 
 =back
 
 =head1 SUPPORT
 
-Support for this module is provided via the datetime@perl.org email
-list.  See http://lists.perl.org/ for more details.
+Support for this module is provided via the datetime@perl.org email list. See
+http://lists.perl.org/ for more details.
 
 =head1 SEE ALSO
 

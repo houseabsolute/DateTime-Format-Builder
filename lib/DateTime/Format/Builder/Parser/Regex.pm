@@ -149,8 +149,8 @@ In short:
     $self->$coderef( %{$p}, %{ $self->{extra} } );
 
 The method is expected to return a valid L<DateTime> object, or C<undef> in
-event of failure, but can conceivably return anything it likes. So long as
-it's 'true'.
+event of failure, but can conceivably return anything it likes. So long as it's
+'true'.
 
 =back
 
@@ -158,8 +158,7 @@ it's 'true'.
 
 C<datetime@perl.org> mailing list.
 
-L<perl>, L<DateTime>,
-L<DateTime::Format::Builder>
+L<perl>, L<DateTime>, L<DateTime::Format::Builder>
 
 =cut
 

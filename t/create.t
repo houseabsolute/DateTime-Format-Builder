@@ -11,28 +11,28 @@ my @parsers = (
     {
         params   => [qw( year month day hour minute second )],
         regex    => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)(\d\d)$/,
-        on_fail  => sub { ok( $should_fail, "on_fail called for $_[0]" ) },
+        on_fail  => sub { ok( $should_fail,  "on_fail called for $_[0]" ) },
         on_match => sub { ok( !$should_fail, "on_match called for $_[0]" ) },
     },
     {
         length   => 8,
         params   => [qw( year month day )],
         regex    => qr/^(\d\d\d\d)(\d\d)(\d\d)$/,
-        on_fail  => sub { ok( $should_fail, "on_fail called for $_[0]" ) },
+        on_fail  => sub { ok( $should_fail,  "on_fail called for $_[0]" ) },
         on_match => sub { ok( !$should_fail, "on_match called for $_[0]" ) },
     },
     {
         length   => 13,
         params   => [qw( year month day hour minute )],
         regex    => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)(\d\d)$/,
-        on_fail  => sub { ok( $should_fail, "on_fail called for $_[0]" ) },
+        on_fail  => sub { ok( $should_fail,  "on_fail called for $_[0]" ) },
         on_match => sub { ok( !$should_fail, "on_match called for $_[0]" ) },
     },
     {
         length   => 11,
         params   => [qw( year month day hour )],
         regex    => qr/^(\d\d\d\d)(\d\d)(\d\d)T(\d\d)$/,
-        on_fail  => sub { ok( $should_fail, "on_fail called for $_[0]" ) },
+        on_fail  => sub { ok( $should_fail,  "on_fail called for $_[0]" ) },
         on_match => sub { ok( !$should_fail, "on_match called for $_[0]" ) },
     },
 );

@@ -3,8 +3,8 @@ use strict;
 
 =pod
 
-This example shows a simple fall through parser that tries
-a few of the other formatting modules, _then_ fails.
+This example shows a simple fall through parser that tries a few of the other
+formatting modules, _then_ fails.
 
 =cut
 
