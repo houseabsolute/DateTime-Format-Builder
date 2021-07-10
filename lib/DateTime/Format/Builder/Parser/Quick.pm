@@ -114,8 +114,6 @@ In any case, the resultant code ends up looking like:
 
 C<datetime@perl.org> mailing list.
 
-http://datetime.perl.org/
-
 L<perl>, L<DateTime>,
 L<DateTime::Format::Builder>
 

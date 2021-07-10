@@ -615,8 +615,6 @@ calls to the callbacks.
 
 C<datetime@perl.org> mailing list.
 
-http://datetime.perl.org/
-
 L<perl>, L<DateTime>, L<DateTime::Format::Builder>.
 
 L<Params::Validate>.

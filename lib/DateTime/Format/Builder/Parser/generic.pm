@@ -177,8 +177,6 @@ a look at F<Regex.pm> and F<Strptime.pm> as examples and work from there.
 
 C<datetime@perl.org> mailing list.
 
-http://datetime.perl.org/
-
 L<perl>, L<DateTime>, L<DateTime::Format::Builder>,
 L<DateTime::Format::Builder::Parser>.
 

@@ -185,6 +185,4 @@ with this module.
 
 datetime@perl.org mailing list
 
-http://datetime.perl.org/
-
 =cut

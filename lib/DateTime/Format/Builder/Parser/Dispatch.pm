@@ -119,8 +119,6 @@ end up with an infinitely recursive parser.
 
 C<datetime@perl.org> mailing list.
 
-http://datetime.perl.org/
-
 L<perl>, L<DateTime>,
 L<DateTime::Format::Builder>
 

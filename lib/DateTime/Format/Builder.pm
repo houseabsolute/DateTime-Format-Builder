@@ -826,8 +826,6 @@ Simon Cozens (SIMON) for saying it was cool.
 
 C<datetime@perl.org> mailing list.
 
-http://datetime.perl.org/
-
 L<perl>, L<DateTime>, L<DateTime::Format::Builder::Tutorial>,
 L<DateTime::Format::Builder::Parser>
 
